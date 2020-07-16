@@ -3,11 +3,11 @@ package com.yuanwiequan.common.annotation;
 import java.lang.annotation.*;
 
 /**
- * 用来控制是否保存
+ * 用来标注表名
  */
 @Documented
-@Target(ElementType.FIELD)
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SaveAble {
-     boolean value() default true;
+public @interface Table {
+     String value();
 }
