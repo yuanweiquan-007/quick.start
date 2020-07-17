@@ -1,7 +1,7 @@
-import com.yuanwiequan.common.annotation.PrimaryKey;
-import com.yuanwiequan.common.annotation.Table;
-import com.yuanwiequan.common.entity.Entity;
-import com.yuanwiequan.common.entity.EntityMeta;
+import quick.start.annotation.PrimaryKey;
+import quick.start.annotation.Table;
+import quick.start.entity.Entity;
+import quick.start.entity.EntityMeta;
 import lombok.Data;
 import org.junit.Test;
 
