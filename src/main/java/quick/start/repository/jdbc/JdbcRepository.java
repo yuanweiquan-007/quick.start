@@ -1,6 +1,8 @@
 package quick.start.repository.jdbc;
 
 import quick.start.entity.Entity;
+import quick.start.parser.CommandParser;
+import quick.start.parser.jdbcparser.JdbcCommandParser;
 import quick.start.repository.DefaultAbstractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -93,5 +95,10 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
      @Override
      public boolean delete(String column, Collection<? extends Serializable> values) {
           return false;
+     }
+
+     @Override
+     protected CommandParser commandParser() {
+          return new JdbcCommandParser();
      }
 }

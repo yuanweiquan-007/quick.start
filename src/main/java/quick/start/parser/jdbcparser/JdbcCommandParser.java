@@ -1,35 +1,42 @@
 package quick.start.parser.jdbcparser;
 
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import quick.start.constant.MysqlCommandConstant;
 import quick.start.parser.CommandParser;
+import quick.start.repository.command.CommandForEntity;
+import quick.start.repository.command.ExecuteCommandMeta;
 import quick.start.repository.condition.ConditionAttribute;
 import quick.start.repository.jdbc.types.JdbcConditionType;
 import quick.start.repository.types.ConditionType;
-import quick.start.repository.command.CommandForEntity;
 import quick.start.util.ArrayUtils;
 import quick.start.util.StringBufferUtils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public class JdbcCommandParser extends CommandParser {
 
+     private ThreadLocal<List<Object>> executeParames = new ThreadLocal<>();
+
      @Override
-     public String parser(CommandForEntity command) {
+     public ExecuteCommandMeta parser(CommandForEntity command) {
           if (ObjectUtils.isEmpty(command)) {
-               return MysqlCommandConstant.NULL;
+               return ExecuteCommandMeta.of(MysqlCommandConstant.NULL, null);
           }
+          executeParames.set(new ArrayList<>());
           switch (command.commandType()) {
                case SELECT:
-                    return parserSelectCommand(command);
+                    return ExecuteCommandMeta.of(parserSelectCommand(command), executeParames.get());
                case COUNT:
                case INSERT:
                case DELETE:
                case UPDATE:
                default:
-                    return MysqlCommandConstant.NULL;
+                    return ExecuteCommandMeta.of(MysqlCommandConstant.NULL, null);
           }
      }
 
@@ -59,15 +66,6 @@ public class JdbcCommandParser extends CommandParser {
                   .map(x -> (MysqlCommandConstant.SPACE.concat(MysqlCommandConstant.AND).concat(parserConditionAttribute(x))))
                   .reduce("WHERE 1=1", (a, b) -> (a.concat(b)))
                   .replace("1=1 AND ", "");
-     }
-
-     public static void main(String[] args) {
-          JdbcCommandParser parser = new JdbcCommandParser();
-          List<ConditionAttribute> conditions = new ArrayList<>();
-          conditions.add(ConditionAttribute.of("name", ConditionType.EQUAL, "10"));
-          conditions.add(ConditionAttribute.of("age", ConditionType.LESS_THEN_OR_EQUAL, "20"));
-          conditions.add(ConditionAttribute.of("sex", ConditionType.IN, Arrays.asList("0", "1")));
-          System.out.println(parser.parserConditions(conditions));
      }
 
      private String parserConditionAttribute(ConditionAttribute condition) {
@@ -113,6 +111,12 @@ public class JdbcCommandParser extends CommandParser {
                   .substring(1);
      }
 
+     /**
+      * limit条件
+      *
+      * @param command
+      * @return
+      */
      private String parserLimit(CommandForEntity command) {
           if (ObjectUtils.isEmpty(command.getPageSize())) {
                return MysqlCommandConstant.NULL;

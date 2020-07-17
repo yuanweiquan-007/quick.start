@@ -5,6 +5,11 @@ import quick.start.entity.EntityMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import quick.start.parser.CommandParser;
+import quick.start.repository.command.Delete;
+import quick.start.repository.command.Insert;
+import quick.start.repository.command.Select;
+import quick.start.repository.command.Update;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -42,5 +47,7 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
      protected void initEntityMeta() {
           entityMeta = EntityMeta.of(entityClass());
      }
+
+     protected abstract CommandParser commandParser();
 
 }
