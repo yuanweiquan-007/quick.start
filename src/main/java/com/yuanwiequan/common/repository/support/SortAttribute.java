@@ -1,4 +1,6 @@
-package com.yuanwiequan.common.repository;
+package com.yuanwiequan.common.repository.support;
+
+import com.yuanwiequan.common.repository.types.SortType;
 
 /**
  * 排序属性

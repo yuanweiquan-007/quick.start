@@ -1,4 +1,4 @@
-package com.yuanwiequan.common.repository;
+package com.yuanwiequan.common.repository.condition;
 
 import java.io.Serializable;
 import java.util.Collection;

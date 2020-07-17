@@ -1,4 +1,4 @@
-package com.yuanwiequan.common.repository;
+package com.yuanwiequan.common.repository.support;
 
 public interface PageSupport {
 

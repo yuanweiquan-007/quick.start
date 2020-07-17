@@ -1,5 +1,9 @@
-package com.yuanwiequan.common.repository;
+package com.yuanwiequan.common.repository.condition;
 
+import com.yuanwiequan.common.repository.types.ConditionType;
+import lombok.Data;
+
+@Data
 public class ConditionAttribute {
 
      //条件属性
