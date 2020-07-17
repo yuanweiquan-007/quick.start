@@ -3,8 +3,8 @@ package quick.start.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import quick.start.entity.Entity;
-import quick.start.entity.EntityMeta;
 import quick.start.parser.CommandParser;
 import quick.start.repository.command.CommandFactory;
 import quick.start.repository.command.CommandForEntity;
@@ -26,7 +26,10 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
      public E findById(Serializable id) {
           Select<E> select = commandFactory.select();
           checkPrimaryKeyAndTableName(select);
-          return null;
+          select.equal(select.getPrimaryKey(), id);
+          List<E> entitys = select(select);
+          //如果有多个，就返回第一个。也可以自行修改抛出异常。
+          return CollectionUtils.isEmpty(entitys) ? null : entitys.get(0);
      }
 
      protected void checkTableName(CommandForEntity<E> commandForEntity) {

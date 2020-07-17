@@ -28,4 +28,9 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions {
      public EntityMeta<E> getMeta() {
           return meta;
      }
+
+     public String getPrimaryKey() {
+          return meta.getPrimaryKey();
+     }
+
 }
