@@ -44,6 +44,19 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
           return select(select);
      }
 
+     @Override
+     public List<E> findByColumn(String column, Serializable value) {
+          Select<E> select = commandFactory.select();
+          checkTableName(select);
+          select.equal(column, value);
+          return select(select);
+     }
+
+     @Override
+     public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
+          return null;
+     }
+
      protected void checkTableName(CommandForEntity<E> commandForEntity) {
           Assert.notNull(commandForEntity.getMeta().getTableName(), "未设置表名，可通过注解@Table来定义表名");
      }

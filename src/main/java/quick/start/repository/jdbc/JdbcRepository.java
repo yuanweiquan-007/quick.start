@@ -38,16 +38,6 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
     }
 
     @Override
-    public List<E> findByColumn(String column, Serializable value) {
-        return null;
-    }
-
-    @Override
-    public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
-        return null;
-    }
-
-    @Override
     public List<E> find() {
         return null;
     }
