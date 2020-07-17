@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import quick.start.entity.Entity;
 import quick.start.parser.CommandParser;
 import quick.start.repository.command.CommandFactory;
@@ -11,6 +12,7 @@ import quick.start.repository.command.CommandForEntity;
 import quick.start.repository.command.Select;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class DefaultAbstractRepository<E extends Entity> implements Repository<E> {
@@ -24,12 +26,22 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
 
      @Override
      public E findById(Serializable id) {
+          Assert.notNull(id, "查询主键值为空");
           Select<E> select = commandFactory.select();
           checkPrimaryKeyAndTableName(select);
           select.equal(select.getPrimaryKey(), id);
           List<E> entitys = select(select);
           //如果有多个，就返回第一个。也可以自行修改抛出异常。
           return CollectionUtils.isEmpty(entitys) ? null : entitys.get(0);
+     }
+
+     @Override
+     public List<E> findByIds(Collection<? extends Serializable> ids) {
+          Assert.notEmpty(ids, "查询主键值为空");
+          Select<E> select = commandFactory.select();
+          checkPrimaryKeyAndTableName(select);
+          select.whereIn(select.getPrimaryKey(), ids);
+          return select(select);
      }
 
      protected void checkTableName(CommandForEntity<E> commandForEntity) {

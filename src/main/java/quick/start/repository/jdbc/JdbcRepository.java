@@ -24,7 +24,7 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
 
     @Override
     protected List<E> select(Select<E> select) {
-        checkTableName(select.getMeta());
+        checkTableName(select);
         ExecuteCommandMeta commandMeta = commandParser().parser(select);
         if (StringUtils.isEmpty(commandMeta.getCommand())) {
             throw new IllegalArgumentException("select语句解析异常");
@@ -35,16 +35,6 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
             logger.info("查询失败", e);
             return new ArrayList<>();
         }
-    }
-
-    @Override
-    public E findById(Serializable id) {
-        return null;
-    }
-
-    @Override
-    public List<E> findByIds(Collection<? extends Serializable> ids) {
-        return null;
     }
 
     @Override
