@@ -9,6 +9,8 @@ import quick.start.repositorys.command.CommandForEntity;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.repositorys.condition.ConditionAttribute;
 import quick.start.repositorys.jdbc.types.JdbcConditionType;
+import quick.start.repositorys.jdbc.types.JdbcSortType;
+import quick.start.repositorys.support.SortAttribute;
 import quick.start.repositorys.types.ConditionType;
 import quick.start.util.ArrayUtils;
 import quick.start.util.StringBufferUtils;
@@ -47,7 +49,7 @@ public class JdbcCommandParser extends CommandParser {
                   .append(rightSpace(MysqlCommandConstant.SELECT))
                   .append(rightSpace(MysqlCommandConstant.COUNT))
                   .append(rightSpace(MysqlCommandConstant.FROM))
-                  .append(rightSpace(command.getMeta().getTableName()))
+                  .append(command.getMeta().getTableName())
                   .append(parserConditions(command.getConditions()))
                   .toString();
      }
@@ -57,10 +59,25 @@ public class JdbcCommandParser extends CommandParser {
                   .append(rightSpace(MysqlCommandConstant.SELECT))
                   .append(rightSpace(parserColumns(command.getColumnes())))
                   .append(rightSpace(MysqlCommandConstant.FROM))
-                  .append(rightSpace(command.getMeta().getTableName()))
+                  .append(command.getMeta().getTableName())
                   .append(parserConditions(command.getConditions()))
+                  .append(parserOrderBy(command.getSorts()))
                   .append(parserLimit(command))
                   .toString();
+     }
+
+     private String parserOrderBy(List<SortAttribute> sorts) {
+          if (CollectionUtils.isEmpty(sorts)) {
+               return CommonConstant.NULL;
+          }
+          StringBuffer buffer = new StringBuffer(" order by ");
+          for (SortAttribute sortAttribute : sorts) {
+               buffer
+                       .append(rightSpace(sortAttribute.getField()))
+                       .append(JdbcSortType.getValue(sortAttribute.getType()))
+                       .append(",");
+          }
+          return buffer.substring(0, buffer.lastIndexOf(","));
      }
 
      private String parserColumns(Set<String> columns) {
@@ -73,7 +90,7 @@ public class JdbcCommandParser extends CommandParser {
           }
           return conditions.stream()
                   .map(x -> (MysqlCommandConstant.SPACE.concat(MysqlCommandConstant.AND).concat(parserConditionAttribute(x))))
-                  .reduce("WHERE 1=1", (a, b) -> (a.concat(b)))
+                  .reduce(" WHERE 1=1", (a, b) -> (a.concat(b)))
                   .replace("1=1 AND ", "");
      }
 
@@ -132,7 +149,13 @@ public class JdbcCommandParser extends CommandParser {
           }
           int start = command.getPageSize() * (command.getPageNumber() - 1);
           int end = start + command.getPageSize();
-          return MysqlCommandConstant.LIMIT.concat(MysqlCommandConstant.SPACE).concat(String.valueOf(start)).concat(",").concat(String.valueOf(end));
+          return StringBufferUtils.of()
+                  .append(MysqlCommandConstant.SPACE)
+                  .append(rightSpace(MysqlCommandConstant.LIMIT))
+                  .append(start)
+                  .append(",")
+                  .append(end)
+                  .toString();
      }
 
 }

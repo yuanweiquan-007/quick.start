@@ -1,10 +1,12 @@
 package quick.start.repositorys.support;
 
+import lombok.Data;
 import quick.start.repositorys.types.SortType;
 
 /**
  * 排序属性
  */
+@Data
 public class SortAttribute {
 
      private String field;

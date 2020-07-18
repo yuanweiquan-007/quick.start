@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import quick.start.collection.Paginator;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
 import quick.start.exception.UniqueException;
 import quick.start.parser.CommandParser;
 import quick.start.repositorys.command.*;
+import quick.start.repositorys.condition.Conditions;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -19,7 +21,7 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
 
      protected CommandFactory<E> commandFactory;
      protected Logger logger = LoggerFactory.getLogger(getClass());
-     
+
      public DefaultAbstractRepository() {
           commandFactory = new CommandFactory<>(EntityMeta.of(entityClass()));
      }
@@ -80,6 +82,18 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
           Select<E> select = commandFactory.select();
           select.whereIn(column, values);
           return select(select);
+     }
+
+     @Override
+     public List<E> find(Conditions conditions) {
+          Select<E> select = commandFactory.select();
+          select.of(conditions);
+          return select(select);
+     }
+
+     @Override
+     public Paginator<E> find(Conditions conditions, Integer pageSize, Integer pageNumber) {
+          return null;
      }
 
      /**

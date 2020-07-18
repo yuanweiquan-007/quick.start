@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import quick.start.config.MyConfig;
 import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
+import quick.start.repositorys.condition.Conditions;
 
 import java.util.Arrays;
 
@@ -37,6 +38,20 @@ public class TestReponsitory {
      @Test
      public void findByIds() {
           orderRepository.findByIds(Arrays.asList("1593238076676", "1593238089359")).forEach(x -> {
+               logger.info("{}", x.toString());
+          });
+     }
+
+     @Test
+     public void findByConditions() {
+          Conditions conditions = new Conditions()
+                  .equal("orderCode", "1593238616437")
+                  .lessThenOrEqual("orderId", 13)
+                  .greaterThen("orderId", 10)
+                  .desc("orderId")
+                  .asc("orderCode")
+                  .limit(10);
+          orderRepository.find(conditions).forEach(x -> {
                logger.info("{}", x.toString());
           });
      }

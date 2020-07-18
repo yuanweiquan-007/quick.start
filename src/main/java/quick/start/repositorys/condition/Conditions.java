@@ -11,7 +11,7 @@ import quick.start.repositorys.types.SortType;
 import java.io.Serializable;
 import java.util.*;
 
-public abstract class Conditions implements ConditionSupport, SortSupport, PageSupport, ColumnSupport {
+public class Conditions implements ConditionSupport, SortSupport, PageSupport, ColumnSupport {
 
      protected Integer pageSize;
      protected Integer pageNumber;
@@ -80,9 +80,9 @@ public abstract class Conditions implements ConditionSupport, SortSupport, PageS
      }
 
      @Override
-     public Conditions limit(Integer pageNumber) {
-          this.pageSize = 1;
-          this.pageNumber = pageNumber;
+     public Conditions limit(Integer pageSize) {
+          this.pageNumber = 1;
+          this.pageSize = pageSize;
           return this;
      }
 
