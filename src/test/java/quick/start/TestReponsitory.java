@@ -12,6 +12,8 @@ import quick.start.config.MyConfig;
 import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
 
+import java.util.Arrays;
+
 @RunWith(value = SpringJUnit4ClassRunner.class)
 @ComponentScan("quick.start")
 @ContextConfiguration(classes = MyConfig.class)
@@ -30,6 +32,13 @@ public class TestReponsitory {
      @Test
      public void findById() {
           logger.info("{}", orderRepository.findById("1593238076676"));
+     }
+
+     @Test
+     public void findByIds() {
+          orderRepository.findByIds(Arrays.asList("1593238076676", "1593238089359")).forEach(x -> {
+               logger.info("{}", x.toString());
+          });
      }
 
 }
