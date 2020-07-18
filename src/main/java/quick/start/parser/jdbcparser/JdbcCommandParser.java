@@ -4,11 +4,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import quick.start.constant.MysqlCommandConstant;
 import quick.start.parser.CommandParser;
-import quick.start.repository.command.CommandForEntity;
-import quick.start.repository.command.ExecuteCommandMeta;
-import quick.start.repository.condition.ConditionAttribute;
-import quick.start.repository.jdbc.types.JdbcConditionType;
-import quick.start.repository.types.ConditionType;
+import quick.start.repositorys.command.CommandForEntity;
+import quick.start.repositorys.command.ExecuteCommandMeta;
+import quick.start.repositorys.condition.ConditionAttribute;
+import quick.start.repositorys.jdbc.types.JdbcConditionType;
+import quick.start.repositorys.types.ConditionType;
 import quick.start.util.ArrayUtils;
 import quick.start.util.StringBufferUtils;
 
@@ -55,7 +55,7 @@ public class JdbcCommandParser extends CommandParser {
      }
 
      private String parserColumns(Set<String> columns) {
-          return CollectionUtils.isEmpty(columns) ? MysqlCommandConstant.NULL : ArrayUtils.join(",", columns);
+          return CollectionUtils.isEmpty(columns) ? MysqlCommandConstant.ALL_FIELDS : ArrayUtils.join(",", columns);
      }
 
      private String parserConditions(List<ConditionAttribute> conditions) {

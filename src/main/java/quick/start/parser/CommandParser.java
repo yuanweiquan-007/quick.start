@@ -1,7 +1,7 @@
 package quick.start.parser;
 
-import quick.start.repository.command.CommandForEntity;
-import quick.start.repository.command.ExecuteCommandMeta;
+import quick.start.repositorys.command.CommandForEntity;
+import quick.start.repositorys.command.ExecuteCommandMeta;
 
 public abstract class CommandParser {
 
