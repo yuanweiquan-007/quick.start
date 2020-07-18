@@ -32,6 +32,15 @@ public class EntityMeta<E extends Entity> {
           return meta;
      }
 
+     public E newInstance() {
+          try {
+               return eClass.newInstance();
+          } catch (Exception ex) {
+               ex.printStackTrace();
+               return null;
+          }
+     }
+
      private static <E extends Entity> void parserPrimaryFromField(Class<E> eClass, EntityMeta<E> meta) {
           Field[] declaredFields = eClass.getDeclaredFields();
           for (Field field : declaredFields) {

@@ -1,17 +1,17 @@
 package quick.start.repository.condition;
 
+import org.springframework.util.CollectionUtils;
 import quick.start.repository.support.ColumnSupport;
 import quick.start.repository.support.PageSupport;
 import quick.start.repository.support.SortAttribute;
 import quick.start.repository.support.SortSupport;
 import quick.start.repository.types.ConditionType;
 import quick.start.repository.types.SortType;
-import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class Conditions implements ConditionSupport, SortSupport, PageSupport, ColumnSupport {
+public abstract class Conditions implements ConditionSupport, SortSupport, PageSupport, ColumnSupport {
 
      protected Integer pageSize;
      protected Integer pageNumber;

@@ -6,10 +6,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import quick.start.entity.Entity;
+import quick.start.exception.UniqueException;
 import quick.start.parser.CommandParser;
-import quick.start.repository.command.CommandFactory;
-import quick.start.repository.command.CommandForEntity;
-import quick.start.repository.command.Select;
+import quick.start.repository.command.*;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,30 +23,46 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
 
      protected abstract List<E> select(Select<E> select);
 
+     protected abstract Integer update(Update<E> update);
+
+     protected abstract Integer insert(Insert<E> insert);
+
+     protected abstract Integer delete(Delete<E> delete);
+
+     protected abstract Integer count(Count<E> count);
+
+     @Override
+     public boolean has(Serializable id) {
+          Count<E> count = commandFactory.count();
+          count.checkPrimaryKey().equal(count.primaryKey(), id);
+          return count(count) > 0;
+     }
+
      @Override
      public E findById(Serializable id) {
           Assert.notNull(id, "查询主键值为空");
           Select<E> select = commandFactory.select();
-          checkPrimaryKeyAndTableName(select);
-          select.equal(select.getPrimaryKey(), id);
+          select.checkPrimaryKeyAndTableName().equal(select.primaryKey(), id);
           List<E> entitys = select(select);
-          //如果有多个，就返回第一个。也可以自行修改抛出异常。
-          return CollectionUtils.isEmpty(entitys) ? null : entitys.get(0);
+          if (entitys.size() > 1) {
+               throw new UniqueException("根据主键查询出了多条数据");
+          }
+          return CollectionUtils.isEmpty(entitys) ? select.getMeta().newInstance() : entitys.get(0);
      }
 
      @Override
      public List<E> findByIds(Collection<? extends Serializable> ids) {
           Assert.notEmpty(ids, "查询主键值为空");
           Select<E> select = commandFactory.select();
-          checkPrimaryKeyAndTableName(select);
-          select.whereIn(select.getPrimaryKey(), ids);
+//          checkPrimaryKeyAndTableName(select);
+          select.whereIn(select.primaryKey(), ids);
           return select(select);
      }
 
      @Override
      public List<E> findByColumn(String column, Serializable value) {
           Select<E> select = commandFactory.select();
-          checkTableName(select);
+//          checkTableName(select);
           select.equal(column, value);
           return select(select);
      }
@@ -55,19 +70,6 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
      @Override
      public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
           return null;
-     }
-
-     protected void checkTableName(CommandForEntity<E> commandForEntity) {
-          Assert.notNull(commandForEntity.getMeta().getTableName(), "未设置表名，可通过注解@Table来定义表名");
-     }
-
-     protected void checkPrimaryKey(CommandForEntity<E> commandForEntity) {
-          Assert.notNull(commandForEntity.getMeta().getPrimaryKey(), "未设置主键，可通过注解@PrimaryKey来定义主键");
-     }
-
-     protected void checkPrimaryKeyAndTableName(CommandForEntity<E> commandForEntity) {
-          checkPrimaryKey(commandForEntity);
-          checkTableName(commandForEntity);
      }
 
 }
