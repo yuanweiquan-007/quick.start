@@ -1,6 +1,7 @@
 package quick.start.repositorys.command;
 
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
 import quick.start.repositorys.condition.Conditions;
@@ -36,6 +37,17 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions {
      public CommandForEntity checkPrimaryKeyAndTableName() {
           checkTableName();
           checkPrimaryKey();
+          return this;
+     }
+
+     public CommandForEntity of(Conditions conditions) {
+          if (!ObjectUtils.isEmpty(conditions)) {
+               this.pageSize = conditions.getPageSize();
+               this.pageNumber = conditions.getPageNumber();
+               this.columnes = conditions.getColumnes();
+               this.sorts = conditions.getSorts();
+               this.conditions = conditions.getConditions();
+          }
           return this;
      }
 

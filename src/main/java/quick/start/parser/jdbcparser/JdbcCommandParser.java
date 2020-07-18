@@ -64,7 +64,7 @@ public class JdbcCommandParser extends CommandParser {
           }
           return conditions.stream()
                   .map(x -> (MysqlCommandConstant.SPACE.concat(MysqlCommandConstant.AND).concat(parserConditionAttribute(x))))
-                  .reduce("WHERE 1=1", (a, b) -> (a.concat(b)))
+                  .reduce(" WHERE 1=1", (a, b) -> (a.concat(b)))
                   .replace("1=1 AND ", "");
      }
 
@@ -84,6 +84,7 @@ public class JdbcCommandParser extends CommandParser {
                             .append(JdbcConditionType.getValue(conditionType))
                             .append(MysqlCommandConstant.SPACE)
                             .append(MysqlCommandConstant.PLACEHOLDER);
+                    executeParames.get().add(condition.getValue());
                     break;
                case IN:
                     buffer

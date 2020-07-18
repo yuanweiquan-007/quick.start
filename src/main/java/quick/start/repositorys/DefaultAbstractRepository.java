@@ -17,8 +17,12 @@ import java.util.List;
 
 public abstract class DefaultAbstractRepository<E extends Entity> implements Repository<E> {
 
+     protected CommandFactory<E> commandFactory;
      protected Logger logger = LoggerFactory.getLogger(getClass());
-     protected CommandFactory<E> commandFactory = new CommandFactory<>(EntityMeta.of(entityClass()));
+     
+     public DefaultAbstractRepository() {
+          commandFactory = new CommandFactory<>(EntityMeta.of(entityClass()));
+     }
 
      protected abstract CommandParser commandParser();
 

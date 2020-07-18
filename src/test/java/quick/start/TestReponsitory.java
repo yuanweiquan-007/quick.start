@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import quick.start.config.MyConfig;
+import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
 
 @RunWith(value = SpringJUnit4ClassRunner.class)
@@ -24,6 +25,11 @@ public class TestReponsitory {
      @Test
      public void find() {
           orderRepository.find().forEach(order -> logger.info(order.toString()));
+     }
+
+     @Test
+     public void findById() {
+          logger.info("{}", orderRepository.findById("1593238076676"));
      }
 
 }

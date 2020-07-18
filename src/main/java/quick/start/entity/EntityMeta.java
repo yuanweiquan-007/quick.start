@@ -46,7 +46,7 @@ public class EntityMeta<E extends Entity> {
           for (Field field : declaredFields) {
                if (field.isAnnotationPresent(PrimaryKey.class)) {
                     PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
-                    if (StringUtils.isEmpty(primaryKey)) {
+                    if (StringUtils.isEmpty(primaryKey.value())) {
                          meta.setPrimaryKey(field.getName());
                          break;
                     }
