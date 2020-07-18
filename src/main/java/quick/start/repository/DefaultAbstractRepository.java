@@ -54,22 +54,22 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
      public List<E> findByIds(Collection<? extends Serializable> ids) {
           Assert.notEmpty(ids, "查询主键值为空");
           Select<E> select = commandFactory.select();
-//          checkPrimaryKeyAndTableName(select);
-          select.whereIn(select.primaryKey(), ids);
+          select.checkPrimaryKey().whereIn(select.primaryKey(), ids);
           return select(select);
      }
 
      @Override
      public List<E> findByColumn(String column, Serializable value) {
           Select<E> select = commandFactory.select();
-//          checkTableName(select);
           select.equal(column, value);
           return select(select);
      }
 
      @Override
      public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
-          return null;
+          Select<E> select = commandFactory.select();
+          select.whereIn(column, values);
+          return select(select);
      }
 
 }
