@@ -46,4 +46,14 @@ public class TestReponsitory {
           logger.info("{}", orderRepository.has("15932380766761"));
      }
 
+     @Test
+     public void findByColumn() {
+          orderRepository.findByColumn("orderId", 9).forEach(x -> {
+               logger.info("{}", x.toString());
+          });
+          orderRepository.findByColumn("orderId", Arrays.asList(9, 10)).forEach(x -> {
+               logger.info("{}", x.toString());
+          });
+     }
+
 }
