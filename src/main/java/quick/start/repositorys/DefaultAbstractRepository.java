@@ -14,6 +14,7 @@ import quick.start.repositorys.condition.Conditions;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -131,6 +132,16 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
           Delete<E> delete = commandFactory.delete();
           delete.whereIn(column, values);
           return delete(delete);
+     }
+
+     @Override
+     public Integer insert(E entity) {
+          return insert(commandFactory.insert().setValues(Arrays.asList(entity)));
+     }
+
+     @Override
+     public Integer insert(List<E> entitys) {
+          return insert(commandFactory.insert().setValues(entitys));
      }
 
      /**

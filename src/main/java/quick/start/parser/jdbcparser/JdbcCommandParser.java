@@ -46,12 +46,23 @@ public class JdbcCommandParser extends CommandParser {
      private String parserInsertCommand(CommandForEntity command) {
           StringBuffer buffer = StringBufferUtils.of()
                   .append(rightSpace(MysqlCommandConstant.INSERT))
-                  .append(rightSpace(MysqlCommandConstant.INSERT))
-                  .append(rightSpace(command.getMeta().getTableName()))
+                  .append(rightSpace(MysqlCommandConstant.INTO))
+                  .append(command.getMeta().getTableName())
                   .append("(");
-          StringBuilder values = new StringBuilder("values(");
-
-          return null;
+          StringBuilder fileds = new StringBuilder();
+          StringBuilder values = new StringBuilder();
+          Set<String> insertFields = command.getMeta().getInsertFields();
+          for (String fieldName : insertFields) {
+               fileds.append(",").append(fieldName);
+               values.append(",").append("?");
+               executeParames.get().add(fieldName);
+          }
+          buffer.append(fileds.substring(1))
+                  .append(rightSpace(")"))
+                  .append("VALUES(")
+                  .append(values.substring(1))
+                  .append(")");
+          return buffer.toString();
      }
 
      private String parserDeleteCommand(CommandForEntity command) {

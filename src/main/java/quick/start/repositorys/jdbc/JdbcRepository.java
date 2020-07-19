@@ -1,7 +1,11 @@
 package quick.start.repositorys.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
@@ -11,10 +15,11 @@ import quick.start.repositorys.DefaultAbstractRepository;
 import quick.start.repositorys.command.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<E> {
 
@@ -62,7 +67,76 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
           if (StringUtils.isEmpty(command.getCommand())) {
                throw new IllegalArgumentException("insert语句解析异常");
           }
-          return this.jdbcTemplate.update(command.getCommand(), command.getParames().toArray());
+          if (CollectionUtils.isEmpty(insert.getValues())) {
+               throw new IllegalArgumentException("插入参数值为空");
+          }
+          if (insert.getValues().size() == 1) {
+               return singleInsert(command, insert.getValues().get(0));
+          } else {
+               return multipleInsert(command, insert.getValues());
+          }
+     }
+
+     /**
+      * 批量插入
+      *
+      * @param command
+      * @param values
+      * @return
+      */
+     private Integer multipleInsert(ExecuteCommandMeta command, List<E> values) {
+          final List<Object> fields = command.getParames();
+          List<Map<String, Object>> attributes = values.stream().map(this::parserAttribute).collect(Collectors.toList());
+          return this.jdbcTemplate.batchUpdate(command.getCommand(), new BatchPreparedStatementSetter() {
+               @Override
+               public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                    Map<String, Object> attrbute = attributes.get(i);
+                    for (int j = 0; j < fields.size(); j++) {
+                         preparedStatement.setObject(j + 1, attrbute.get(String.valueOf(fields.get(j))));
+                    }
+               }
+
+               @Override
+               public int getBatchSize() {
+                    return attributes.size();
+               }
+          }).length;
+     }
+
+     /**
+      * 单个插入
+      *
+      * @param command
+      * @param entity
+      * @return
+      */
+     private Integer singleInsert(ExecuteCommandMeta command, E entity) {
+          Map<String, Object> attribute = parserAttribute(entity);
+          final List<Object> fields = command.getParames();
+          return this.jdbcTemplate.update(command.getCommand(), new PreparedStatementSetter() {
+               @Override
+               public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                    for (int i = 0; i < fields.size(); i++) {
+                         preparedStatement.setObject(i + 1, attribute.get(String.valueOf(fields.get(i))));
+                    }
+               }
+          });
+     }
+
+     private Map<String, Object> parserAttribute(E entity) {
+          Map<String, Object> map = new HashMap<>();
+          if (!ObjectUtils.isEmpty(entity)) {
+               Field[] fields = entity.getClass().getDeclaredFields();
+               for (Field field : fields) {
+                    try {
+                         field.setAccessible(true);
+                         map.put(field.getName(), field.get(entity));
+                    } catch (Exception ex) {
+                         ex.printStackTrace();
+                    }
+               }
+          }
+          return map;
      }
 
      @Override
@@ -83,16 +157,6 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
                throw new IllegalArgumentException("count语句解析异常");
           }
           return this.jdbcTemplate.queryForObject(command.getCommand(), command.getParames().toArray(), Integer.class);
-     }
-
-     @Override
-     public boolean insert(E entity) {
-          return false;
-     }
-
-     @Override
-     public boolean insert(List<E> entitys) {
-          return false;
      }
 
      @Override

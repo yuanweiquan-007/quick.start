@@ -20,7 +20,7 @@ public interface Writeable<E extends Entity> {
       * @param entity 实体
       * @return
       */
-     boolean insert(E entity);
+     Integer insert(E entity);
 
      /**
       * 写入多个实体
@@ -28,7 +28,7 @@ public interface Writeable<E extends Entity> {
       * @param entitys 实体
       * @return
       */
-     boolean insert(List<E> entitys);
+     Integer insert(List<E> entitys);
 
      /**
       * 更新实体

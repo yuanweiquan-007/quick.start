@@ -13,6 +13,7 @@ import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
 import quick.start.repositorys.condition.Conditions;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @RunWith(value = SpringJUnit4ClassRunner.class)
@@ -80,6 +81,14 @@ public class TestReponsitory {
           orderRepository.findByColumn("orderId", Arrays.asList(9, 10)).forEach(x -> {
                logger.info("{}", x.toString());
           });
+     }
+
+     @Test
+     public void insert() {
+          Order order = new Order();
+          order.setOrderCode(String.valueOf(System.currentTimeMillis()));
+          order.setRemark(LocalDateTime.now().toString());
+          logger.info("{}", orderRepository.insert(order));
      }
 
      @Test

@@ -1,15 +1,15 @@
 package quick.start.entity;
 
+import lombok.Data;
+import org.springframework.util.StringUtils;
 import quick.start.annotation.Generated;
 import quick.start.annotation.PrimaryKey;
 import quick.start.annotation.SaveAble;
 import quick.start.annotation.Table;
-import lombok.Data;
-import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -18,7 +18,7 @@ public class EntityMeta<E extends Entity> {
      private Class<E> eClass;
      private String tableName;
      private String primaryKey;
-     private Set<String> insertFields;
+     private Set<String> insertFields = new HashSet<>();
 
      private EntityMeta() {
      }
