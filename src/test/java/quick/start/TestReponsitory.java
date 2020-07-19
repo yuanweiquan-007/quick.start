@@ -82,4 +82,10 @@ public class TestReponsitory {
           });
      }
 
+     @Test
+     public void delete() {
+          orderRepository.delete("1593238076676");
+          orderRepository.delete(Arrays.asList("1593238076676", "1593238089359"));
+     }
+
 }

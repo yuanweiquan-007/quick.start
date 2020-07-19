@@ -111,13 +111,19 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
 
 
      @Override
-     public boolean delete(Serializable id) {
-          return false;
+     public Integer delete(Serializable id) {
+          Assert.notNull(id, "删除主键值为空");
+          Delete<E> delete = commandFactory.delete();
+          delete.where(delete.primaryKey(), id);
+          return delete(delete);
      }
 
      @Override
-     public boolean delete(List<? extends Serializable> ids) {
-          return false;
+     public Integer delete(List<? extends Serializable> ids) {
+          Assert.notNull(ids, "删除主键值为空");
+          Delete<E> delete = commandFactory.delete();
+          delete.whereIn(delete.primaryKey(), ids);
+          return delete(delete);
      }
 
      /**

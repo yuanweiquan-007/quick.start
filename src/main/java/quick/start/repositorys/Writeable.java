@@ -82,7 +82,7 @@ public interface Writeable<E extends Entity> {
       * @param id
       * @return
       */
-     boolean delete(Serializable id);
+     Integer delete(Serializable id);
 
      /**
       * 删除多条记录
@@ -90,7 +90,7 @@ public interface Writeable<E extends Entity> {
       * @param ids
       * @return
       */
-     boolean delete(List<? extends Serializable> ids);
+     Integer delete(List<? extends Serializable> ids);
 
      /**
       * 根据字段删除
