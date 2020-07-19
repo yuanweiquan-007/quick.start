@@ -16,10 +16,7 @@ import quick.start.util.ArrayUtils;
 import quick.start.util.StringBufferUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class JdbcCommandParser extends CommandParser {
 
@@ -37,12 +34,24 @@ public class JdbcCommandParser extends CommandParser {
                case COUNT:
                     return ExecuteCommandMeta.of(parserCountCommand(command), executeParames.get());
                case INSERT:
+                    return ExecuteCommandMeta.of(parserInsertCommand(command), executeParames.get());
                case DELETE:
                     return ExecuteCommandMeta.of(parserDeleteCommand(command), executeParames.get());
                case UPDATE:
                default:
                     return ExecuteCommandMeta.of(MysqlCommandConstant.NULL, null);
           }
+     }
+
+     private String parserInsertCommand(CommandForEntity command) {
+          StringBuffer buffer = StringBufferUtils.of()
+                  .append(rightSpace(MysqlCommandConstant.INSERT))
+                  .append(rightSpace(MysqlCommandConstant.INSERT))
+                  .append(rightSpace(command.getMeta().getTableName()))
+                  .append("(");
+          StringBuilder values = new StringBuilder("values(");
+
+          return null;
      }
 
      private String parserDeleteCommand(CommandForEntity command) {

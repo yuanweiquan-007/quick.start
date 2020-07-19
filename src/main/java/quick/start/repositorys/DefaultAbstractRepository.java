@@ -126,6 +126,13 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
           return delete(delete);
      }
 
+     @Override
+     public Integer delete(String column, Collection<? extends Serializable> values) {
+          Delete<E> delete = commandFactory.delete();
+          delete.whereIn(column, values);
+          return delete(delete);
+     }
+
      /**
       * 获取泛型类的类型
       *

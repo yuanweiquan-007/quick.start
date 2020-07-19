@@ -121,11 +121,6 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
      }
 
      @Override
-     public boolean delete(String column, Collection<? extends Serializable> values) {
-          return false;
-     }
-
-     @Override
      protected CommandParser commandParser() {
           return new JdbcCommandParser();
      }

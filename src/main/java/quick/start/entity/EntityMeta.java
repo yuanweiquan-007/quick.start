@@ -1,11 +1,16 @@
 package quick.start.entity;
 
+import quick.start.annotation.Generated;
 import quick.start.annotation.PrimaryKey;
+import quick.start.annotation.SaveAble;
 import quick.start.annotation.Table;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Set;
 
 @Data
 public class EntityMeta<E extends Entity> {
@@ -13,6 +18,7 @@ public class EntityMeta<E extends Entity> {
      private Class<E> eClass;
      private String tableName;
      private String primaryKey;
+     private Set<String> insertFields;
 
      private EntityMeta() {
      }
@@ -29,7 +35,27 @@ public class EntityMeta<E extends Entity> {
           if (StringUtils.isEmpty(meta.primaryKey)) {
                parserPrimaryFromField(eClass, meta);
           }
+          meta.parserInsertFields();
           return meta;
+     }
+
+     private void parserInsertFields() {
+          Field[] fields = eClass.getDeclaredFields();
+          for (Field field : fields) {
+               //@SaveAble(false)
+               if (field.isAnnotationPresent(SaveAble.class) && (false == field.getAnnotation(SaveAble.class).value())) {
+                    continue;
+               }
+               //@Generated,自增不保存
+               if (field.isAnnotationPresent(Generated.class)) {
+                    continue;
+               }
+               //其他条件
+               if (!(field.getType() instanceof Serializable) || field.getType().isInterface()) {
+                    continue;
+               }
+               insertFields.add(field.getName());
+          }
      }
 
      public E newInstance() {

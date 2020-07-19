@@ -99,6 +99,6 @@ public interface Writeable<E extends Entity> {
       * @param values
       * @return
       */
-     boolean delete(String column, Collection<? extends Serializable> values);
+     Integer delete(String column, Collection<? extends Serializable> values);
 
 }
