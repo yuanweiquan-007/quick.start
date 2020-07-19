@@ -36,7 +36,7 @@ public interface Writeable<E extends Entity> {
       * @param entity 实体
       * @return
       */
-     boolean update(E entity);
+     Integer update(E entity);
 
      /**
       * 按照指定主键更新多个字段
@@ -45,7 +45,7 @@ public interface Writeable<E extends Entity> {
       * @param data 更新数据
       * @return
       */
-     boolean update(List<? extends Serializable> ids, Map<String, Object> data);
+     Integer update(List<? extends Serializable> ids, Map<String, Object> data);
 
      /**
       * 按照指定主键更新多个字段
@@ -54,7 +54,7 @@ public interface Writeable<E extends Entity> {
       * @param data 更新数据
       * @return
       */
-     boolean update(String id, Map<String, Object> data);
+     Integer update(String id, Map<String, Object> data);
 
      /**
       * 按照指定主键更新字段
@@ -64,7 +64,7 @@ public interface Writeable<E extends Entity> {
       * @param value 值
       * @return
       */
-     boolean update(String id, String key, Object value);
+     Integer update(String id, String key, Object value);
 
      /**
       * 按照指定主键更新字段
@@ -74,7 +74,7 @@ public interface Writeable<E extends Entity> {
       * @param value 值
       * @return
       */
-     boolean update(List<? extends Serializable> ids, String key, Object value);
+     Integer update(List<? extends Serializable> ids, String key, Object value);
 
      /**
       * 删除

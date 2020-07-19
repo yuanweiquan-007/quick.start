@@ -5,10 +5,16 @@ import org.springframework.util.ObjectUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
 import quick.start.repositorys.condition.Conditions;
+import quick.start.repositorys.support.SetAttribute;
+import quick.start.repositorys.support.SetSupport;
 
-public abstract class CommandForEntity<E extends Entity> extends Conditions {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class CommandForEntity<E extends Entity> extends Conditions implements SetSupport {
 
      protected EntityMeta<E> meta;
+     protected List<SetAttribute> setAttributes = new ArrayList<>();
 
      public CommandForEntity(EntityMeta<E> meta) {
           this.meta = meta;
@@ -51,4 +57,13 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions {
           return this;
      }
 
+     @Override
+     public CommandForEntity set(String key, Object value) {
+          setAttributes.add(new SetAttribute(key, value));
+          return this;
+     }
+
+     public List<SetAttribute> getSetAttributes() {
+          return setAttributes;
+     }
 }

@@ -160,31 +160,6 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
      }
 
      @Override
-     public boolean update(E entity) {
-          return false;
-     }
-
-     @Override
-     public boolean update(List<? extends Serializable> ids, Map<String, Object> data) {
-          return false;
-     }
-
-     @Override
-     public boolean update(String id, Map<String, Object> data) {
-          return false;
-     }
-
-     @Override
-     public boolean update(String id, String key, Object value) {
-          return false;
-     }
-
-     @Override
-     public boolean update(List<? extends Serializable> ids, String key, Object value) {
-          return false;
-     }
-
-     @Override
      protected CommandParser commandParser() {
           return new JdbcCommandParser();
      }

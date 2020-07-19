@@ -10,6 +10,7 @@ import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.repositorys.condition.ConditionAttribute;
 import quick.start.repositorys.jdbc.types.JdbcConditionType;
 import quick.start.repositorys.jdbc.types.JdbcSortType;
+import quick.start.repositorys.support.SetAttribute;
 import quick.start.repositorys.support.SortAttribute;
 import quick.start.repositorys.types.ConditionType;
 import quick.start.util.ArrayUtils;
@@ -38,9 +39,29 @@ public class JdbcCommandParser extends CommandParser {
                case DELETE:
                     return ExecuteCommandMeta.of(parserDeleteCommand(command), executeParames.get());
                case UPDATE:
+                    return ExecuteCommandMeta.of(parserUpdateCommand(command), executeParames.get());
                default:
                     return ExecuteCommandMeta.of(MysqlCommandConstant.NULL, null);
           }
+     }
+
+     private String parserUpdateCommand(CommandForEntity command) {
+          StringBuffer buffer = StringBufferUtils.of()
+                  .append(rightSpace(MysqlCommandConstant.UPDATE))
+                  .append(rightSpace(command.getMeta().getTableName()))
+                  .append(rightSpace(MysqlCommandConstant.SET))
+                  .append(parserUpdateValues(command.getSetAttributes()))
+                  .append(parserConditions(command.getConditions()));
+          return buffer.toString();
+     }
+
+     private String parserUpdateValues(List<SetAttribute> setAttributes) {
+          StringBuffer buffer = new StringBuffer();
+          for (SetAttribute setAttribute : setAttributes) {
+               buffer.append(",").append(setAttribute.getKey()).append(MysqlCommandConstant.EQUAL).append("?");
+               executeParames.get().add(setAttribute.getValue());
+          }
+          return buffer.substring(1);
      }
 
      private String parserInsertCommand(CommandForEntity command) {

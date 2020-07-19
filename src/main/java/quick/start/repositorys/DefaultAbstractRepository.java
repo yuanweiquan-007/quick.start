@@ -4,19 +4,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import quick.start.collection.Paginator;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
+import quick.start.exception.NotFoundExceptin;
 import quick.start.exception.UniqueException;
 import quick.start.parser.CommandParser;
 import quick.start.repositorys.command.*;
 import quick.start.repositorys.condition.Conditions;
+import quick.start.util.BeanUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public abstract class DefaultAbstractRepository<E extends Entity> implements Repository<E> {
 
@@ -121,7 +125,7 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
 
      @Override
      public Integer delete(List<? extends Serializable> ids) {
-          Assert.notNull(ids, "删除主键值为空");
+          Assert.notEmpty(ids, "删除主键值为空");
           Delete<E> delete = commandFactory.delete();
           delete.whereIn(delete.primaryKey(), ids);
           return delete(delete);
@@ -142,6 +146,60 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
      @Override
      public Integer insert(List<E> entitys) {
           return insert(commandFactory.insert().setValues(entitys));
+     }
+
+     @Override
+     public Integer update(String id, String key, Object value) {
+          Assert.notNull(id, "修改主键值为空");
+          Update<E> update = commandFactory.update();
+          update.set(key, value).where(update.primaryKey(), id);
+          return update(update);
+     }
+
+     @Override
+     public Integer update(E entity) {
+          Map<String, Object> map = BeanUtils.parserAttributeValues(entity);
+          Select<E> select = commandFactory.select();
+          String primaryKey = select.primaryKey();
+          Object primaryKeyValue = map.get(primaryKey);
+          if (ObjectUtils.isEmpty(primaryKeyValue)) {
+               throw new IllegalArgumentException("更新时未发现主键的值");
+          }
+          select.where(primaryKey, primaryKeyValue);
+          List<E> entitys = select(select);
+          if (CollectionUtils.isEmpty(entitys)) {
+               throw new NotFoundExceptin("未发现记录");
+          }
+
+          E oldEntity = entitys.get(0);
+          Map<String, Object> differents = BeanUtils.differents(oldEntity, entity);
+          Update<E> update = commandFactory.update();
+          update.from(differents).where(primaryKey, primaryKeyValue);
+          return update(update);
+     }
+
+     @Override
+     public Integer update(List<? extends Serializable> ids, Map<String, Object> data) {
+          Assert.notEmpty(ids, "修改主键值为空");
+          Update<E> update = commandFactory.update();
+          update.from(data).whereIn(update.primaryKey(), ids);
+          return update(update);
+     }
+
+     @Override
+     public Integer update(String id, Map<String, Object> data) {
+          Assert.notNull(id, "修改主键值为空");
+          Update<E> update = commandFactory.update();
+          update.from(data).where(update.primaryKey(), id);
+          return update(update);
+     }
+
+     @Override
+     public Integer update(List<? extends Serializable> ids, String key, Object value) {
+          Assert.notEmpty(ids, "修改主键值为空");
+          Update<E> update = commandFactory.update();
+          update.set(key, value).whereIn(update.primaryKey(), ids);
+          return update(update);
      }
 
      /**

@@ -15,7 +15,9 @@ import quick.start.repositorys.condition.Conditions;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -111,6 +113,28 @@ public class TestReponsitory {
      public void delete() {
           orderRepository.delete("1593238076676");
           orderRepository.delete(Arrays.asList("1593238076676", "1593238089359"));
+     }
+
+     @Test
+     public void update() {
+          logger.info("{}", orderRepository.update("1593238090683", "remark", LocalDateTime.now().toString()));
+          logger.info("{}", orderRepository.update(Arrays.asList("1593238090683"), "remark", LocalDateTime.now().toString()));
+     }
+
+     @Test
+     public void updateByData() {
+          Map<String, Object> data = new HashMap<>();
+          data.put("remark", LocalDateTime.now().toString());
+          data.put("orderId", 1);
+          logger.info("{}", orderRepository.update(Arrays.asList("1593238090683", "1593238090682"), data));
+     }
+
+     @Test
+     public void updateByEntity() {
+          String code = "1593238090683";
+          Order order = orderRepository.findById(code);
+          order.setRemark("remark");
+          logger.info("{}", orderRepository.update(order));
      }
 
 }
