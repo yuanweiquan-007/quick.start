@@ -10,6 +10,6 @@ public interface Repository<E extends Entity> extends Writeable<E>, Readable<E> 
 
      public List<E> find(Conditions conditions);
 
-     public Paginator<E> find(Conditions conditions, Integer pageSize, Integer pageNumber);
+     public Paginator<E> findByPage(Conditions conditions, Integer pageSize, Integer pageNumber);
 
 }

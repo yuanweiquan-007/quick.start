@@ -38,10 +38,20 @@ public class JdbcCommandParser extends CommandParser {
                     return ExecuteCommandMeta.of(parserCountCommand(command), executeParames.get());
                case INSERT:
                case DELETE:
+                    return ExecuteCommandMeta.of(parserDeleteCommand(command), executeParames.get());
                case UPDATE:
                default:
                     return ExecuteCommandMeta.of(MysqlCommandConstant.NULL, null);
           }
+     }
+
+     private String parserDeleteCommand(CommandForEntity command) {
+          return StringBufferUtils.of()
+                  .append(rightSpace(MysqlCommandConstant.DELETE))
+                  .append(rightSpace(MysqlCommandConstant.FROM))
+                  .append(command.getMeta().getTableName())
+                  .append(parserConditions(command.getConditions()))
+                  .toString();
      }
 
      private String parserCountCommand(CommandForEntity command) {

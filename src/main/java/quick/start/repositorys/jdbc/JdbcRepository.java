@@ -121,16 +121,6 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
      }
 
      @Override
-     public boolean delete(Serializable id) {
-          return false;
-     }
-
-     @Override
-     public boolean delete(List<? extends Serializable> ids) {
-          return false;
-     }
-
-     @Override
      public boolean delete(String column, Collection<? extends Serializable> values) {
           return false;
      }

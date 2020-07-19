@@ -57,6 +57,17 @@ public class TestReponsitory {
      }
 
      @Test
+     public void findByPage() {
+          Conditions conditions = new Conditions()
+                  .equal("orderCode", "1593238616437")
+                  .lessThenOrEqual("orderId", 13)
+                  .greaterThen("orderId", 10);
+          orderRepository.findByPage(conditions, 5, 1).getResults().forEach(x -> {
+               logger.info("{}", x.toString());
+          });
+     }
+
+     @Test
      public void has() {
           logger.info("{}", orderRepository.has("15932380766761"));
      }

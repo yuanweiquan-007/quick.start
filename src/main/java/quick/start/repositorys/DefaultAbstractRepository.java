@@ -92,8 +92,32 @@ public abstract class DefaultAbstractRepository<E extends Entity> implements Rep
      }
 
      @Override
-     public Paginator<E> find(Conditions conditions, Integer pageSize, Integer pageNumber) {
-          return null;
+     public Paginator<E> findByPage(Conditions conditions, Integer pageSize, Integer pageNumber) {
+          if (pageNumber < 0) {
+               pageNumber = 1;
+          }
+          Paginator<E> paginator = new Paginator<>(pageSize, pageNumber);
+          Count<E> count = commandFactory.count();
+          count.of(conditions);
+          Integer total = count(count);
+          paginator.setTotal(total);
+          if (total > 0) {
+               Select<E> select = commandFactory.select();
+               select.of(conditions).limit(pageSize, pageNumber);
+               paginator.setResults(select(select));
+          }
+          return paginator;
+     }
+
+
+     @Override
+     public boolean delete(Serializable id) {
+          return false;
+     }
+
+     @Override
+     public boolean delete(List<? extends Serializable> ids) {
+          return false;
      }
 
      /**
