@@ -3,8 +3,6 @@ package quick.start.repositorys.command;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
 
-import java.lang.reflect.ParameterizedType;
-
 public class CommandFactory<E extends Entity> {
 
      private EntityMeta<E> meta;
