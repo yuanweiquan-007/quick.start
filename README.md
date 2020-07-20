@@ -81,6 +81,29 @@ orderRepository.findById("1593238076676"));
 orderRepository.delete("1593238076676");
 ```
 
+##### 其他
+
+如果需要执行复杂的sql，可以在Repository中通过内置的**jdbcTemplate**对象来执行对应的sql。
+
+```java
+this.jdbcTemplate.query(sql, args);
+```
+
+如果要指定数据源，可以重写方法
+
+```java
+/**
+* 如果要指定JdbcTemplate，可以通过此方法修改
+*
+* @param jdbcTemplate
+*/
+public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+	this.jdbcTemplate = jdbcTemplate;
+}
+```
+
+
+
 ### Conditions条件使用
 
 ```java
