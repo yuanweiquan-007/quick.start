@@ -33,7 +33,6 @@ public class XmlUtils {
 
           OutputFormat format = OutputFormat.createPrettyPrint();
           format.setEncoding(encoding);
-
           StringWriter writer = new StringWriter();
           XMLWriter xmlWriter = new XMLWriter(writer, format);
           try {

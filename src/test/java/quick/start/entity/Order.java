@@ -13,5 +13,4 @@ public class Order implements Entity {
      @PrimaryKey
      private String orderCode;
      private String remark;
-
 }
