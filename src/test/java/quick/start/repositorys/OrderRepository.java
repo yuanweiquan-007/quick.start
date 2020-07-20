@@ -6,4 +6,5 @@ import quick.start.repositorys.jdbc.JdbcRepository;
 
 @Repository
 public class OrderRepository extends JdbcRepository<Order> {
+
 }

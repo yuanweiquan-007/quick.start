@@ -10,132 +10,48 @@ import quick.start.repositorys.command.CommandForEntity;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.repositorys.condition.ConditionAttribute;
 import quick.start.repositorys.jdbc.types.JdbcConditionType;
-import quick.start.repositorys.jdbc.types.JdbcSortType;
-import quick.start.repositorys.support.SetAttribute;
-import quick.start.repositorys.support.SortAttribute;
 import quick.start.repositorys.types.ConditionType;
-import quick.start.util.ArrayUtils;
 import quick.start.util.StringBufferUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ServiceLoader;
 
 public class JdbcCommandParser extends CommandParser {
 
-     private ThreadLocal<List<Object>> executeParames = new ThreadLocal<>();
+     protected static ThreadLocal<List<Object>> executeParames = new ThreadLocal<>();
+
+     private static final List<JdbcCommandParser> jdbcCommandParsers = new ArrayList<>();
+
+     static {
+          for (JdbcCommandParser jdbcCommandParser : ServiceLoader.load(JdbcCommandParser.class)) {
+               jdbcCommandParsers.add(jdbcCommandParser);
+          }
+     }
 
      @Override
      public ExecuteCommandMeta parser(CommandForEntity command) {
           Assert.notNull(command, "待解析命令对象为空");
           Assert.notNull(command.getMeta().getTableName(), "tableName未设置#可以通过注解@Table注解来设置");
           executeParames.set(new ArrayList<>());
-          switch (command.commandType()) {
-               case SELECT:
-                    return ExecuteCommandMeta.of(parserSelectCommand(command), executeParames.get());
-               case COUNT:
-                    return ExecuteCommandMeta.of(parserCountCommand(command), executeParames.get());
-               case INSERT:
-                    return ExecuteCommandMeta.of(parserInsertCommand(command), executeParames.get());
-               case DELETE:
-                    return ExecuteCommandMeta.of(parserDeleteCommand(command), executeParames.get());
-               case UPDATE:
-                    return ExecuteCommandMeta.of(parserUpdateCommand(command), executeParames.get());
-               default:
-                    return ExecuteCommandMeta.of(MysqlCommandConstant.NULL, null);
+          for (JdbcCommandParser parser : jdbcCommandParsers) {
+               if (parser.adapter(command)) {
+                    return parser.parser(command);
+               }
           }
+          return ExecuteCommandMeta.of(CommonConstant.NULL, null);
      }
 
-     private String parserUpdateCommand(CommandForEntity command) {
-          StringBuffer buffer = StringBufferUtils.of()
-                  .append(rightSpace(MysqlCommandConstant.UPDATE))
-                  .append(rightSpace(command.getMeta().getTableName()))
-                  .append(rightSpace(MysqlCommandConstant.SET))
-                  .append(parserUpdateValues(command.getSetAttributes()))
-                  .append(parserConditions(command.getConditions()));
-          return buffer.toString();
-     }
 
-     private String parserUpdateValues(List<SetAttribute> setAttributes) {
-          StringBuffer buffer = new StringBuffer();
-          for (SetAttribute setAttribute : setAttributes) {
-               buffer.append(",").append(setAttribute.getKey()).append(MysqlCommandConstant.EQUAL).append("?");
-               executeParames.get().add(setAttribute.getValue());
-          }
-          return buffer.substring(1);
-     }
-
-     private String parserInsertCommand(CommandForEntity command) {
-          StringBuffer buffer = StringBufferUtils.of()
-                  .append(rightSpace(MysqlCommandConstant.INSERT))
-                  .append(rightSpace(MysqlCommandConstant.INTO))
-                  .append(command.getMeta().getTableName())
-                  .append("(");
-          StringBuilder fileds = new StringBuilder();
-          StringBuilder values = new StringBuilder();
-          Set<String> insertFields = command.getMeta().getInsertFields();
-          for (String fieldName : insertFields) {
-               fileds.append(",").append(fieldName);
-               values.append(",").append("?");
-               executeParames.get().add(fieldName);
-          }
-          buffer.append(fileds.substring(1))
-                  .append(rightSpace(")"))
-                  .append("VALUES(")
-                  .append(values.substring(1))
-                  .append(")");
-          return buffer.toString();
-     }
-
-     private String parserDeleteCommand(CommandForEntity command) {
-          return StringBufferUtils.of()
-                  .append(rightSpace(MysqlCommandConstant.DELETE))
-                  .append(rightSpace(MysqlCommandConstant.FROM))
-                  .append(command.getMeta().getTableName())
-                  .append(parserConditions(command.getConditions()))
-                  .toString();
-     }
-
-     private String parserCountCommand(CommandForEntity command) {
-          return StringBufferUtils.of()
-                  .append(rightSpace(MysqlCommandConstant.SELECT))
-                  .append(rightSpace(MysqlCommandConstant.COUNT))
-                  .append(rightSpace(MysqlCommandConstant.FROM))
-                  .append(command.getMeta().getTableName())
-                  .append(parserConditions(command.getConditions()))
-                  .toString();
-     }
-
-     private String parserSelectCommand(CommandForEntity command) {
-          return StringBufferUtils.of()
-                  .append(rightSpace(MysqlCommandConstant.SELECT))
-                  .append(rightSpace(parserColumns(command.getColumnes())))
-                  .append(rightSpace(MysqlCommandConstant.FROM))
-                  .append(command.getMeta().getTableName())
-                  .append(parserConditions(command.getConditions()))
-                  .append(parserOrderBy(command.getSorts()))
-                  .append(parserLimit(command))
-                  .toString();
-     }
-
-     private String parserOrderBy(List<SortAttribute> sorts) {
-          if (CollectionUtils.isEmpty(sorts)) {
-               return CommonConstant.NULL;
-          }
-          StringBuffer buffer = new StringBuffer(" order by ");
-          for (SortAttribute sortAttribute : sorts) {
-               buffer
-                       .append(rightSpace(sortAttribute.getField()))
-                       .append(JdbcSortType.getValue(sortAttribute.getType()))
-                       .append(",");
-          }
-          return buffer.substring(0, buffer.lastIndexOf(","));
-     }
-
-     private String parserColumns(Set<String> columns) {
-          return CollectionUtils.isEmpty(columns) ? MysqlCommandConstant.ALL_FIELDS : ArrayUtils.join(",", columns);
-     }
-
-     private String parserConditions(List<ConditionAttribute> conditions) {
+     /**
+      * 解析条件
+      *
+      * @param conditions
+      * @return
+      */
+     protected String parserConditions(List<ConditionAttribute> conditions) {
           if (CollectionUtils.isEmpty(conditions)) {
                return CommonConstant.NULL;
           }
@@ -145,7 +61,13 @@ public class JdbcCommandParser extends CommandParser {
                   .replace("1=1 AND ", "");
      }
 
-     private String parserConditionAttribute(ConditionAttribute condition) {
+     /**
+      * 解析条件属性
+      *
+      * @param condition
+      * @return
+      */
+     protected String parserConditionAttribute(ConditionAttribute condition) {
           StringBuffer buffer = new StringBuffer(MysqlCommandConstant.SPACE);
           ConditionType conditionType = condition.getType();
           switch (conditionType) {
@@ -175,7 +97,13 @@ public class JdbcCommandParser extends CommandParser {
           return buffer.toString();
      }
 
-     private String convertInValues(Collection<? extends Serializable> values) {
+     /**
+      * in添加值转换
+      *
+      * @param values
+      * @return
+      */
+     protected String convertInValues(Collection<? extends Serializable> values) {
           if (CollectionUtils.isEmpty(values)) {
                return CommonConstant.NULL;
           }
@@ -186,12 +114,12 @@ public class JdbcCommandParser extends CommandParser {
      }
 
      /**
-      * limit条件
+      * 解析limit条件
       *
       * @param command
       * @return
       */
-     private String parserLimit(CommandForEntity command) {
+     protected String parserLimit(CommandForEntity command) {
           if (ObjectUtils.isEmpty(command.getPageSize())) {
                return CommonConstant.NULL;
           }
@@ -209,4 +137,7 @@ public class JdbcCommandParser extends CommandParser {
                   .toString();
      }
 
+     public Boolean adapter(CommandForEntity command) {
+          return false;
+     }
 }

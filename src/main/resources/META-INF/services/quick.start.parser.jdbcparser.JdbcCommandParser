@@ -1,0 +1,5 @@
+quick.start.parser.jdbcparser.JdbcSelectCommandParser
+quick.start.parser.jdbcparser.JdbcUpdateCommandParser
+quick.start.parser.jdbcparser.JdbcCountCommandParser
+quick.start.parser.jdbcparser.JdbcDeleteCommandParser
+quick.start.parser.jdbcparser.JdbcInsertCommandParser
