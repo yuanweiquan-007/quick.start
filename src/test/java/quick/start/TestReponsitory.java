@@ -75,7 +75,7 @@ public class TestReponsitory {
 
      @Test
      public void has() {
-          logger.info("{}", orderRepository.has("15932380766761"));
+          logger.info("{}", orderRepository.has("1595141992172"));
      }
 
      @Test

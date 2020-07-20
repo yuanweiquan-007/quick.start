@@ -2,6 +2,8 @@ package quick.start.util;
 
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import quick.start.annotation.Generated;
+import quick.start.annotation.SaveAble;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -27,6 +29,11 @@ public class BeanUtils {
                          Object newFieldValues = field.get(newObject);
                          Object oldFieldValues = oldValues.get(field.getName());
                          if (ObjectUtils.isEmpty(oldFieldValues) && ObjectUtils.isEmpty(newFieldValues)) {
+                              continue;
+                         }
+                         if ((field.isAnnotationPresent(SaveAble.class)
+                                 && field.getAnnotation(SaveAble.class).value() == false)
+                                 || field.isAnnotationPresent(Generated.class)) {
                               continue;
                          }
                          if ((ObjectUtils.isEmpty(oldFieldValues) && !ObjectUtils.isEmpty(newFieldValues))

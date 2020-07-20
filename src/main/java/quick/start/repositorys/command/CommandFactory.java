@@ -30,5 +30,14 @@ public class CommandFactory<E extends Entity> {
      public Count<E> count() {
           return new Count<>(meta);
      }
-     
+
+     public E newInstance() {
+          try {
+               return meta.getEntityClass().newInstance();
+          } catch (Exception ex) {
+               ex.printStackTrace();
+               return null;
+          }
+     }
+
 }

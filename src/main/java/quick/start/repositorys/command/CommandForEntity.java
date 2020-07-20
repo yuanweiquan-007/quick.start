@@ -1,6 +1,7 @@
 package quick.start.repositorys.command;
 
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
@@ -8,8 +9,11 @@ import quick.start.repositorys.condition.Conditions;
 import quick.start.repositorys.support.SetAttribute;
 import quick.start.repositorys.support.SetSupport;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public abstract class CommandForEntity<E extends Entity> extends Conditions implements SetSupport {
 
@@ -35,6 +39,28 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
           return this;
      }
 
+     /**
+      * 默认走主键
+      *
+      * @param value
+      * @return
+      */
+     public CommandForEntity equal(Object value) {
+          this.equal(primaryKey(), value);
+          return this;
+     }
+
+     /**
+      * 默认走主键
+      *
+      * @param values
+      * @return
+      */
+     public CommandForEntity whereIn(Collection<? extends Serializable> values) {
+          this.whereIn(primaryKey(), values);
+          return this;
+     }
+
      public CommandForEntity of(Conditions conditions) {
           if (!ObjectUtils.isEmpty(conditions)) {
                this.pageSize = conditions.getPageSize();
@@ -42,6 +68,17 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
                this.columnes = conditions.getColumnes();
                this.sorts = conditions.getSorts();
                this.conditions = conditions.getConditions();
+          }
+          return this;
+     }
+
+     public CommandForEntity from(Map<String, Object> map) {
+          if (!CollectionUtils.isEmpty(map)) {
+               map.forEach((key, value) -> {
+                    if (!key.equals(primaryKey())) {//主键不允许更新
+                         this.set(key, value);
+                    }
+               });
           }
           return this;
      }

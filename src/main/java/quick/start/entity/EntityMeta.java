@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 public class EntityMeta<E extends Entity> {
 
-     private Class<E> eClass;
+     private Class<E> entityClass;
      private String tableName;
      private String primaryKey;
      private Set<String> insertFields = new HashSet<>();
@@ -23,24 +23,24 @@ public class EntityMeta<E extends Entity> {
      private EntityMeta() {
      }
 
-     public static <E extends Entity> EntityMeta<E> of(Class<E> eClass) {
+     public static <E extends Entity> EntityMeta<E> of(Class<E> entityClass) {
           EntityMeta<E> meta = new EntityMeta<>();
-          meta.setEClass(eClass);
-          if (eClass.isAnnotationPresent(Table.class)) {
-               meta.setTableName(eClass.getAnnotation(Table.class).value());
+          meta.setEntityClass(entityClass);
+          if (entityClass.isAnnotationPresent(Table.class)) {
+               meta.setTableName(entityClass.getAnnotation(Table.class).value());
           }
-          if (eClass.isAnnotationPresent(PrimaryKey.class)) {
-               meta.setPrimaryKey(eClass.getAnnotation(PrimaryKey.class).value());
+          if (entityClass.isAnnotationPresent(PrimaryKey.class)) {
+               meta.setPrimaryKey(entityClass.getAnnotation(PrimaryKey.class).value());
           }
           if (StringUtils.isEmpty(meta.primaryKey)) {
-               parserPrimaryFromField(eClass, meta);
+               parserPrimaryFromField(entityClass, meta);
           }
           meta.parserInsertFields();
           return meta;
      }
 
      private void parserInsertFields() {
-          Field[] fields = eClass.getDeclaredFields();
+          Field[] fields = entityClass.getDeclaredFields();
           for (Field field : fields) {
                //@SaveAble(false)
                if (field.isAnnotationPresent(SaveAble.class) && (false == field.getAnnotation(SaveAble.class).value())) {
@@ -55,15 +55,6 @@ public class EntityMeta<E extends Entity> {
                     continue;
                }
                insertFields.add(field.getName());
-          }
-     }
-
-     public E newInstance() {
-          try {
-               return eClass.newInstance();
-          } catch (Exception ex) {
-               ex.printStackTrace();
-               return null;
           }
      }
 

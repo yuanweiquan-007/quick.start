@@ -44,29 +44,39 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
 
      @Override
      public boolean has(Serializable id) {
-          Count<E> count = commandFactory.count();
-          count.checkPrimaryKey().equal(count.primaryKey(), id);
-          return count(count) > 0;
+          Assert.notNull(id, "查询时主键值为空");
+          return count(
+                  (Count) commandFactory
+                          .count()
+                          .checkPrimaryKey()
+                          .equal(id)
+          ) > 0;
      }
 
      @Override
      public E findById(Serializable id) {
-          Assert.notNull(id, "查询主键值为空");
-          Select<E> select = commandFactory.select();
-          select.checkPrimaryKeyAndTableName().equal(select.primaryKey(), id);
-          List<E> entitys = select(select);
+          Assert.notNull(id, "查询时主键值为空");
+          List<E> entitys = select(
+                  (Select) commandFactory
+                          .select()
+                          .checkPrimaryKey()
+                          .equal(id)
+          );
           if (entitys.size() > 1) {
                throw new UniqueException("根据主键查询出了多条数据");
           }
-          return CollectionUtils.isEmpty(entitys) ? select.getMeta().newInstance() : entitys.get(0);
+          return CollectionUtils.isEmpty(entitys) ? commandFactory.newInstance() : entitys.get(0);
      }
 
      @Override
      public List<E> findByIds(Collection<? extends Serializable> ids) {
           Assert.notEmpty(ids, "查询主键值为空");
-          Select<E> select = commandFactory.select();
-          select.checkPrimaryKey().whereIn(select.primaryKey(), ids);
-          return select(select);
+          return select(
+                  (Select) commandFactory
+                          .select()
+                          .checkPrimaryKey()
+                          .whereIn(ids)
+          );
      }
 
      @Override
@@ -76,23 +86,29 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
 
      @Override
      public List<E> findByColumn(String column, Serializable value) {
-          Select<E> select = commandFactory.select();
-          select.equal(column, value);
-          return select(select);
+          return select(
+                  (Select) commandFactory
+                          .select()
+                          .equal(column, value)
+          );
      }
 
      @Override
      public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
-          Select<E> select = commandFactory.select();
-          select.whereIn(column, values);
-          return select(select);
+          return select(
+                  (Select) commandFactory
+                          .select()
+                          .whereIn(column, values)
+          );
      }
 
      @Override
      public List<E> find(Conditions conditions) {
-          Select<E> select = commandFactory.select();
-          select.of(conditions);
-          return select(select);
+          return select(
+                  (Select) commandFactory
+                          .select()
+                          .of(conditions)
+          );
      }
 
      @Override
@@ -101,14 +117,10 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
                pageNumber = 1;
           }
           Paginator<E> paginator = new Paginator<>(pageSize, pageNumber);
-          Count<E> count = commandFactory.count();
-          count.of(conditions);
-          Integer total = count(count);
+          Integer total = count((Count) commandFactory.count().of(conditions));
           paginator.setTotal(total);
           if (total > 0) {
-               Select<E> select = commandFactory.select();
-               select.of(conditions).limit(pageSize, pageNumber);
-               paginator.setResults(select(select));
+               paginator.setResults(select((Select) commandFactory.select().of(conditions).limit(pageSize, pageNumber)));
           }
           return paginator;
      }
@@ -117,24 +129,32 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
      @Override
      public Integer delete(Serializable id) {
           Assert.notNull(id, "删除主键值为空");
-          Delete<E> delete = commandFactory.delete();
-          delete.where(delete.primaryKey(), id);
-          return delete(delete);
+          return delete(
+                  (Delete) commandFactory
+                          .delete()
+                          .checkPrimaryKey()
+                          .equal(id)
+          );
      }
 
      @Override
      public Integer delete(List<? extends Serializable> ids) {
           Assert.notEmpty(ids, "删除主键值为空");
-          Delete<E> delete = commandFactory.delete();
-          delete.whereIn(delete.primaryKey(), ids);
-          return delete(delete);
+          return delete(
+                  (Delete) commandFactory
+                          .delete()
+                          .checkPrimaryKey()
+                          .whereIn(ids)
+          );
      }
 
      @Override
      public Integer delete(String column, Collection<? extends Serializable> values) {
-          Delete<E> delete = commandFactory.delete();
-          delete.whereIn(column, values);
-          return delete(delete);
+          return delete(
+                  (Delete) commandFactory
+                          .delete()
+                          .whereIn(column, values)
+          );
      }
 
      @Override
@@ -145,14 +165,6 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
      @Override
      public Integer insert(List<E> entitys) {
           return insert(commandFactory.insert().setValues(entitys));
-     }
-
-     @Override
-     public Integer update(String id, String key, Object value) {
-          Assert.notNull(id, "修改主键值为空");
-          Update<E> update = commandFactory.update();
-          update.set(key, value).where(update.primaryKey(), id);
-          return update(update);
      }
 
      @Override
@@ -169,36 +181,69 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
           if (CollectionUtils.isEmpty(entitys)) {
                throw new NotFoundExceptin("未发现记录");
           }
-
+          if (entitys.size() > 1) {
+               throw new UniqueException("根据主键查询出了多条数据");
+          }
           E oldEntity = entitys.get(0);
           Map<String, Object> differents = BeanUtils.differents(oldEntity, entity);
-          Update<E> update = commandFactory.update();
-          update.from(differents).where(primaryKey, primaryKeyValue);
-          return update(update);
+          if (CollectionUtils.isEmpty(differents)) {
+               return 0;
+          }
+          return update(
+                  (Update) commandFactory
+                          .update()
+                          .checkPrimaryKey()
+                          .from(differents)
+                          .equal(primaryKeyValue)
+          );
+     }
+
+     @Override
+     public Integer update(String id, String key, Object value) {
+          Assert.notNull(id, "修改主键值为空");
+          return update(
+                  (Update) commandFactory
+                          .update()
+                          .checkPrimaryKey()
+                          .set(key, value)
+                          .equal(id)
+          );
      }
 
      @Override
      public Integer update(List<? extends Serializable> ids, Map<String, Object> data) {
           Assert.notEmpty(ids, "修改主键值为空");
-          Update<E> update = commandFactory.update();
-          update.from(data).whereIn(update.primaryKey(), ids);
-          return update(update);
+          return update(
+                  (Update) commandFactory
+                          .update()
+                          .checkPrimaryKey()
+                          .from(data)
+                          .whereIn(ids)
+          );
      }
 
      @Override
      public Integer update(String id, Map<String, Object> data) {
           Assert.notNull(id, "修改主键值为空");
-          Update<E> update = commandFactory.update();
-          update.from(data).where(update.primaryKey(), id);
-          return update(update);
+          return update(
+                  (Update) commandFactory
+                          .update()
+                          .checkPrimaryKey()
+                          .from(data)
+                          .equal(id)
+          );
      }
 
      @Override
      public Integer update(List<? extends Serializable> ids, String key, Object value) {
           Assert.notEmpty(ids, "修改主键值为空");
-          Update<E> update = commandFactory.update();
-          update.set(key, value).whereIn(update.primaryKey(), ids);
-          return update(update);
+          return update(
+                  (Update) commandFactory
+                          .update()
+                          .checkPrimaryKey()
+                          .set(key, value)
+                          .whereIn(ids)
+          );
      }
 
      /**
