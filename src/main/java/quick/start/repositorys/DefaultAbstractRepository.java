@@ -22,16 +22,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DefaultAbstractRepository<E extends Entity> implements Repository<E> {
+public abstract class DefaultAbstractRepository<E extends Entity, P extends CommandParser> implements Repository<E> {
 
+     protected CommandParser commandParser;
      protected CommandFactory<E> commandFactory;
      protected Logger logger = LoggerFactory.getLogger(getClass());
 
      public DefaultAbstractRepository() {
           commandFactory = new CommandFactory<>(EntityMeta.of(entityClass()));
      }
-
-     protected abstract CommandParser commandParser();
 
      protected abstract List<E> select(Select<E> select);
 

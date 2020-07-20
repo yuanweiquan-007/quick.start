@@ -1,5 +1,6 @@
 package quick.start.parser.jdbcparser;
 
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import quick.start.constant.CommonConstant;
@@ -25,9 +26,8 @@ public class JdbcCommandParser extends CommandParser {
 
      @Override
      public ExecuteCommandMeta parser(CommandForEntity command) {
-          if (ObjectUtils.isEmpty(command)) {
-               return ExecuteCommandMeta.of(CommonConstant.NULL, null);
-          }
+          Assert.notNull(command, "待解析命令对象为空");
+          Assert.notNull(command.getMeta().getTableName(), "tableName未设置#可以通过注解@Table注解来设置");
           executeParames.set(new ArrayList<>());
           switch (command.commandType()) {
                case SELECT:

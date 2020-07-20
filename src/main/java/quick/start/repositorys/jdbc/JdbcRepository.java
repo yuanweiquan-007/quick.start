@@ -9,22 +9,27 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
-import quick.start.parser.CommandParser;
 import quick.start.parser.jdbcparser.JdbcCommandParser;
 import quick.start.repositorys.DefaultAbstractRepository;
 import quick.start.repositorys.command.*;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<E> {
+public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<E, JdbcCommandParser> {
 
      @Autowired
      private JdbcTemplate jdbcTemplate;
+
+     public JdbcRepository() {
+          this.commandParser = new JdbcCommandParser();
+     }
 
      /**
       * 如果要指定JdbcTemplate，可以通过此方法修改
@@ -37,8 +42,7 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
 
      @Override
      protected List<E> select(Select<E> select) {
-          select.checkTableName();
-          ExecuteCommandMeta command = commandParser().parser(select);
+          ExecuteCommandMeta command = commandParser.parser(select);
           if (StringUtils.isEmpty(command.getCommand())) {
                throw new IllegalArgumentException("select语句解析异常");
           }
@@ -52,8 +56,7 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
 
      @Override
      protected Integer update(Update<E> update) {
-          update.checkTableName();
-          ExecuteCommandMeta command = commandParser().parser(update);
+          ExecuteCommandMeta command = commandParser.parser(update);
           if (StringUtils.isEmpty(command.getCommand())) {
                throw new IllegalArgumentException("update语句解析异常");
           }
@@ -62,8 +65,7 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
 
      @Override
      protected Integer insert(Insert<E> insert) {
-          insert.checkTableName();
-          ExecuteCommandMeta command = commandParser().parser(insert);
+          ExecuteCommandMeta command = commandParser.parser(insert);
           if (StringUtils.isEmpty(command.getCommand())) {
                throw new IllegalArgumentException("insert语句解析异常");
           }
@@ -141,8 +143,7 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
 
      @Override
      protected Integer delete(Delete<E> delete) {
-          delete.checkTableName();
-          ExecuteCommandMeta command = commandParser().parser(delete);
+          ExecuteCommandMeta command = commandParser.parser(delete);
           if (StringUtils.isEmpty(command.getCommand())) {
                throw new IllegalArgumentException("delete语句解析异常");
           }
@@ -151,17 +152,11 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
 
      @Override
      protected Integer count(Count<E> count) {
-          count.checkTableName();
-          ExecuteCommandMeta command = commandParser().parser(count);
+          ExecuteCommandMeta command = commandParser.parser(count);
           if (StringUtils.isEmpty(command.getCommand())) {
                throw new IllegalArgumentException("count语句解析异常");
           }
           return this.jdbcTemplate.queryForObject(command.getCommand(), command.getParames().toArray(), Integer.class);
-     }
-
-     @Override
-     protected CommandParser commandParser() {
-          return new JdbcCommandParser();
      }
 
 }

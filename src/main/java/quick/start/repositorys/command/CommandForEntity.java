@@ -35,17 +35,6 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
           return this;
      }
 
-     public CommandForEntity checkTableName() {
-          Assert.notNull(meta.getTableName(), "tableName未设置#可以通过注解@Table注解来设置");
-          return this;
-     }
-
-     public CommandForEntity checkPrimaryKeyAndTableName() {
-          checkTableName();
-          checkPrimaryKey();
-          return this;
-     }
-
      public CommandForEntity of(Conditions conditions) {
           if (!ObjectUtils.isEmpty(conditions)) {
                this.pageSize = conditions.getPageSize();
