@@ -36,6 +36,8 @@ public JdbcTemplate jdbcTemplate() {
 }
 ```
 
+也可以通过xml配置文件的方式注入
+
 ##### 第二步：定义对象
 
 ```java
@@ -55,7 +57,7 @@ public class Order implements Entity {
 ```java
 @Repository
 public class OrderRepository extends JdbcRepository<Order> {
-		//nothing to do
+	//nothing to do
 }
 ```
 
