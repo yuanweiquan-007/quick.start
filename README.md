@@ -1,9 +1,18 @@
 # quick start
 > 一个Java快速开发框架，支持mysql、xml、json等的基本操作。
 
+### Maven依赖
+```xml
+<dependency>
+  <groupId>io.github.yuanweiquan-007</groupId>
+  <artifactId>quick.start</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
 ### Mysql功能
 
-##### 默认支持功能列表
+##### 默认支持功能
 
 | 方法                                                         | 说明                                       |
 | ------------------------------------------------------------ | ------------------------------------------ |
