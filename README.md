@@ -1,18 +1,20 @@
 # quick start
-> 一个Java快速开发框架，支持mysql、xml、json等的基本操作。
+> 一个基于Java快速开发框架，支持mysql、xml、json等的基本操作。
 
-### Maven依赖
-```xml
-<dependency>
-  <groupId>io.github.yuanweiquan-007</groupId>
-  <artifactId>quick.start</artifactId>
-  <version>1.0</version>
-</dependency>
-```
 
-### Mysql功能
 
-##### 默认支持功能
+### 依赖框架
+
+- Spring 5.1.5.RELEASE
+- Mysql 5.1.26
+- Dom4j 1.6.1
+- Jackson 2.9.9
+- Lombok 1.18.10
+- Jdk 1.8
+
+
+
+### 默认Mysql功能
 
 | 方法                                                         | 说明                                       |
 | ------------------------------------------------------------ | ------------------------------------------ |
@@ -35,7 +37,21 @@
 | Integer update(String id, Map<String, Object> data)          | 修改                                       |
 | Integer update(List<? extends Serializable> ids, String key, Object value) | 修改                                       |
 
-##### 第一步：注入jdbcTemplate
+
+
+### 如何使用
+
+##### 1、添加Maven依赖
+
+```xml
+<dependency>
+  <groupId>io.github.yuanweiquan-007</groupId>
+  <artifactId>quick.start</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
+##### 2、注入jdbcTemplate
 
 ```java
 @Bean
@@ -47,7 +63,7 @@ public JdbcTemplate jdbcTemplate() {
 
 也可以通过xml配置文件的方式注入
 
-##### 第二步：定义对象
+##### 3、定义对象
 
 ```java
 @Data
@@ -61,7 +77,7 @@ public class Order implements Entity {
 }
 ```
 
-##### 第三步：定义Repository
+##### 4、定义Repository
 
 ```java
 @Repository
@@ -70,7 +86,7 @@ public class OrderRepository extends JdbcRepository<Order> {
 }
 ```
 
-##### 第四步：增删改查
+##### 5、增删改查操作
 
 ```java
 //新增
