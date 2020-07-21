@@ -11,7 +11,7 @@
 
     <name>${project.groupId}:${project.artifactId}</name>
     <url>https://github.com/yuanweiquan-007/quick.start</url>
-    <description>java quick start orm project</description>
+    <description>java quick start project</description>
 
     <properties>
         <spring.vsersion>5.1.5.RELEASE</spring.vsersion>
