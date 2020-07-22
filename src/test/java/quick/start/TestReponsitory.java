@@ -12,12 +12,10 @@ import quick.start.config.MyConfig;
 import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
 import quick.start.repositorys.condition.Conditions;
+import quick.start.util.DateUtils;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -97,13 +95,14 @@ public class TestReponsitory {
      private Order createOrder() {
           Order order = new Order();
           order.setOrderCode(String.valueOf(System.currentTimeMillis()));
-          order.setRemark(LocalDateTime.now().toString());
+          order.setCreateTime(new Date());
+          order.setStatus(new Random().nextInt(3));
           return order;
      }
 
      @Test
      public void batchInsert() {
-          List<Order> orders = IntStream.rangeClosed(1, 5)
+          List<Order> orders = IntStream.rangeClosed(1, 128)
                   .mapToObj(x -> createOrder())
                   .collect(Collectors.toList());
           logger.info("{}", orderRepository.insert(orders));
