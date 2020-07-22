@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class JsonUtils {
+public final class JsonUtils {
 
      private final static ObjectMapper MAPPER = new ObjectMapper()
              .setVisibility(PropertyAccessor.FIELD, Visibility.ANY).disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);

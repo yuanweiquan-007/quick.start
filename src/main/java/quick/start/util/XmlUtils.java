@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class XmlUtils {
+public final class XmlUtils {
 
      public static String fromMap(Map<String, Object> data, String root, String encoding) {
           return fromMap(data, root, encoding, null);
@@ -30,7 +30,6 @@ public class XmlUtils {
           if (fixer != null) {
                fixer.accept(document);
           }
-
           OutputFormat format = OutputFormat.createPrettyPrint();
           format.setEncoding(encoding);
           StringWriter writer = new StringWriter();

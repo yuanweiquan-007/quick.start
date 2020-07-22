@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class StreamUtils {
+public final class StreamUtils {
 
      public static <T> Stream<T> of(Iterator<T> iterator, boolean parallel) {
           return of(() -> iterator, parallel);

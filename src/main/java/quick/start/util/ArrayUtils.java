@@ -3,7 +3,7 @@ package quick.start.util;
 import java.util.Collection;
 import java.util.StringJoiner;
 
-public class ArrayUtils {
+public final class ArrayUtils {
 
      /**
       * 将集合拼接为字符串

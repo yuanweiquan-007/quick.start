@@ -1,7 +1,6 @@
 package quick.start.util;
 
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import quick.start.annotation.Generated;
 import quick.start.annotation.SaveAble;
 
@@ -9,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BeanUtils {
+public final class BeanUtils {
 
      /**
       * 获取两个对象中属性值不一样的字段
