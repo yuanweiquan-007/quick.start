@@ -17,10 +17,7 @@ import quick.start.util.BeanUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class DefaultAbstractRepository<E extends Entity, P extends CommandParser> implements Repository<E> {
 
@@ -169,8 +166,9 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
 
      @Override
      public Integer update(E entity) {
-          Map<String, Object> map = BeanUtils.parserAttributeValues(entity);
           Select<E> select = commandFactory.select();
+          Map<String, Object> map = BeanUtils.parserAttributeValues(entity);
+          appendMappingIfNecessary(map, select.getMeta().getColumnMapping());
           String primaryKey = select.primaryKey();
           Object primaryKeyValue = map.get(primaryKey);
           if (ObjectUtils.isEmpty(primaryKeyValue)) {
@@ -185,7 +183,7 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
                throw new UniqueException("根据主键查询出了多条数据");
           }
           E oldEntity = entitys.get(0);
-          Map<String, Object> differents = BeanUtils.differents(oldEntity, entity);
+          Map<String, Object> differents = replaceRealFiledNameIfNecessary(BeanUtils.differents(oldEntity, entity), select.getMeta().getFieldMapping());
           if (CollectionUtils.isEmpty(differents)) {
                return 0;
           }
@@ -246,6 +244,32 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
           );
      }
 
+     protected void appendMappingIfNecessary(List<Map<String, Object>> data, Map<String, String> mapping) {
+          if (!CollectionUtils.isEmpty(data) && !CollectionUtils.isEmpty(mapping)) {
+               for (Map<String, Object> map : data) {
+                    appendMappingIfNecessary(map, mapping);
+               }
+          }
+     }
+
+     protected void appendMappingIfNecessary(Map<String, Object> data, Map<String, String> mapping) {
+          mapping.forEach((k, v) -> {
+               if (data.containsKey(k)) {
+                    data.put(v, data.get(k));
+               }
+          });
+     }
+
+     protected Map<String, Object> replaceRealFiledNameIfNecessary(Map<String, Object> data, Map<String, String> mapping) {
+          Map<String, Object> result = new HashMap<>();
+          if (!CollectionUtils.isEmpty(data) && !CollectionUtils.isEmpty(mapping)) {
+               data.forEach((k, v) -> {
+                    result.put((mapping.containsKey(k) ? mapping.get(k) : k), v);
+               });
+          }
+          return result;
+     }
+
      /**
       * 获取泛型类的类型
       *
@@ -254,5 +278,6 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
      public Class<E> entityClass() {
           return (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
      }
+
 
 }

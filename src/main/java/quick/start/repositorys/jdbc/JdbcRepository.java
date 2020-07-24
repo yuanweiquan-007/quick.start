@@ -47,7 +47,9 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
                throw new IllegalArgumentException("select语句解析异常");
           }
           try {
-               return EntityMapper.toEntityList(this.jdbcTemplate.queryForList(command.getCommand(), command.getParames().toArray()), select.getMeta().getEntityClass());
+               List<Map<String, Object>> data = this.jdbcTemplate.queryForList(command.getCommand(), command.getParames().toArray());
+               appendMappingIfNecessary(data, select.getMeta().getColumnMapping());
+               return EntityMapper.toEntityList(data, select.getMeta().getEntityClass());
           } catch (Exception ex) {
                logger.info("查询异常", ex);
                return new ArrayList<>();

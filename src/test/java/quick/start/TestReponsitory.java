@@ -12,7 +12,6 @@ import quick.start.config.MyConfig;
 import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
 import quick.start.repositorys.condition.Conditions;
-import quick.start.util.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -45,7 +44,7 @@ public class TestReponsitory {
 
      @Test
      public void batchInsert() {
-          List<Order> orders = IntStream.rangeClosed(1, 128)
+          List<Order> orders = IntStream.rangeClosed(1, 4)
                   .mapToObj(x -> createOrder())
                   .collect(Collectors.toList());
           logger.info("{}", orderRepository.insert(orders));
@@ -54,12 +53,12 @@ public class TestReponsitory {
 
      @Test
      public void find() {
-          orderRepository.find().forEach(order -> logger.info(order.toString()));
+//          orderRepository.find().forEach(order -> logger.info(order.toString()));
      }
 
      @Test
      public void findById() {
-          logger.info("{}", orderRepository.findById("1593238076676"));
+          logger.info("{}", orderRepository.findById("1595431116348"));
      }
 
      @Test
@@ -117,23 +116,23 @@ public class TestReponsitory {
 
      @Test
      public void update() {
-          logger.info("{}", orderRepository.update("1593238090683", "remark", LocalDateTime.now().toString()));
-          logger.info("{}", orderRepository.update(Arrays.asList("1593238090683"), "remark", LocalDateTime.now().toString()));
+          logger.info("{}", orderRepository.update("1593238090683", "remarks", LocalDateTime.now().toString()));
+          logger.info("{}", orderRepository.update(Arrays.asList("1593238090683"), "remarks", LocalDateTime.now().toString()));
      }
 
      @Test
      public void updateByData() {
           Map<String, Object> data = new HashMap<>();
-          data.put("remark", LocalDateTime.now().toString());
+          data.put("remarks", LocalDateTime.now().toString());
           data.put("orderId", 1);
           logger.info("{}", orderRepository.update(Arrays.asList("1593238090683", "1593238090682"), data));
      }
 
      @Test
      public void updateByEntity() {
-          String code = "1593238090683";
+          String code = "1595431116348";
           Order order = orderRepository.findById(code);
-          order.setRemark("remark");
+          order.setRemark("remark1");
           logger.info("{}", orderRepository.update(order));
      }
 
