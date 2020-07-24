@@ -136,4 +136,12 @@ public class TestReponsitory {
           logger.info("{}", orderRepository.update(order));
      }
 
+     @Test
+     public void like() {
+          Conditions conditions = new Conditions().like("orderCode", "%159543111634");
+          orderRepository.findByPage(conditions, 5, 1).getResults().forEach(x -> {
+               logger.info("{}", x.toString());
+          });
+     }
+
 }

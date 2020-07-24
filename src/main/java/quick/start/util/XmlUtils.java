@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class XmlUtils {
+public class XmlUtils {
 
      public static String fromMap(Map<String, Object> data, String root, String encoding) {
           return fromMap(data, root, encoding, null);

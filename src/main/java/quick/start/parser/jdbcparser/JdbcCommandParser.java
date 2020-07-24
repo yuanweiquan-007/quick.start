@@ -12,6 +12,7 @@ import quick.start.repositorys.condition.ConditionAttribute;
 import quick.start.repositorys.jdbc.types.JdbcConditionType;
 import quick.start.repositorys.types.ConditionType;
 import quick.start.util.StringBufferUtils;
+import quick.start.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,10 +92,35 @@ public class JdbcCommandParser extends CommandParser {
                             .append(convertInValues((Collection<? extends Serializable>) condition.getValue()))
                             .append(")");
                     break;
+               case LIKE:
+                    buffer
+                            .append(rightSpace(condition.getField()))
+                            .append(rightSpace(JdbcConditionType.getValue(conditionType)))
+                            .append(parserLike(condition));
+                    break;
                default:
                     break;
           }
           return buffer.toString();
+     }
+
+     protected String parserLike(ConditionAttribute condition) {
+          Object value = CommonConstant.NULL;
+          if (String.valueOf(condition.getValue()).contains("%")) {
+               value = condition.getValue();
+          } else {
+               value = StringUtils.concat(
+                       CommonConstant.NULL,
+                       MysqlCommandConstant.PERCENT,
+                       String.valueOf(condition.getValue()),
+                       MysqlCommandConstant.PERCENT
+               );
+          }
+          return StringBufferUtils.of()
+                  .append("\"")
+                  .append(value)
+                  .append("\"")
+                  .toString();
      }
 
      /**

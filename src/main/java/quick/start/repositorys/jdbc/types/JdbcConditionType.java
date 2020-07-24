@@ -1,5 +1,6 @@
 package quick.start.repositorys.jdbc.types;
 
+import quick.start.constant.CommonConstant;
 import quick.start.repositorys.types.ConditionType;
 
 public enum JdbcConditionType {
@@ -10,7 +11,8 @@ public enum JdbcConditionType {
      LESS_THEN_OR_EQUAL(ConditionType.LESS_THEN_OR_EQUAL, "<="),
      GREATER_THEN(ConditionType.GREATER_THEN, ">"),
      GREATER_THEN_OR_EQUAL(ConditionType.GREATER_THEN_OR_EQUAL, ">="),
-     IN(ConditionType.IN, "in");
+     IN(ConditionType.IN, "in"),
+     LIKE(ConditionType.LIKE, "like");
 
      private String value;
      private ConditionType type;
@@ -26,7 +28,7 @@ public enum JdbcConditionType {
                     return jdbcConditionType.value;
                }
           }
-          return "";
+          return CommonConstant.NULL;
      }
 
 }

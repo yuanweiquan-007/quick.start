@@ -62,6 +62,12 @@ public class Conditions implements ConditionSupport, SortSupport, PageSupport, C
      }
 
      @Override
+     public Conditions like(String field, Object value) {
+          conditions.add(ConditionAttribute.of(field, ConditionType.LIKE, value));
+          return this;
+     }
+
+     @Override
      public Conditions whereIn(String field, Collection<? extends Serializable> values) {
           conditions.add(ConditionAttribute.of(field, ConditionType.IN, values));
           return this;

@@ -19,6 +19,8 @@ public interface ConditionSupport {
 
      public ConditionSupport lessThenOrEqual(String field, Object value);
 
+     public ConditionSupport like(String field, Object value);
+
      public ConditionSupport whereIn(String field, Collection<? extends Serializable> values);
 
 }
