@@ -30,6 +30,29 @@ public class TestReponsitory {
      Logger logger = LoggerFactory.getLogger(TestReponsitory.class);
 
      @Test
+     public void insert() {
+          Order order = createOrder();
+          logger.info("{}", orderRepository.insert(order));
+     }
+
+     private Order createOrder() {
+          Order order = new Order();
+          order.setOrderCode(String.valueOf(System.currentTimeMillis()));
+          order.setCreateTime(new Date());
+          order.setStatus(new Random().nextInt(3));
+          return order;
+     }
+
+     @Test
+     public void batchInsert() {
+          List<Order> orders = IntStream.rangeClosed(1, 128)
+                  .mapToObj(x -> createOrder())
+                  .collect(Collectors.toList());
+          logger.info("{}", orderRepository.insert(orders));
+     }
+
+
+     @Test
      public void find() {
           orderRepository.find().forEach(order -> logger.info(order.toString()));
      }
@@ -84,28 +107,6 @@ public class TestReponsitory {
           orderRepository.findByColumn("orderId", Arrays.asList(9, 10)).forEach(x -> {
                logger.info("{}", x.toString());
           });
-     }
-
-     @Test
-     public void insert() {
-          Order order = createOrder();
-          logger.info("{}", orderRepository.insert(order));
-     }
-
-     private Order createOrder() {
-          Order order = new Order();
-          order.setOrderCode(String.valueOf(System.currentTimeMillis()));
-          order.setCreateTime(new Date());
-          order.setStatus(new Random().nextInt(3));
-          return order;
-     }
-
-     @Test
-     public void batchInsert() {
-          List<Order> orders = IntStream.rangeClosed(1, 128)
-                  .mapToObj(x -> createOrder())
-                  .collect(Collectors.toList());
-          logger.info("{}", orderRepository.insert(orders));
      }
 
      @Test
