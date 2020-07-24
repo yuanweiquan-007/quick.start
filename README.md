@@ -1,5 +1,5 @@
 # quick start
-> 一个基于Java快速开发框架，支持mysql、xml、json等的基本操作。
+> 一个基于Spring的Java快速开发框架，支持mysql、xml、json等的基本操作。
 
 
 

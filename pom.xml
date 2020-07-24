@@ -6,11 +6,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.yuanweiquan-007</groupId>
     <artifactId>quick.start</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <url>https://github.com/yuanweiquan-007/quick.start</url>
     <description>java quick start project</description>
 
     <properties>
@@ -18,31 +17,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-
-    <!-- 许可证信息 -->
-    <licenses>
-        <!-- Apache许可证 -->
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-
-    <!-- SCM信息 -> git在github上托管 -->
-    <scm>
-        <connection>scm:git:git://github.com/yuanweiquan-007/quick.start.git</connection>
-        <developerConnection>scm:git:ssh://github.com/yuanweiquan-007/quick.start.git</developerConnection>
-        <url>https://github.com/yuanweiquan-007/quick.start/tree/master</url>
-    </scm>
-
-    <!-- 开发者信息 -->
-    <developers>
-        <developer>
-            <name>yuanweiquan</name>
-            <email>494420676@qq.com</email>
-            <url>https://github.com/yuanweiquan-007</url>
-        </developer>
-    </developers>
 
     <!-- 依赖 -->
     <dependencies>
@@ -115,81 +89,5 @@
             <version>4.12</version>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>ossrh</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <!-- Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法。要配置它，只需将插件添加到Maven pom.xml即可。 -->
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId><!--这个是在setting.xml配置的用户名密码-->
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- 签名配置 -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
 
 </project>
