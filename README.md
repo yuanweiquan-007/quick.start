@@ -73,6 +73,7 @@ public class Order implements Entity {
      private Integer orderId;
      @PrimaryKey//定义主键
      private String orderCode;
+  	 @Column("remarks")//字段和属性不一致时
      private String remark;
 }
 ```
@@ -127,9 +128,7 @@ public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 }
 ```
 
-
-
-### Conditions条件使用
+##### Conditions条件使用
 
 ```java
 Conditions conditions = new Conditions()
@@ -141,6 +140,69 @@ Conditions conditions = new Conditions()
   .limit(10);//limit-分页
 orderRepository.find(conditions).forEach(x -> {
   logger.info("{}", x.toString());
+});
+```
+
+
+
+### 解析JSON
+
+```
+String json = "{\n" +
+        "  \"name\":\"quick.start\",\n" +
+        "  \"version\":\"1.0\",\n" +
+        "  \"details\":[\n" +
+        "    {\n" +
+        "      \"key\":\"key1\",\n" +
+        "      \"value\":\"value1\"\n" +
+        "    },\n" +
+        "    {\n" +
+        "      \"key\":\"ke2\",\n" +
+        "      \"value\":\"value2\"\n" +
+        "    }\n" +
+        "  ]\n" +
+        "}";
+Resolver resolver = Resolver.ofJson(json);
+//解析字符串
+String name = resolver.get("name");
+System.out.println(name);
+
+//解析数组
+List<Map<String, Object>> list = resolver.getList("/details");
+list.forEach(x -> {
+     System.out.println(x);
+});
+```
+
+
+
+### 解析XML
+
+```
+String xml = "<response>\n" +
+        "  <code>200</code>\n" +
+        "  <flag>success</flag>\n" +
+        "  <message>成功</message>\n" +
+        "  <orders>\n" +
+        "    <order>\n" +
+        "      <orderCode>12345678</orderCode>\n" +
+        "      <createTime>2020-07-22 17:47:46</createTime>\n" +
+        "    </order>\n" +
+        "    <order>\n" +
+        "      <orderCode>87654321</orderCode>\n" +
+        "      <createTime>2020-07-22 17:48:13</createTime>\n" +
+        "    </order>\n" +
+        "  </orders>\n" +
+        "</response>";
+Resolver resolver = Resolver.ofXml(xml);
+//解析字符串
+String code = resolver.get("/response/code");
+System.out.println(code);
+
+//解析数组
+List<Map<String, Object>> list = resolver.getList("/response/orders/order");
+list.forEach(x -> {
+     System.out.println(x);
 });
 ```
 
