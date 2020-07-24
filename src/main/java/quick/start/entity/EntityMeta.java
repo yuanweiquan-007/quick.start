@@ -2,10 +2,8 @@ package quick.start.entity;
 
 import lombok.Data;
 import org.springframework.util.StringUtils;
-import quick.start.annotation.Generated;
-import quick.start.annotation.PrimaryKey;
-import quick.start.annotation.SaveAble;
-import quick.start.annotation.Table;
+import quick.start.annotation.*;
+import quick.start.util.FieldUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -40,33 +38,33 @@ public class EntityMeta<E extends Entity> {
      }
 
      private void parserInsertFields() {
-          Field[] fields = entityClass.getDeclaredFields();
-          for (Field field : fields) {
-               //@SaveAble(false)
-               if (field.isAnnotationPresent(SaveAble.class) && (false == field.getAnnotation(SaveAble.class).value())) {
-                    continue;
+          for (Field field : entityClass.getDeclaredFields()) {
+               //@SaveAble(false)、@Generated、未序列化、接口类型不保存
+               if (!(FieldUtils.isAnnotationPresent(field, SaveAble.class, x -> !x.value())
+                       || FieldUtils.isAnnotationPresent(field, Generated.class)
+                       || (!(field.getType() instanceof Serializable))
+                       || field.getType().isInterface())) {
+                    insertFields.add(FieldUtils.getFieldName(field));
                }
-               //@Generated,自增不保存
-               if (field.isAnnotationPresent(Generated.class)) {
-                    continue;
-               }
-               //其他条件
-               if (!(field.getType() instanceof Serializable) || field.getType().isInterface()) {
-                    continue;
-               }
-               insertFields.add(field.getName());
           }
      }
 
      private static <E extends Entity> void parserPrimaryFromField(Class<E> eClass, EntityMeta<E> meta) {
-          Field[] declaredFields = eClass.getDeclaredFields();
-          for (Field field : declaredFields) {
-               if (field.isAnnotationPresent(PrimaryKey.class)) {
-                    PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
-                    if (StringUtils.isEmpty(primaryKey.value())) {
-                         meta.setPrimaryKey(field.getName());
+          for (Field field : eClass.getDeclaredFields()) {
+               if (FieldUtils.isAnnotationPresent(field, PrimaryKey.class)) {
+                    //@Column注解优先级高
+                    if (FieldUtils.isAnnotationPresent(field, Column.class, x -> !StringUtils.isEmpty(x.value()))) {
+                         meta.setPrimaryKey(field.getAnnotation(Column.class).value());
                          break;
                     }
+                    //再解析@PrimaryKey
+                    String primaryKey = field.getAnnotation(PrimaryKey.class).value();
+                    if (StringUtils.isEmpty(primaryKey)) {
+                         meta.setPrimaryKey(field.getName());
+                    } else {
+                         meta.setPrimaryKey(primaryKey);
+                    }
+                    break;
                }
           }
      }
