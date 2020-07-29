@@ -72,34 +72,26 @@ public class Snowflake {
       */
      private long lastTimestamp = -1L;
 
-     public Snowflake() {
+     private static Snowflake snowflake = null;
+
+     private Snowflake() {
           this.workerId = 0;
           this.datacenterId = 0;
      }
 
      /**
-      * 构造函数
-      *
-      * @param workerId     工作ID (0~31)
-      * @param datacenterId 数据中心ID (0~31)
-      */
-     public Snowflake(Long workerId, Long datacenterId) {
-          if (workerId > maxWorkerId || workerId < 0) {
-               throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
-          }
-          if (datacenterId > maxDatacenterId || datacenterId < 0) {
-               throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
-          }
-          this.workerId = workerId;
-          this.datacenterId = datacenterId;
-     }
-
-     /**
       * 获得下一个ID (该方法是线程安全的)
       *
-      * @return SnowflakeId
+      * @return
       */
-     public synchronized long nextId() {
+     public static synchronized long nextId() {
+          if (snowflake == null) {
+               snowflake = new Snowflake();
+          }
+          return snowflake.getNextId();
+     }
+
+     private long getNextId() {
           long timestamp = currentTimeMillis();
 
           //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
