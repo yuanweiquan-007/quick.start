@@ -2,7 +2,7 @@ package quick.start.validator;
 
 import java.util.Date;
 
-public class DateValidator extends Validator {
+public class DateValidation extends Validation {
 
      @Override
      public boolean isSupported(ValidateType type) {

@@ -2,7 +2,7 @@ package quick.start.validator;
 
 import java.util.regex.Pattern;
 
-public class UrlValidator extends Validator {
+public class UrlValidation extends Validation {
 
      public static final Pattern REGEX_URL = Pattern.compile("^(http|www|ftp)://(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*((:\\d+)?)(/(\\w+(-\\w+)*))*(\\.?(\\w)*)(\\?)?(((\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*(\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*)*(\\w*)*)$", Pattern.CASE_INSENSITIVE);
 

@@ -2,7 +2,7 @@ package quick.start.validator;
 
 import java.util.regex.Pattern;
 
-public class PhoneValidator extends Validator {
+public class PhoneValidation extends Validation {
 
      public static final Pattern REGEX_TELEPHONE = Pattern.compile("^[0][0-9]{2,3}-[0-9]{7,8}$");
 

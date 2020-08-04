@@ -1,6 +1,6 @@
 package quick.start.validator;
 
-public class LongValidator extends NumberValidator {
+public class LongValidation extends NumberValidation {
 
      @Override
      public boolean validate(Object value) {

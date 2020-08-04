@@ -2,7 +2,7 @@ package quick.start.validator;
 
 import org.springframework.util.NumberUtils;
 
-public class NumberValidator extends Validator {
+public class NumberValidation extends Validation {
 
      @Override
      public boolean validate(Object value) {

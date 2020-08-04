@@ -1,6 +1,6 @@
 package quick.start.validator;
 
-public class BooleanValidator extends Validator {
+public class BooleanValidation extends Validation {
 
      @Override
      public boolean isSupported(ValidateType type) {

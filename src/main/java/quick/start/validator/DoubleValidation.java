@@ -1,14 +1,14 @@
 package quick.start.validator;
 
-public class ShortValidator extends NumberValidator {
+public class DoubleValidation extends NumberValidation {
 
      @Override
      public boolean validate(Object value) {
-          return isNumber(value, Short.class);
+          return isNumber(value, Double.class);
      }
 
      @Override
      public boolean isSupported(ValidateType type) {
-          return ValidateType.SHORT.equals(type);
+          return ValidateType.DOUBLE.equals(type);
      }
 }

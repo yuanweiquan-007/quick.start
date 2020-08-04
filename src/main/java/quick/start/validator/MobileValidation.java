@@ -2,7 +2,7 @@ package quick.start.validator;
 
 import java.util.regex.Pattern;
 
-public class MobileValidator extends Validator {
+public class MobileValidation extends Validation {
 
      public static final Pattern REGEX_MOBILE = Pattern.compile("^1\\d{10}$");
 

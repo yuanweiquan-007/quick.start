@@ -2,7 +2,7 @@ package quick.start.validator;
 
 import java.math.BigInteger;
 
-public class BigIntegerValidator extends NumberValidator {
+public class BigIntegerValidation extends NumberValidation {
 
      @Override
      public boolean validate(Object value) {

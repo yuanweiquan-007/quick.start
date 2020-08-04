@@ -1,15 +1,15 @@
 package quick.start.validator;
 
-public class StringValidator extends Validator {
+public class NotEmptyValidation extends Validation {
 
      @Override
      public boolean isSupported(ValidateType type) {
-          return ValidateType.STRING.equals(type);
+          return ValidateType.NOT_EMPTY.equals(type);
      }
 
      @Override
      public boolean validate(Object value) {
-          return isString(value);
+          return !isEmpty(value);
      }
 
 }

@@ -1,14 +1,14 @@
 package quick.start.validator;
 
-public class FloatValidator extends NumberValidator {
+public class ByteValidation extends NumberValidation {
 
      @Override
      public boolean validate(Object value) {
-          return isNumber(value, Float.class);
+          return isNumber(value, Byte.class);
      }
 
      @Override
      public boolean isSupported(ValidateType type) {
-          return ValidateType.FLOAT.equals(type);
+          return ValidateType.BYTE.equals(type);
      }
 }
