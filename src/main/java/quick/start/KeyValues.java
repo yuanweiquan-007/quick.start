@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class KeyValues<K extends Object, V extends Object> {
+
      protected K key;
      protected V value;
 
@@ -11,4 +12,5 @@ public class KeyValues<K extends Object, V extends Object> {
           this.key = key;
           this.value = value;
      }
+
 }

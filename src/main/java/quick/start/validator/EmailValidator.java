@@ -1,0 +1,18 @@
+package quick.start.validator;
+
+import java.util.regex.Pattern;
+
+public class EmailValidator extends Validator {
+
+     public static final Pattern REGEX_EMAIL = Pattern.compile("^([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");
+
+     @Override
+     public boolean isSupported(ValidateType type) {
+          return ValidateType.EMAIL.equals(type);
+     }
+
+     @Override
+     public boolean validate(Object value) {
+          return match(value, REGEX_EMAIL);
+     }
+}
