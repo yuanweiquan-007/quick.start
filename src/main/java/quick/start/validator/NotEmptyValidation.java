@@ -12,4 +12,9 @@ public class NotEmptyValidation extends Validation {
           return !isEmpty(value);
      }
 
+     @Override
+     public String validationMessage(String key) {
+          return key + "不能为空";
+     }
+
 }

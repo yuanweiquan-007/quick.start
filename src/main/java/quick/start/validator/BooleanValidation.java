@@ -21,4 +21,9 @@ public class BooleanValidation extends Validation {
           return false;
      }
 
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为布尔类型(true|false|0|1)";
+     }
+
 }

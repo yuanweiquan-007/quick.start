@@ -11,6 +11,7 @@ public class NumberValidation extends Validation {
 
      /**
       * 判断当前值是否指定类型的number
+      *
       * @param value
       * @param clazz
       * @param <T>
@@ -28,5 +29,10 @@ public class NumberValidation extends Validation {
      @Override
      public boolean isSupported(ValidateType type) {
           return ValidateType.NUMBER.equals(type);
+     }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为数字类型";
      }
 }

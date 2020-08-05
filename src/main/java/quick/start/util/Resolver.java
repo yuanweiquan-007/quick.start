@@ -114,4 +114,7 @@ public class Resolver {
           return container;
      }
 
+     public Map<String, Object> getData() {
+          return data;
+     }
 }

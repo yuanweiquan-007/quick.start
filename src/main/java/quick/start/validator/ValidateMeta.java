@@ -2,6 +2,7 @@ package quick.start.validator;
 
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -9,9 +10,16 @@ import java.util.Set;
  */
 @Data
 public class ValidateMeta {
+
      private String key;
      private Object value;
-     private Set<ValidateType> validateType;
+     private Boolean required = true;
+     private Set<ValidateType> validateType = new HashSet<>();
      private boolean isValidated;
      private String message;
+
+     public void addValidateType(ValidateType validateType) {
+          this.validateType.add(validateType);
+     }
+
 }

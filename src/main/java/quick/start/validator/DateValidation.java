@@ -14,4 +14,9 @@ public class DateValidation extends Validation {
           return Date.class.isAssignableFrom(value.getClass());
      }
 
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为时间类型(yyyy-MM-dd HH:mm:ss)";
+     }
+
 }

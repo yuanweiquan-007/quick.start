@@ -1,19 +1,22 @@
 package quick.start.validator;
 
-public class EmptyValidation extends Validation {
+import java.util.Map;
+
+public class MapValidation extends Validation {
 
      @Override
      public boolean isSupported(ValidateType type) {
-          return ValidateType.EMPTY.equals(type);
+          return ValidateType.MAP.equals(type);
      }
 
      @Override
      public boolean validate(Object value) {
-          return isEmpty(value);
+          return isClass(value, Map.class);
      }
 
      @Override
      public String validationMessage(String key) {
-          return key + "必须为空";
+          return key + "必须为Map类型";
      }
+
 }

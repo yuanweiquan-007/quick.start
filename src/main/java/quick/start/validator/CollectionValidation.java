@@ -1,19 +1,22 @@
 package quick.start.validator;
 
-public class EmptyValidation extends Validation {
+import java.util.Collection;
+
+public class CollectionValidation extends Validation {
 
      @Override
      public boolean isSupported(ValidateType type) {
-          return ValidateType.EMPTY.equals(type);
+          return ValidateType.COLLECTION.equals(type);
      }
 
      @Override
      public boolean validate(Object value) {
-          return isEmpty(value);
+          return isClass(value, Collection.class);
      }
 
      @Override
      public String validationMessage(String key) {
-          return key + "必须为空";
+          return key + "必须为集合类型";
      }
+
 }

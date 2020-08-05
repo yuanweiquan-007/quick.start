@@ -15,4 +15,9 @@ public class EmailValidation extends Validation {
      public boolean validate(Object value) {
           return match(value, REGEX_EMAIL);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "邮箱格式错误";
+     }
 }

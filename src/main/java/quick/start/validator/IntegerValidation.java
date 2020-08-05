@@ -11,4 +11,9 @@ public class IntegerValidation extends NumberValidation {
      public boolean isSupported(ValidateType type) {
           return ValidateType.INTEGER.equals(type);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为Int类型";
+     }
 }

@@ -11,4 +11,9 @@ public class ByteValidation extends NumberValidation {
      public boolean isSupported(ValidateType type) {
           return ValidateType.BYTE.equals(type);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为Byte类型";
+     }
 }

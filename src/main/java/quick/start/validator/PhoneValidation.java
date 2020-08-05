@@ -15,4 +15,9 @@ public class PhoneValidation extends Validation {
      public boolean validate(Object value) {
           return match(value, REGEX_TELEPHONE);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "手机格式错误";
+     }
 }

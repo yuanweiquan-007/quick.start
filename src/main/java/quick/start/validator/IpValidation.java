@@ -15,4 +15,9 @@ public class IpValidation extends Validation {
      public boolean validate(Object value) {
           return match(value, REGEX_IP_ADDR);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "非正确的IP格式";
+     }
 }

@@ -11,4 +11,9 @@ public class FloatValidation extends NumberValidation {
      public boolean isSupported(ValidateType type) {
           return ValidateType.FLOAT.equals(type);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为Float类型";
+     }
 }

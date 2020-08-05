@@ -12,4 +12,9 @@ public class StringValidation extends Validation {
           return isString(value);
      }
 
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为String类型";
+     }
+
 }

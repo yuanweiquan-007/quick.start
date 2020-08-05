@@ -19,5 +19,7 @@ public enum ValidateType {
      BOOLEAN,
      PHONE,
      MOBILE,
-     IP
+     IP,
+     COLLECTION,
+     MAP
 }

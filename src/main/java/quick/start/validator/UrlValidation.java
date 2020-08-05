@@ -16,4 +16,9 @@ public class UrlValidation extends Validation {
           return match(value, REGEX_URL);
      }
 
+     @Override
+     public String validationMessage(String key) {
+          return key + "错误的URL格式";
+     }
+
 }

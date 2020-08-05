@@ -11,4 +11,9 @@ public class DoubleValidation extends NumberValidation {
      public boolean isSupported(ValidateType type) {
           return ValidateType.DOUBLE.equals(type);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为Double类型";
+     }
 }

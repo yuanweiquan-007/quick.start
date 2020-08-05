@@ -11,4 +11,9 @@ public class ShortValidation extends NumberValidation {
      public boolean isSupported(ValidateType type) {
           return ValidateType.SHORT.equals(type);
      }
+
+     @Override
+     public String validationMessage(String key) {
+          return key + "必须为Short类型";
+     }
 }
