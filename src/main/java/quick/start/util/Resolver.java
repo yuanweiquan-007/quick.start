@@ -15,7 +15,8 @@ import java.util.*;
 public class Resolver {
 
      protected final Map<String, Object> data = new LinkedHashMap<>();
-     protected final static String delimiters = "|-/#;,: ";
+
+     public final static String delimiters = "|-/#;,: ";
 
      private Resolver() {
      }

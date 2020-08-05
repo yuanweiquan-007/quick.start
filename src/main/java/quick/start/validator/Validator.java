@@ -3,7 +3,7 @@ package quick.start.validator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import quick.start.constant.CommonConstant;
+import quick.start.entity.Entity;
 import quick.start.util.Resolver;
 import quick.start.util.StringUtils;
 
@@ -20,9 +20,9 @@ public class Validator {
      //当前验证的信息
      protected ValidateMeta currentValidateElement;
      //数据
-     protected Map<String, Object> data = new HashMap<>();
+     protected Map<String, Object> data = new LinkedHashMap<>();
      //错误信息
-     protected List<String> errorMessage = new ArrayList<>();
+     protected Set<String> errorMessage = new HashSet<>();
      //所有的待验证信息
      protected List<ValidateMeta> allValidateElements = new ArrayList<>();
 
@@ -49,20 +49,36 @@ public class Validator {
           return validator;
      }
 
-     public ValidatorSet set(String key) {
+     public static Validator ofXml(String xml) throws Exception {
+          return of(Resolver.ofXml(xml));
+     }
+
+     public static Validator ofJson(String json) throws Exception {
+          return of(Resolver.ofJson(json));
+     }
+
+     public static Validator of(Map<String, ?> data) {
+          return of(Resolver.of(data));
+     }
+
+     public static <E extends Entity> Validator of(E entity) {
+          return of(Resolver.ofEntity(entity));
+     }
+
+     public ValidatorBaseType set(String key) {
           addValidateElementIfNecessary();
           currentValidateElement = new ValidateMeta();
           currentValidateElement.setKey(key);
           currentValidateElement.setValue(Resolver.of(data).get(key));
-          return new ValidatorSet(this);
+          return new ValidatorBaseType(this);
      }
 
-     public ValidatorSet set(String key, Object value) {
+     public ValidatorBaseType set(String key, Object value) {
           addValidateElementIfNecessary();
           currentValidateElement = new ValidateMeta();
           currentValidateElement.setKey(key);
           currentValidateElement.setValue(value);
-          return new ValidatorSet(this);
+          return new ValidatorBaseType(this);
      }
 
      protected void addValidateElementIfNecessary() {
@@ -73,7 +89,7 @@ public class Validator {
           }
      }
 
-     public void validate() {
+     protected void validate() {
           if (!doValidation && !CollectionUtils.isEmpty(allValidateElements)) {
                doValidation = true;
                for (ValidateMeta meta : allValidateElements) {
@@ -88,10 +104,12 @@ public class Validator {
                if (ObjectUtils.isEmpty(validation)) {
                     errorMessage.add("不支持的验证格式:" + validateType);
                     isSuccess = false;
+                    break;
                }
                if (!validation.validate(meta.getValue())) {
                     errorMessage.add(validation.validationMessage(meta.getKey()));
                     isSuccess = false;
+                    break;
                }
           }
      }
@@ -122,11 +140,7 @@ public class Validator {
           return isSuccess;
      }
 
-     public String firstErrorMessage() {
-          return errorMessage.isEmpty() ? CommonConstant.NULL : errorMessage.get(0);
-     }
-
-     public List<String> getErrorMessage() {
+     public Set<String> getErrorMessage() {
           return errorMessage;
      }
 

@@ -1,113 +1,118 @@
 package quick.start.validator;
 
-public class ValidatorSet {
+public class ValidatorBaseType {
 
-     private Validator validator;
+     protected Validator validator;
 
-     protected ValidatorSet(Validator validator) {
+     protected ValidatorBaseType(Validator validator) {
           this.validator = validator;
      }
 
-     public ValidatorSet required() {
+     public ValidatorBaseType required() {
           this.validator.currentValidateElement.setRequired(true);
           return this;
      }
 
-     public ValidatorSet sometimes() {
+     public ValidatorBaseType sometimes() {
           this.validator.currentValidateElement.setRequired(false);
           return this;
      }
 
-     public ValidatorSet bytes() {
+     public ValidatorBaseType bytes() {
           return addValidateType(ValidateType.BYTE);
      }
 
-     public ValidatorSet bigInteger() {
+     public ValidatorBaseType bigInteger() {
           return addValidateType(ValidateType.BIGINTEGER);
      }
 
-     public ValidatorSet bool() {
+     public ValidatorBaseType bool() {
           return addValidateType(ValidateType.BOOLEAN);
      }
 
-     public ValidatorSet collection() {
+     public ValidatorBaseType collection() {
           return addValidateType(ValidateType.COLLECTION);
      }
 
-     public ValidatorSet date() {
+     public ValidatorBaseType date() {
           return addValidateType(ValidateType.DATE);
      }
 
-     public ValidatorSet doubles() {
+     public ValidatorBaseType doubles() {
           return addValidateType(ValidateType.DOUBLE);
      }
 
-     public ValidatorSet email() {
+     public ValidatorBaseType email() {
           return addValidateType(ValidateType.EMAIL);
      }
 
-     public ValidatorSet empty() {
+     public ValidatorBaseType empty() {
           return addValidateType(ValidateType.EMPTY);
      }
 
-     public ValidatorSet floats() {
+     public ValidatorBaseType floats() {
           return addValidateType(ValidateType.FLOAT);
      }
 
-     public ValidatorSet integer() {
+     public ValidatorBaseType integer() {
           return addValidateType(ValidateType.INTEGER);
      }
 
-     public ValidatorSet ip() {
+     public ValidatorBaseType ip() {
           return addValidateType(ValidateType.IP);
      }
 
-     public ValidatorSet longs() {
+     public ValidatorBaseType longs() {
           return addValidateType(ValidateType.LONG);
      }
 
-     public ValidatorSet map() {
+     public ValidatorBaseType map() {
           return addValidateType(ValidateType.MAP);
      }
 
-     public ValidatorSet mobile() {
+     public ValidatorBaseType mobile() {
           return addValidateType(ValidateType.MOBILE);
      }
 
-     public ValidatorSet notEmpty() {
+     public ValidatorBaseType notEmpty() {
           return addValidateType(ValidateType.NOT_EMPTY);
      }
 
-     public ValidatorSet number() {
+     public ValidatorBaseType number() {
           return addValidateType(ValidateType.NUMBER);
      }
 
-     public ValidatorSet phone() {
+     public ValidatorBaseType phone() {
           return addValidateType(ValidateType.PHONE);
      }
 
-     public ValidatorSet shorts() {
+     public ValidatorBaseType shorts() {
           return addValidateType(ValidateType.SHORT);
      }
 
-     public ValidatorSet string() {
+     public ValidatorBaseType string() {
           return addValidateType(ValidateType.STRING);
      }
 
-     public ValidatorSet url() {
+     public ValidatorBaseType url() {
           return addValidateType(ValidateType.URL);
      }
 
-     private ValidatorSet addValidateType(ValidateType type) {
+     public ValidatorList list() {
+          addValidateType(ValidateType.COLLECTION);
+          return new ValidatorList(validator);
+     }
+
+     private ValidatorBaseType addValidateType(ValidateType type) {
           this.validator.currentValidateElement.addValidateType(type);
           return this;
      }
 
-     public ValidatorSet set(String key) {
+     public ValidatorBaseType set(String key) {
           return validator.set(key);
      }
 
-     public ValidatorSet set(String key, Object value) {
+     public ValidatorBaseType set(String key, Object value) {
           return validator.set(key, value);
      }
 
