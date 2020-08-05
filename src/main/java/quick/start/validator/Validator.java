@@ -13,12 +13,18 @@ import java.util.*;
  * 验证器
  */
 public class Validator {
-
-     private Boolean isSuccess = true;
-     private ValidateMeta currentValidateElement;
-     private Map<String, Object> data = new HashMap<>();
-     private List<String> errorMessage = new ArrayList<>();
-     private List<ValidateMeta> allValidateElements = new ArrayList<>();
+     //验证是否成功
+     protected Boolean isSuccess = true;
+     //是否已经执行了验证操作
+     protected Boolean doValidation = false;
+     //当前验证的信息
+     protected ValidateMeta currentValidateElement;
+     //数据
+     protected Map<String, Object> data = new HashMap<>();
+     //错误信息
+     protected List<String> errorMessage = new ArrayList<>();
+     //所有的待验证信息
+     protected List<ValidateMeta> allValidateElements = new ArrayList<>();
 
      private static final List<Validation> validations = new ArrayList<>();
 
@@ -44,7 +50,7 @@ public class Validator {
      }
 
      public ValidatorSet set(String key) {
-          allValidateElementIfNecessary();
+          addValidateElementIfNecessary();
           currentValidateElement = new ValidateMeta();
           currentValidateElement.setKey(key);
           currentValidateElement.setValue(Resolver.of(data).get(key));
@@ -52,14 +58,14 @@ public class Validator {
      }
 
      public ValidatorSet set(String key, Object value) {
-          allValidateElementIfNecessary();
+          addValidateElementIfNecessary();
           currentValidateElement = new ValidateMeta();
           currentValidateElement.setKey(key);
           currentValidateElement.setValue(value);
           return new ValidatorSet(this);
      }
 
-     private void allValidateElementIfNecessary() {
+     protected void addValidateElementIfNecessary() {
           if (!ObjectUtils.isEmpty(currentValidateElement)) {
                ValidateMeta newValidateMeta = new ValidateMeta();
                BeanUtils.copyProperties(currentValidateElement, newValidateMeta);
@@ -68,7 +74,8 @@ public class Validator {
      }
 
      public void validate() {
-          if (!CollectionUtils.isEmpty(allValidateElements)) {
+          if (!doValidation && !CollectionUtils.isEmpty(allValidateElements)) {
+               doValidation = true;
                for (ValidateMeta meta : allValidateElements) {
                     if (isValidate(meta)) validateMeta(meta);
                }
@@ -80,9 +87,11 @@ public class Validator {
                Validation validation = getSupportValidation(validateType);
                if (ObjectUtils.isEmpty(validation)) {
                     errorMessage.add("不支持的验证格式:" + validateType);
+                    isSuccess = false;
                }
                if (!validation.validate(meta.getValue())) {
                     errorMessage.add(validation.validationMessage(meta.getKey()));
+                    isSuccess = false;
                }
           }
      }
@@ -107,6 +116,9 @@ public class Validator {
      }
 
      public Boolean isValidate() {
+          if (!doValidation) {
+               validate();
+          }
           return isSuccess;
      }
 
@@ -118,117 +130,5 @@ public class Validator {
           return errorMessage;
      }
 
-     class ValidatorSet {
-
-          private Validator validator;
-
-          protected ValidatorSet(Validator validator) {
-               validator = validator;
-          }
-
-          public ValidatorSet required() {
-               this.validator.currentValidateElement.setRequired(true);
-               return this;
-          }
-
-          public ValidatorSet sometimes() {
-               this.validator.currentValidateElement.setRequired(false);
-               return this;
-          }
-
-          public ValidatorSet bytes() {
-               return addValidateType(ValidateType.BYTE);
-          }
-
-          public ValidatorSet bigInteger() {
-               return addValidateType(ValidateType.BIGINTEGER);
-          }
-
-          public ValidatorSet bool() {
-               return addValidateType(ValidateType.BOOLEAN);
-          }
-
-          public ValidatorSet collection() {
-               return addValidateType(ValidateType.COLLECTION);
-          }
-
-          public ValidatorSet date() {
-               return addValidateType(ValidateType.DATE);
-          }
-
-          public ValidatorSet doubles() {
-               return addValidateType(ValidateType.DOUBLE);
-          }
-
-          public ValidatorSet email() {
-               return addValidateType(ValidateType.EMAIL);
-          }
-
-          public ValidatorSet empty() {
-               return addValidateType(ValidateType.EMPTY);
-          }
-
-          public ValidatorSet floats() {
-               return addValidateType(ValidateType.FLOAT);
-          }
-
-          public ValidatorSet integer() {
-               return addValidateType(ValidateType.INTEGER);
-          }
-
-          public ValidatorSet ip() {
-               return addValidateType(ValidateType.IP);
-          }
-
-          public ValidatorSet longs() {
-               return addValidateType(ValidateType.LONG);
-          }
-
-          public ValidatorSet map() {
-               return addValidateType(ValidateType.MAP);
-          }
-
-          public ValidatorSet mobile() {
-               return addValidateType(ValidateType.MOBILE);
-          }
-
-          public ValidatorSet notEmpty() {
-               return addValidateType(ValidateType.NOT_EMPTY);
-          }
-
-          public ValidatorSet number() {
-               return addValidateType(ValidateType.NUMBER);
-          }
-
-          public ValidatorSet phone() {
-               return addValidateType(ValidateType.PHONE);
-          }
-
-          public ValidatorSet shorts() {
-               return addValidateType(ValidateType.SHORT);
-          }
-
-          public ValidatorSet string() {
-               return addValidateType(ValidateType.STRING);
-          }
-
-          public ValidatorSet url() {
-               return addValidateType(ValidateType.URL);
-          }
-
-          private ValidatorSet addValidateType(ValidateType type) {
-               this.validator.currentValidateElement.addValidateType(type);
-               return this;
-          }
-
-          public ValidatorSet set(String key) {
-               return validator.set(key);
-          }
-
-          public ValidatorSet set(String key, String value) {
-               return validator.set(key, value);
-          }
-
-     }
 
 }
