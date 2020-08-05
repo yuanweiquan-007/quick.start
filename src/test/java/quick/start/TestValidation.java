@@ -13,7 +13,7 @@ public class TestValidation {
                   "  <message>订单成功!</message>\n" +
                   "  <orders>\n" +
                   "    <order>\n" +
-                  "      <orderCode></orderCode>\n" +
+                  "      <orderCode>ECO001</orderCode>\n" +
                   "      <createTime>2020-07-22 17:47:41</createTime>\n" +
                   "    </order>\n" +
                   "    <order>\n" +
@@ -25,7 +25,7 @@ public class TestValidation {
 
           Validator validator = Validator.ofXml(xml)
                   .set("version", "1.0").required().integer()
-                  .set("payTime", "2016-11-11").date()
+                  .set("payTime", "2016-11-11 10:12:12").date()
                   .set("remark", "").string().notEmpty()
                   .set("money", "545T").doubles()
                   .set("email", "777@qq").email()

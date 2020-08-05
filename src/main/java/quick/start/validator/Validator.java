@@ -107,7 +107,7 @@ public class Validator {
                     break;
                }
                if (!validation.validate(meta.getValue())) {
-                    errorMessage.add(validation.validationMessage(meta.getKey()));
+                    errorMessage.add(validation.validationMessage(StringUtils.isEmpty(meta.getAlias()) ? meta.getKey() : meta.getAlias()));
                     isSuccess = false;
                     break;
                }

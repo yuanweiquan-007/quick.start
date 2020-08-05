@@ -21,11 +21,20 @@ public class ValidatorList extends ValidatorBaseType {
           for (Map<String, Object> map : list) {
                Validator childValidator = Validator.of(map);
                consumer.accept(childValidator);
+               setAliaxName(childValidator);
                if (!childValidator.isValidate()) {
                     appendErrorMessage(map, childValidator);
                }
           }
           return this;
+     }
+
+     private void setAliaxName(Validator childValidator) {
+          if (!CollectionUtils.isEmpty(childValidator.allValidateElements)) {
+               for (ValidateMeta meta : childValidator.allValidateElements) {
+                    meta.setAlias(childKey(meta.getKey()));
+               }
+          }
      }
 
      /**
@@ -36,27 +45,9 @@ public class ValidatorList extends ValidatorBaseType {
       */
      private void appendErrorMessage(Map<String, Object> map, Validator childValidator) {
           if (!CollectionUtils.isEmpty(childValidator.errorMessage)) {
-               validator.isSuccess = false;
-               childValidator.errorMessage.forEach(message -> {
-                    validator.errorMessage.add(replaceKey(map, message));
-               });
+               validator.isSuccess = childValidator.isSuccess;
+               validator.errorMessage.addAll(childValidator.errorMessage);
           }
-     }
-
-     /**
-      * 替换错误信息提示的key
-      *
-      * @param data
-      * @param message
-      * @return
-      */
-     private String replaceKey(Map<String, Object> data, String message) {
-          for (String key : data.keySet()) {
-               if (message.contains(key)) {
-                    message = message.replace(key, childKey(key));
-               }
-          }
-          return message;
      }
 
      /**

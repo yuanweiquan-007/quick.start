@@ -17,6 +17,7 @@ public class ValidateMeta {
      private Set<ValidateType> validateType = new HashSet<>();
      private boolean isValidated;
      private String message;
+     private String alias;
 
      public void addValidateType(ValidateType validateType) {
           this.validateType.add(validateType);

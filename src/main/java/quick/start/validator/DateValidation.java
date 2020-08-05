@@ -1,7 +1,5 @@
 package quick.start.validator;
 
-import java.util.Date;
-
 public class DateValidation extends Validation {
 
      @Override
@@ -11,7 +9,7 @@ public class DateValidation extends Validation {
 
      @Override
      public boolean validate(Object value) {
-          return Date.class.isAssignableFrom(value.getClass());
+          return isDate(value, "yyyy-MM-dd HH:mm:ss");
      }
 
      @Override

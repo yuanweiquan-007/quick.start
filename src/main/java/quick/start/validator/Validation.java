@@ -3,7 +3,10 @@ package quick.start.validator;
 import quick.start.Support;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -78,6 +81,31 @@ public abstract class Validation implements Validatable, Support<ValidateType> {
                return false;
           }
           return clazz.isInstance(value);
+     }
+
+     /**
+      * 判断当前值是不是一个与指定格式相符的日期时间
+      *
+      * @param value
+      * @param format
+      * @return
+      */
+     public static boolean isDate(Object value, String format) {
+          if (!isPresent(value)) {
+               return false;
+          }
+          if (Date.class.isAssignableFrom(value.getClass())) {
+               return true;
+          }
+
+          try {
+               SimpleDateFormat formatter = new SimpleDateFormat(format);
+               formatter.setLenient(true);
+               formatter.parse(String.valueOf(value));
+               return true;
+          } catch (ParseException e) {
+               return false;
+          }
      }
 
      public abstract String validationMessage(String key);
