@@ -73,7 +73,7 @@ public class Order implements Entity {
      private Integer orderId;
      @PrimaryKey//定义主键
      private String orderCode;
-  	 @Column("remarks")//字段和属性不一致时
+     @Column("remarks")//设置字段名
      private String remark;
 }
 ```
@@ -204,5 +204,71 @@ List<Map<String, Object>> list = resolver.getList("/response/orders/order");
 list.forEach(x -> {
      System.out.println(x);
 });
+```
+
+
+
+### 参数验证
+
+```
+@Test
+ public void test() throws Exception {
+      String xml = "<response>\n" +
+              "  <code>200</code>\n" +
+              "  <flag>success</flag>\n" +
+              "  <message>订单成功!</message>\n" +
+              "  <orders>\n" +
+              "    <order>\n" +
+              "      <orderCode></orderCode>\n" +
+              "      <createTime>2020-07-22 17:47:41</createTime>\n" +
+              "    </order>\n" +
+              "    <order>\n" +
+              "      <orderCode>87654321</orderCode>\n" +
+              "      <createTime>111</createTime>\n" +
+              "    </order>\n" +
+              "  </orders>\n" +
+              "</response>";
+
+      Validator validator = Validator.ofXml(xml)
+              .set("version", "1.0").required().integer()
+              .set("payTime", "2016-11-11 10:12:12").date()
+              .set("remark", "").string().notEmpty()
+              .set("money", "545T").doubles()
+              .set("email", "777@qq").email()
+              .set("id", "1").empty()
+              .set("host", "1111").ip()
+              .set("mobile", "18141448961").mobile()
+              .set("phone", "0792-1548562").phone()
+              .set("/response/code").number().notEmpty()
+              .set("/response/message").string().notEmpty()
+              .set("/response/flag").string().notEmpty()
+              .set("/response/orders/order").list().forEach(childVal -> {
+                   childVal.set("orderCode").string().notEmpty()
+                           .set("createTime").date().required()
+                           .end();
+              })
+              .end();
+
+      if (!validator.isValidate()) {
+           for (String errorMessage : validator.getErrorMessage()) {
+                System.out.println(errorMessage);
+           }
+      } else {
+           System.out.println("验证成功");
+      }
+ }
+```
+
+##### 输出结果
+
+```
+version必须为Int类型
+remark不能为空
+response.orders.order.createTime必须为时间类型(yyyy-MM-dd HH:mm:ss)
+email邮箱格式错误
+money必须为Double类型
+response.orders.order.orderCode不能为空
+id必须为空
+host非正确的IP格式
 ```
 

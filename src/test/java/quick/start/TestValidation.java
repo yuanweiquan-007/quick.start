@@ -13,12 +13,12 @@ public class TestValidation {
                   "  <message>订单成功!</message>\n" +
                   "  <orders>\n" +
                   "    <order>\n" +
-                  "      <orderCode>ECO001</orderCode>\n" +
+                  "      <orderCode></orderCode>\n" +
                   "      <createTime>2020-07-22 17:47:41</createTime>\n" +
                   "    </order>\n" +
                   "    <order>\n" +
                   "      <orderCode>87654321</orderCode>\n" +
-                  "      <createTime>2020-07-22 17:48:13</createTime>\n" +
+                  "      <createTime>111</createTime>\n" +
                   "    </order>\n" +
                   "  </orders>\n" +
                   "</response>";
