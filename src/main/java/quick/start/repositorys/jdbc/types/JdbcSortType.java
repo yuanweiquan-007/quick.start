@@ -2,9 +2,17 @@ package quick.start.repositorys.jdbc.types;
 
 import quick.start.repositorys.types.SortType;
 
+/**
+ * @author yuanweiquan
+ */
 public enum JdbcSortType {
-
+     /**
+      * 升序
+      */
      ASC(SortType.ASC, "asc"),
+     /**
+      * 降序
+      */
      DESC(SortType.DESC, "desc");
 
      private String value;

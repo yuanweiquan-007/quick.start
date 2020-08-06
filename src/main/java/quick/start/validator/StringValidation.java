@@ -1,6 +1,9 @@
 package quick.start.validator;
 
-public class StringValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class StringValidation extends AbstractValidation {
 
      @Override
      public boolean isSupported(ValidateType type) {

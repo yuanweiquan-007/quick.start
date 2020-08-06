@@ -2,7 +2,10 @@ package quick.start.validator;
 
 import org.springframework.util.NumberUtils;
 
-public class NumberValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class NumberValidation extends AbstractValidation {
 
      @Override
      public boolean validate(Object value) {

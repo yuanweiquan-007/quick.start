@@ -1,7 +1,16 @@
 package quick.start.validator;
 
+/**
+ * @author yuanweiquan
+ */
 public interface Validatable {
 
-    boolean validate(Object value);
-    
+     /**
+      * 验证
+      *
+      * @param value
+      * @return
+      */
+     boolean validate(Object value);
+
 }

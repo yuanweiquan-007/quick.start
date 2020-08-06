@@ -1,5 +1,16 @@
 package quick.start.repositorys.types;
 
+/**
+ * @author yuanweiquan
+ */
+
 public enum SortType {
-     ASC, DESC
+     /**
+      * 升序
+      */
+     ASC,
+     /**
+      * 降序
+      */
+     DESC
 }

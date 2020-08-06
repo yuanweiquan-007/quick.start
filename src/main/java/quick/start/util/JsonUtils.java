@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yuanweiquan
+ */
 public class JsonUtils {
 
      private final static ObjectMapper MAPPER = new ObjectMapper()

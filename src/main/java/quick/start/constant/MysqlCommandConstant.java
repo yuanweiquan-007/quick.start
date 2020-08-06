@@ -1,5 +1,8 @@
 package quick.start.constant;
 
+/**
+ * @author yuanweiquan
+ */
 public class MysqlCommandConstant extends CommonConstant {
      public static final String FROM = "FROM";
      public static final String SELECT = "SELECT";

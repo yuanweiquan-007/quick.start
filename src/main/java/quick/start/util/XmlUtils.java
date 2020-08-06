@@ -17,6 +17,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author yuanweiquan
+ */
 public class XmlUtils {
 
      public static String fromMap(Map<String, Object> data, String root, String encoding) {
@@ -48,7 +51,7 @@ public class XmlUtils {
           Document document = DocumentHelper.parseText(text);
           Element root = document.getRootElement();
           Map<String, Object> data = (Map<String, Object>) parseElement(root);
-          Map<String, Object> result = new HashMap<>();
+          Map<String, Object> result = new HashMap<>(16);
           if (data != null) {
                result.put(root.getName(), data);
           }
@@ -113,12 +116,12 @@ public class XmlUtils {
                return root.getText();
           }
 
-          Map<String, Object> result = new HashMap<>();
+          Map<String, Object> result = new HashMap<>(16);
           if (size == 1) {
                Element element = elements.get(0);
                result.put(element.getName(), parseElement(element));
           } else {
-               Map<String, Element> tmp = new HashMap<>();
+               Map<String, Element> tmp = new HashMap<>(16);
                elements.forEach(x -> tmp.put(x.getName(), x));
                tmp.forEach((name, element) -> {
                     Namespace namespace = element.getNamespace();

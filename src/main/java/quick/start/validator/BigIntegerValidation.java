@@ -2,6 +2,9 @@ package quick.start.validator;
 
 import java.math.BigInteger;
 
+/**
+ * @author yuanweiquan
+ */
 public class BigIntegerValidation extends NumberValidation {
 
      @Override

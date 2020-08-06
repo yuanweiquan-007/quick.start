@@ -7,6 +7,9 @@ import java.lang.reflect.Field;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * @author yuanweiquan
+ */
 public class AnnotationUtils {
 
      public static <T, A extends Annotation> T getAnnotationAttribute(A annotation, Function<A, T> function) {

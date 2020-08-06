@@ -10,7 +10,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public abstract class Validation implements Validatable, Support<ValidateType> {
+/**
+ * @author yuanweiquan
+ */
+public abstract class AbstractValidation implements Validatable, Support<ValidateType> {
 
      /**
       * 判断当前值是否为空
@@ -27,7 +30,7 @@ public abstract class Validation implements Validatable, Support<ValidateType> {
                return true;
           }
           if (value instanceof String) {
-               return String.valueOf(value).trim().equals("");
+               return "".equals(String.valueOf(value).trim());
           }
           if (value instanceof CharSequence) {
                return ((CharSequence) value).length() == 0;
@@ -108,6 +111,12 @@ public abstract class Validation implements Validatable, Support<ValidateType> {
           }
      }
 
+     /**
+      * 传入一个key，返回验证信息
+      *
+      * @param key
+      * @return
+      */
      public abstract String validationMessage(String key);
 
 }

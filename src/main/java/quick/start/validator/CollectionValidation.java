@@ -2,7 +2,10 @@ package quick.start.validator;
 
 import java.util.Collection;
 
-public class CollectionValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class CollectionValidation extends AbstractValidation {
 
      @Override
      public boolean isSupported(ValidateType type) {

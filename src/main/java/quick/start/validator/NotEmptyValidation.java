@@ -1,6 +1,9 @@
 package quick.start.validator;
 
-public class NotEmptyValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class NotEmptyValidation extends AbstractValidation {
 
      @Override
      public boolean isSupported(ValidateType type) {

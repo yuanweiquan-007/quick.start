@@ -5,6 +5,7 @@ import quick.start.repositorys.types.SortType;
 
 /**
  * 排序属性
+ * @author yuanweiquan
  */
 @Data
 public class SortAttribute {

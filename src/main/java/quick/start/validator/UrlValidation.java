@@ -2,7 +2,10 @@ package quick.start.validator;
 
 import java.util.regex.Pattern;
 
-public class UrlValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class UrlValidation extends AbstractValidation {
 
      public static final Pattern REGEX_URL = Pattern.compile("^(http|www|ftp)://(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*((:\\d+)?)(/(\\w+(-\\w+)*))*(\\.?(\\w)*)(\\?)?(((\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*(\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*)*(\\w*)*)$", Pattern.CASE_INSENSITIVE);
 

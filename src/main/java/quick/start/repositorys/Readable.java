@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 可读Dao接口
+ * @author yuanweiquan
  */
 public interface Readable<E extends Entity> {
 

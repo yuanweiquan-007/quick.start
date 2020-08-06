@@ -5,8 +5,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import quick.start.constant.CommonConstant;
 import quick.start.constant.MysqlCommandConstant;
-import quick.start.parser.CommandParser;
-import quick.start.repositorys.command.CommandForEntity;
+import quick.start.parser.AbstractCommandParser;
+import quick.start.repositorys.command.AbstractCommandForEntity;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.repositorys.condition.ConditionAttribute;
 import quick.start.repositorys.jdbc.types.JdbcConditionType;
@@ -20,24 +20,27 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
 
-public class JdbcCommandParser extends CommandParser {
+/**
+ * @author yuanweiquan
+ */
+public class JdbcCommandParser extends AbstractCommandParser {
 
      protected static ThreadLocal<List<Object>> executeParames = new ThreadLocal<>();
 
-     private static final List<JdbcCommandParser> jdbcCommandParsers = new ArrayList<>();
+     private static final List<JdbcCommandParser> JDBC_COMMAND_PARSERS = new ArrayList<>();
 
      static {
           for (JdbcCommandParser jdbcCommandParser : ServiceLoader.load(JdbcCommandParser.class)) {
-               jdbcCommandParsers.add(jdbcCommandParser);
+               JDBC_COMMAND_PARSERS.add(jdbcCommandParser);
           }
      }
 
      @Override
-     public ExecuteCommandMeta parser(CommandForEntity command) {
+     public ExecuteCommandMeta parser(AbstractCommandForEntity command) {
           Assert.notNull(command, "待解析命令对象为空");
           Assert.notNull(command.getMeta().getTableName(), "tableName未设置#可以通过注解@Table注解来设置");
           executeParames.set(new ArrayList<>());
-          for (JdbcCommandParser parser : jdbcCommandParsers) {
+          for (JdbcCommandParser parser : JDBC_COMMAND_PARSERS) {
                if (parser.adapter(command)) {
                     return parser.parser(command);
                }
@@ -106,7 +109,7 @@ public class JdbcCommandParser extends CommandParser {
 
      protected String parserLike(ConditionAttribute condition) {
           Object value = CommonConstant.NULL;
-          if (String.valueOf(condition.getValue()).contains("%")) {
+          if (String.valueOf(condition.getValue()).contains(MysqlCommandConstant.PERCENT)) {
                value = condition.getValue();
           } else {
                value = StringUtils.concat(
@@ -145,7 +148,7 @@ public class JdbcCommandParser extends CommandParser {
       * @param command
       * @return
       */
-     protected String parserLimit(CommandForEntity command) {
+     protected String parserLimit(AbstractCommandForEntity command) {
           if (ObjectUtils.isEmpty(command.getPageSize())) {
                return CommonConstant.NULL;
           }
@@ -163,7 +166,7 @@ public class JdbcCommandParser extends CommandParser {
                   .toString();
      }
 
-     public Boolean adapter(CommandForEntity command) {
+     public Boolean adapter(AbstractCommandForEntity command) {
           return false;
      }
 }

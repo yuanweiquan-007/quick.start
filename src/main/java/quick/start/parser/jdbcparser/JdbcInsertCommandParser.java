@@ -1,21 +1,24 @@
 package quick.start.parser.jdbcparser;
 
 import quick.start.constant.MysqlCommandConstant;
-import quick.start.repositorys.command.CommandForEntity;
+import quick.start.repositorys.command.AbstractCommandForEntity;
 import quick.start.repositorys.command.CommandType;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.util.StringBufferUtils;
 
 import java.util.Set;
 
+/**
+ * @author yuanweiquan
+ */
 public class JdbcInsertCommandParser extends JdbcCommandParser {
 
      @Override
-     public ExecuteCommandMeta parser(CommandForEntity command) {
+     public ExecuteCommandMeta parser(AbstractCommandForEntity command) {
           return ExecuteCommandMeta.of(parserInsertCommand(command), executeParames.get());
      }
 
-     private String parserInsertCommand(CommandForEntity command) {
+     private String parserInsertCommand(AbstractCommandForEntity command) {
           StringBuffer buffer = StringBufferUtils.of()
                   .append(rightSpace(MysqlCommandConstant.INSERT))
                   .append(rightSpace(MysqlCommandConstant.INTO))
@@ -38,7 +41,7 @@ public class JdbcInsertCommandParser extends JdbcCommandParser {
      }
 
      @Override
-     public Boolean adapter(CommandForEntity command) {
+     public Boolean adapter(AbstractCommandForEntity command) {
           return CommandType.INSERT.equals(command.commandType());
      }
 }

@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * @author yuanweiquan
+ */
 public class StreamUtils {
 
      public static <T> Stream<T> of(Iterator<T> iterator, boolean parallel) {

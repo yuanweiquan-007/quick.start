@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
 import quick.start.parser.jdbcparser.JdbcCommandParser;
-import quick.start.repositorys.DefaultAbstractRepository;
+import quick.start.repositorys.AbstractDefaultRepository;
 import quick.start.repositorys.command.*;
 
 import java.lang.reflect.Field;
@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<E, JdbcCommandParser> {
+/**
+ * @author yuanweiquan
+ */
+public class JdbcRepository<E extends Entity> extends AbstractDefaultRepository<E, JdbcCommandParser> {
 
      @Autowired
      private JdbcTemplate jdbcTemplate;
@@ -128,7 +131,7 @@ public class JdbcRepository<E extends Entity> extends DefaultAbstractRepository<
      }
 
      private Map<String, Object> parserAttribute(E entity) {
-          Map<String, Object> map = new HashMap<>();
+          Map<String, Object> map = new HashMap<>(16);
           if (!ObjectUtils.isEmpty(entity)) {
                Field[] fields = entity.getClass().getDeclaredFields();
                for (Field field : fields) {

@@ -4,6 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 当对象属性和数据库属性不一致时使用
+ * @author yuanweiquan
  */
 @Documented
 @Target(ElementType.FIELD)

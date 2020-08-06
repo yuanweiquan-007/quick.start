@@ -1,5 +1,8 @@
 package quick.start.validator;
 
+/**
+ * @author yuanweiquan
+ */
 public class ValidatorBaseType {
 
      protected Validator validator;

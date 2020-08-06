@@ -3,7 +3,10 @@ package quick.start.repositorys.command;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
 
-public class Count<E extends Entity> extends CommandForEntity<E> {
+/**
+ * @author yuanweiquan
+ */
+public class Count<E extends Entity> extends AbstractCommandForEntity<E> {
 
      public Count(EntityMeta<E> meta) {
           super(meta);

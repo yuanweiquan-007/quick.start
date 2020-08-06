@@ -1,7 +1,7 @@
 package quick.start.parser.jdbcparser;
 
 import quick.start.constant.MysqlCommandConstant;
-import quick.start.repositorys.command.CommandForEntity;
+import quick.start.repositorys.command.AbstractCommandForEntity;
 import quick.start.repositorys.command.CommandType;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.repositorys.support.SetAttribute;
@@ -9,14 +9,17 @@ import quick.start.util.StringBufferUtils;
 
 import java.util.List;
 
+/**
+ * @author yuanweiquan
+ */
 public class JdbcUpdateCommandParser extends JdbcCommandParser {
 
      @Override
-     public ExecuteCommandMeta parser(CommandForEntity command) {
+     public ExecuteCommandMeta parser(AbstractCommandForEntity command) {
           return ExecuteCommandMeta.of(parserUpdateCommand(command), executeParames.get());
      }
 
-     private String parserUpdateCommand(CommandForEntity command) {
+     private String parserUpdateCommand(AbstractCommandForEntity command) {
           StringBuffer buffer = StringBufferUtils.of()
                   .append(rightSpace(MysqlCommandConstant.UPDATE))
                   .append(rightSpace(command.getMeta().getTableName()))
@@ -36,7 +39,7 @@ public class JdbcUpdateCommandParser extends JdbcCommandParser {
      }
 
      @Override
-     public Boolean adapter(CommandForEntity command) {
+     public Boolean adapter(AbstractCommandForEntity command) {
           return CommandType.UPDATE.equals(command.commandType());
      }
 

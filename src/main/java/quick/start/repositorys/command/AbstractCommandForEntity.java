@@ -15,15 +15,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CommandForEntity<E extends Entity> extends Conditions implements SetSupport {
+/**
+ * @author yuanweiquan
+ */
+public abstract class AbstractCommandForEntity<E extends Entity> extends Conditions implements SetSupport {
 
      protected EntityMeta<E> meta;
      protected List<SetAttribute> setAttributes = new ArrayList<>();
 
-     public CommandForEntity(EntityMeta<E> meta) {
+     public AbstractCommandForEntity(EntityMeta<E> meta) {
           this.meta = meta;
      }
 
+     /**
+      * 命令类型
+      *
+      * @return
+      * @see CommandType
+      */
      public abstract CommandType commandType();
 
      public EntityMeta<E> getMeta() {
@@ -34,7 +43,7 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
           return meta.getPrimaryKey();
      }
 
-     public CommandForEntity checkPrimaryKey() {
+     public AbstractCommandForEntity checkPrimaryKey() {
           Assert.notNull(meta.getPrimaryKey(), "primaryKey未设置#可以使用@PrimaryKey注解来设置");
           return this;
      }
@@ -45,7 +54,7 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
       * @param value
       * @return
       */
-     public CommandForEntity equal(Object value) {
+     public AbstractCommandForEntity equal(Object value) {
           this.equal(primaryKey(), value);
           return this;
      }
@@ -56,12 +65,12 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
       * @param values
       * @return
       */
-     public CommandForEntity whereIn(Collection<? extends Serializable> values) {
+     public AbstractCommandForEntity whereIn(Collection<? extends Serializable> values) {
           this.whereIn(primaryKey(), values);
           return this;
      }
 
-     public CommandForEntity of(Conditions conditions) {
+     public AbstractCommandForEntity of(Conditions conditions) {
           if (!ObjectUtils.isEmpty(conditions)) {
                this.pageSize = conditions.getPageSize();
                this.pageNumber = conditions.getPageNumber();
@@ -72,7 +81,7 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
           return this;
      }
 
-     public CommandForEntity from(Map<String, Object> map) {
+     public AbstractCommandForEntity from(Map<String, Object> map) {
           if (!CollectionUtils.isEmpty(map)) {
                map.forEach((key, value) -> {
                     if (!key.equals(primaryKey())) {//主键不允许更新
@@ -84,7 +93,7 @@ public abstract class CommandForEntity<E extends Entity> extends Conditions impl
      }
 
      @Override
-     public CommandForEntity set(String key, Object value) {
+     public AbstractCommandForEntity set(String key, Object value) {
           setAttributes.add(new SetAttribute(key, value));
           return this;
      }

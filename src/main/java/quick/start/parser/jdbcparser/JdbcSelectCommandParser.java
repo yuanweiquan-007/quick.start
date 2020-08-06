@@ -3,7 +3,7 @@ package quick.start.parser.jdbcparser;
 import org.springframework.util.CollectionUtils;
 import quick.start.constant.CommonConstant;
 import quick.start.constant.MysqlCommandConstant;
-import quick.start.repositorys.command.CommandForEntity;
+import quick.start.repositorys.command.AbstractCommandForEntity;
 import quick.start.repositorys.command.CommandType;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.repositorys.jdbc.types.JdbcSortType;
@@ -14,10 +14,13 @@ import quick.start.util.StringBufferUtils;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author yuanweiquan
+ */
 public class JdbcSelectCommandParser extends JdbcCommandParser {
 
      @Override
-     public ExecuteCommandMeta parser(CommandForEntity command) {
+     public ExecuteCommandMeta parser(AbstractCommandForEntity command) {
           return ExecuteCommandMeta.of(parserSelectCommand(command), executeParames.get());
      }
 
@@ -31,7 +34,7 @@ public class JdbcSelectCommandParser extends JdbcCommandParser {
           return CollectionUtils.isEmpty(columns) ? MysqlCommandConstant.ALL_FIELDS : ArrayUtils.join(",", columns);
      }
 
-     private String parserSelectCommand(CommandForEntity command) {
+     private String parserSelectCommand(AbstractCommandForEntity command) {
           return StringBufferUtils.of()
                   .append(rightSpace(MysqlCommandConstant.SELECT))
                   .append(rightSpace(parserColumns(command.getColumnes())))
@@ -64,7 +67,7 @@ public class JdbcSelectCommandParser extends JdbcCommandParser {
      }
 
      @Override
-     public Boolean adapter(CommandForEntity command) {
+     public Boolean adapter(AbstractCommandForEntity command) {
           return CommandType.SELECT.equals(command.commandType());
      }
 }

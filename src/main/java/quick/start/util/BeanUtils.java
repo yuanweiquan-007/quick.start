@@ -8,6 +8,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author yuanweiquan
+ */
 public class BeanUtils {
 
      /**
@@ -18,7 +21,7 @@ public class BeanUtils {
       * @return
       */
      public static Map<String, Object> differents(Object oldObject, Object newObject) {
-          Map<String, Object> differents = new HashMap<>();
+          Map<String, Object> differents = new HashMap<>(16);
           if (!ObjectUtils.isEmpty(newObject) && !ObjectUtils.isEmpty(oldObject)) {
                Field[] fields = newObject.getClass().getDeclaredFields();
                Map<String, Object> oldValues = parserAttributeValues(oldObject);
@@ -51,7 +54,7 @@ public class BeanUtils {
      }
 
      public static Map<String, Object> parserAttributeValues(Object object) {
-          Map<String, Object> map = new HashMap<>();
+          Map<String, Object> map = new HashMap<>(16);
           if (!ObjectUtils.isEmpty(object)) {
                Field[] fields = object.getClass().getDeclaredFields();
                for (Field field : fields) {

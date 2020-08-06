@@ -3,14 +3,23 @@ package quick.start.repositorys.condition;
 import quick.start.repositorys.types.ConditionType;
 import lombok.Data;
 
+/**
+ * @author yuanweiquan
+ */
 @Data
 public class ConditionAttribute {
 
-     //条件属性
+     /**
+      * 条件属性
+      */
      private String field;
-     //查询条件类型
+     /**
+      * 查询条件类型
+      */
      private ConditionType type;
-     //查询条件值
+     /**
+      * 查询条件值
+      */
      private Object value;
 
      private ConditionAttribute(String field, ConditionType type, Object value) {

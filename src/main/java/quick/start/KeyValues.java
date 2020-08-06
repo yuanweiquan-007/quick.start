@@ -2,6 +2,9 @@ package quick.start;
 
 import lombok.Data;
 
+/**
+ * @author yuanweiquan
+ */
 @Data
 public class KeyValues<K extends Object, V extends Object> {
 

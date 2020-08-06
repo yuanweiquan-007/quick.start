@@ -3,6 +3,9 @@ package quick.start.repositorys.command;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
 
+/**
+ * @author yuanweiquan
+ */
 public class CommandFactory<E extends Entity> {
 
      private EntityMeta<E> meta;

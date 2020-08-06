@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author yuanweiquan
+ */
 public class EntityMapper {
 
      private static final Logger logger = LoggerFactory.getLogger(EntityMapper.class);
 
      public static <T extends Entity> Map<String, Object> toMap(T entity) {
-          Map<String, Object> map = new HashMap<>();
+          Map<String, Object> map = new HashMap<>(16);
           if (!ObjectUtils.isEmpty(entity)) {
                BeanMap beanMap = BeanMap.create(entity);
                for (Object key : beanMap.keySet()) {

@@ -8,9 +8,9 @@ import org.springframework.util.ObjectUtils;
 import quick.start.collection.Paginator;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
-import quick.start.exception.NotFoundExceptin;
+import quick.start.exception.NotFoundException;
 import quick.start.exception.UniqueException;
-import quick.start.parser.CommandParser;
+import quick.start.parser.AbstractCommandParser;
 import quick.start.repositorys.command.*;
 import quick.start.repositorys.condition.Conditions;
 import quick.start.util.BeanUtils;
@@ -19,13 +19,16 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
-public abstract class DefaultAbstractRepository<E extends Entity, P extends CommandParser> implements Repository<E> {
+/**
+ * @author yuanweiquan
+ */
+public abstract class AbstractDefaultRepository<E extends Entity, P extends AbstractCommandParser> implements Repository<E> {
 
-     protected CommandParser commandParser;
+     protected AbstractCommandParser commandParser;
      protected CommandFactory<E> commandFactory;
      protected Logger logger = LoggerFactory.getLogger(getClass());
 
-     public DefaultAbstractRepository() {
+     public AbstractDefaultRepository() {
           commandFactory = new CommandFactory<>(EntityMeta.of(entityClass()));
      }
 
@@ -177,7 +180,7 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
           select.where(primaryKey, primaryKeyValue);
           List<E> entitys = select(select);
           if (CollectionUtils.isEmpty(entitys)) {
-               throw new NotFoundExceptin("未发现记录");
+               throw new NotFoundException("未发现记录");
           }
           if (entitys.size() > 1) {
                throw new UniqueException("根据主键查询出了多条数据");
@@ -261,7 +264,7 @@ public abstract class DefaultAbstractRepository<E extends Entity, P extends Comm
      }
 
      protected Map<String, Object> replaceRealFiledNameIfNecessary(Map<String, Object> data, Map<String, String> mapping) {
-          Map<String, Object> result = new HashMap<>();
+          Map<String, Object> result = new HashMap<>(16);
           if (!CollectionUtils.isEmpty(data) && !CollectionUtils.isEmpty(mapping)) {
                data.forEach((k, v) -> {
                     result.put((mapping.containsKey(k) ? mapping.get(k) : k), v);

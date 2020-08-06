@@ -10,6 +10,9 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * @author yuanweiquan
+ */
 public class ValidatorList extends ValidatorBaseType {
 
      protected ValidatorList(Validator validator) {
@@ -58,7 +61,7 @@ public class ValidatorList extends ValidatorBaseType {
       */
      private String childKey(String key) {
           List<String> list = StreamUtils
-                  .of(StringUtils.tokenizeToStringArray(validator.currentValidateElement.getKey(), Resolver.delimiters))
+                  .of(StringUtils.tokenizeToStringArray(validator.currentValidateElement.getKey(), Resolver.DELIMITERS))
                   .collect(Collectors.toList());
           list.add(key);
           return ArrayUtils.join(".", list);

@@ -5,9 +5,14 @@ import quick.start.entity.EntityMeta;
 
 import java.util.List;
 
-public class Insert<E extends Entity> extends CommandForEntity<E> {
+/**
+ * @author yuanweiquan
+ */
+public class Insert<E extends Entity> extends AbstractCommandForEntity<E> {
 
-     //插入时需要知道对象属性值
+     /**
+      * 插入时需要知道对象属性值
+      */
      private List<E> values;
 
      public Insert(EntityMeta<E> meta) {

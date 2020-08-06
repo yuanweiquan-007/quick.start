@@ -11,6 +11,9 @@ import quick.start.repositorys.types.SortType;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * @author yuanweiquan
+ */
 public class Conditions implements ConditionSupport, SortSupport, PageSupport, ColumnSupport {
 
      protected Integer pageSize;

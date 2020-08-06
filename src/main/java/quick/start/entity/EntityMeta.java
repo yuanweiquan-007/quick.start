@@ -13,20 +13,35 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author yuanweiquan
+ */
 @Data
 public class EntityMeta<E extends Entity> {
 
-     //对象类
+     /**
+      * 对象类
+      */
      private Class<E> entityClass;
-     //表名
+     /**
+      * 表名
+      */
      private String tableName;
-     //主键
+     /**
+      * 主键
+      */
      private String primaryKey;
-     //插入的字段
+     /**
+      * 插入的字段
+      */
      private Set<String> insertFields = new HashSet<>();
-     //@Column注解的字段映射：别名 -> 字段名
+     /**
+      * @Column注解的字段映射：别名 -> 字段名
+      */
      private Map<String, String> columnMapping = new HashMap<>();
-     //@Column注解的字段映射：字段名 -> 别名
+     /**
+      * @Column注解的字段映射：字段名 -> 别名
+      */
      private Map<String, String> fieldMapping = new HashMap<>();
 
      private EntityMeta() {

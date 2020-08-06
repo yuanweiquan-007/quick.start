@@ -6,21 +6,29 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+
+/**
+ * @author yuanweiquan
+ */
 public class DateUtils {
 
-     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
      public static String format(Date date) {
-          return simpleDateFormat.format(date);
+          synchronized (SIMPLE_DATE_FORMAT) {
+               return SIMPLE_DATE_FORMAT.format(date);
+          }
      }
 
      public static Date parser(String date) throws ParseException {
-          return simpleDateFormat.parse(date);
+          synchronized (SIMPLE_DATE_FORMAT) {
+               return SIMPLE_DATE_FORMAT.parse(date);
+          }
      }
 
      public static String format(LocalDateTime localDateTime) {
-          return localDateTime.format(dateTimeFormatter);
+          return localDateTime.format(DATE_TIME_FORMATTER);
      }
 
 }

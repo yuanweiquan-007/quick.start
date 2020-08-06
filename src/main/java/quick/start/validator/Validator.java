@@ -11,26 +11,40 @@ import java.util.*;
 
 /**
  * 验证器
+ * @author yuanweiquan
  */
 public class Validator {
-     //验证是否成功
+
+     /**
+      * 验证是否成功
+      */
      protected Boolean isSuccess = true;
-     //是否已经执行了验证操作
+     /**
+      * 是否已经执行了验证操作
+      */
      protected Boolean doValidation = false;
-     //当前验证的信息
+     /**
+      * 当前验证的信息
+      */
      protected ValidateMeta currentValidateElement;
-     //数据
+     /**
+      * 数据
+      */
      protected Map<String, Object> data = new LinkedHashMap<>();
-     //错误信息
+     /**
+      * 错误信息
+      */
      protected Set<String> errorMessage = new HashSet<>();
-     //所有的待验证信息
+     /**
+      * 所有的待验证信息
+      */
      protected List<ValidateMeta> allValidateElements = new ArrayList<>();
 
-     private static final List<Validation> validations = new ArrayList<>();
+     private static final List<AbstractValidation> VALIDATIONS = new ArrayList<>();
 
      static {
-          for (Validation validation : ServiceLoader.load(Validation.class)) {
-               validations.add(validation);
+          for (AbstractValidation validation : ServiceLoader.load(AbstractValidation.class)) {
+               VALIDATIONS.add(validation);
           }
      }
 
@@ -93,14 +107,16 @@ public class Validator {
           if (!doValidation && !CollectionUtils.isEmpty(allValidateElements)) {
                doValidation = true;
                for (ValidateMeta meta : allValidateElements) {
-                    if (isValidate(meta)) validateMeta(meta);
+                    if (isValidate(meta)) {
+                         validateMeta(meta);
+                    }
                }
           }
      }
 
      private void validateMeta(ValidateMeta meta) {
           for (ValidateType validateType : meta.getValidateType()) {
-               Validation validation = getSupportValidation(validateType);
+               AbstractValidation validation = getSupportValidation(validateType);
                if (ObjectUtils.isEmpty(validation)) {
                     errorMessage.add("不支持的验证格式:" + validateType);
                     isSuccess = false;
@@ -114,8 +130,8 @@ public class Validator {
           }
      }
 
-     private Validation getSupportValidation(ValidateType type) {
-          for (Validation validation : validations) {
+     private AbstractValidation getSupportValidation(ValidateType type) {
+          for (AbstractValidation validation : VALIDATIONS) {
                if (validation.isSupported(type)) {
                     return validation;
                }

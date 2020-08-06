@@ -1,19 +1,22 @@
 package quick.start.parser.jdbcparser;
 
 import quick.start.constant.MysqlCommandConstant;
-import quick.start.repositorys.command.CommandForEntity;
+import quick.start.repositorys.command.AbstractCommandForEntity;
 import quick.start.repositorys.command.CommandType;
 import quick.start.repositorys.command.ExecuteCommandMeta;
 import quick.start.util.StringBufferUtils;
 
+/**
+ * @author yuanweiquan
+ */
 public class JdbcCountCommandParser extends JdbcCommandParser {
 
      @Override
-     public ExecuteCommandMeta parser(CommandForEntity command) {
+     public ExecuteCommandMeta parser(AbstractCommandForEntity command) {
           return ExecuteCommandMeta.of(parserCountCommand(command), executeParames.get());
      }
 
-     private String parserCountCommand(CommandForEntity command) {
+     private String parserCountCommand(AbstractCommandForEntity command) {
           return StringBufferUtils.of()
                   .append(rightSpace(MysqlCommandConstant.SELECT))
                   .append(rightSpace(MysqlCommandConstant.COUNT))
@@ -24,7 +27,7 @@ public class JdbcCountCommandParser extends JdbcCommandParser {
      }
 
      @Override
-     public Boolean adapter(CommandForEntity command) {
+     public Boolean adapter(AbstractCommandForEntity command) {
           return CommandType.COUNT.equals(command.commandType());
      }
 }

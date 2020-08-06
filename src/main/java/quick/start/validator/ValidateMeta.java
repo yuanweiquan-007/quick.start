@@ -7,6 +7,7 @@ import java.util.Set;
 
 /**
  * 验证信息
+ * @author yuanweiquan
  */
 @Data
 public class ValidateMeta {

@@ -2,7 +2,10 @@ package quick.start.validator;
 
 import java.util.Map;
 
-public class MapValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class MapValidation extends AbstractValidation {
 
      @Override
      public boolean isSupported(ValidateType type) {

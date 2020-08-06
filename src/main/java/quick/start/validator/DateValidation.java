@@ -1,6 +1,9 @@
 package quick.start.validator;
 
-public class DateValidation extends Validation {
+/**
+ * @author yuanweiquan
+ */
+public class DateValidation extends AbstractValidation {
 
      @Override
      public boolean isSupported(ValidateType type) {

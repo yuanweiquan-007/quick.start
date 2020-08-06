@@ -4,6 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 用来标注表名
+ * @author yuanweiquan
  */
 @Documented
 @Target({ElementType.TYPE})

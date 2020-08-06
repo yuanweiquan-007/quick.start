@@ -11,12 +11,13 @@ import java.util.*;
 
 /**
  * 解析器
+ * @author yuanweiquan
  */
 public class Resolver {
 
      protected final Map<String, Object> data = new LinkedHashMap<>();
 
-     public final static String delimiters = "|-/#;,: ";
+     public final static String DELIMITERS = "|-/#;,: ";
 
      private Resolver() {
      }
@@ -81,7 +82,7 @@ public class Resolver {
 
      private Object getValue(String key) {
           Assert.hasLength(key, "key invalid");
-          String[] tokenizeToStringArray = StringUtils.tokenizeToStringArray(key, delimiters);
+          String[] tokenizeToStringArray = StringUtils.tokenizeToStringArray(key, DELIMITERS);
           Map<String, Object> currentData = this.data;
           for (int i = 0; i < tokenizeToStringArray.length; i++) {
                String token = tokenizeToStringArray[i];

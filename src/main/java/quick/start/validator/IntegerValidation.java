@@ -1,5 +1,8 @@
 package quick.start.validator;
 
+/**
+ * @author yuanweiquan
+ */
 public class IntegerValidation extends NumberValidation {
 
      @Override
