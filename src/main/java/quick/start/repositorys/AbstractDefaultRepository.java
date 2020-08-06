@@ -32,14 +32,44 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
           commandFactory = new CommandFactory<>(EntityMeta.of(entityClass()));
      }
 
+     /**
+      * 查询
+      *
+      * @param select
+      * @return
+      */
      protected abstract List<E> select(Select<E> select);
 
+     /**
+      * 修改
+      *
+      * @param update
+      * @return
+      */
      protected abstract Integer update(Update<E> update);
 
+     /**
+      * 新增
+      *
+      * @param insert
+      * @return
+      */
      protected abstract Integer insert(Insert<E> insert);
 
+     /**
+      * 删除
+      *
+      * @param delete
+      * @return
+      */
      protected abstract Integer delete(Delete<E> delete);
 
+     /**
+      * 统计
+      *
+      * @param count
+      * @return
+      */
      protected abstract Integer count(Count<E> count);
 
      @Override

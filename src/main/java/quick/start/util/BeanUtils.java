@@ -33,13 +33,10 @@ public class BeanUtils {
                          if (ObjectUtils.isEmpty(oldFieldValues) && ObjectUtils.isEmpty(newFieldValues)) {
                               continue;
                          }
-                         if ((field.isAnnotationPresent(SaveAble.class)
-                                 && field.getAnnotation(SaveAble.class).value() == false)
-                                 || field.isAnnotationPresent(Generated.class)) {
+                         if (!saveAble(field)) {
                               continue;
                          }
-                         if ((ObjectUtils.isEmpty(oldFieldValues) && !ObjectUtils.isEmpty(newFieldValues))
-                                 || (!ObjectUtils.isEmpty(oldFieldValues) && ObjectUtils.isEmpty(newFieldValues))) {
+                         if (oneAndOnlyOneIsEmpty(newFieldValues, oldFieldValues)) {
                               differents.put(field.getName(), newFieldValues);
                          }
                          if (!ObjectUtils.nullSafeToString(oldFieldValues).equals(ObjectUtils.nullSafeToString(newFieldValues))) {
@@ -51,6 +48,17 @@ public class BeanUtils {
                }
           }
           return differents;
+     }
+
+     private static boolean oneAndOnlyOneIsEmpty(Object newFieldValues, Object oldFieldValues) {
+          return (ObjectUtils.isEmpty(oldFieldValues) && !ObjectUtils.isEmpty(newFieldValues))
+                  || (!ObjectUtils.isEmpty(oldFieldValues) && ObjectUtils.isEmpty(newFieldValues));
+     }
+
+     private static Boolean saveAble(Field field) {
+          return !(field.isAnnotationPresent(SaveAble.class)
+                  && field.getAnnotation(SaveAble.class).value() == false)
+                  && !field.isAnnotationPresent(Generated.class);
      }
 
      public static Map<String, Object> parserAttributeValues(Object object) {
