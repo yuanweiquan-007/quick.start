@@ -1,11 +1,13 @@
 package quick.start.collection;
 
+import java.io.Serializable;
+
 /**
  * 不可变三值元组
  *
  * @author yuanweiquan
  */
-public class Triple<L, M, R> {
+public class Triple<L, M, R> implements Serializable {
 
      private static final long serialVersionUID = 1L;
 
