@@ -8,9 +8,11 @@ import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * 解析器
+ *
  * @author yuanweiquan
  */
 public class Resolver {
@@ -77,6 +79,13 @@ public class Resolver {
                return (T) value;
           } else {
                return null;
+          }
+     }
+
+     public void ifPresent(String key, BiConsumer<String, Object> consumer) {
+          Optional<Object> optional = Optional.ofNullable(get(key));
+          if (optional.isPresent()) {
+               consumer.accept(key, optional.get());
           }
      }
 
