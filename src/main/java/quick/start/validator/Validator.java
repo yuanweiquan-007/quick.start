@@ -8,9 +8,11 @@ import quick.start.util.Resolver;
 import quick.start.util.StringUtils;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * 验证器
+ *
  * @author yuanweiquan
  */
 public class Validator {
@@ -88,10 +90,12 @@ public class Validator {
      }
 
      public ValidatorBaseType set(String key, Object value) {
+          data.put(key, value);
           addValidateElementIfNecessary();
           currentValidateElement = new ValidateMeta();
           currentValidateElement.setKey(key);
           currentValidateElement.setValue(value);
+          data.put(key, value);
           return new ValidatorBaseType(this);
      }
 
@@ -111,6 +115,13 @@ public class Validator {
                          validateMeta(meta);
                     }
                }
+          }
+     }
+
+     public void ifPresent(String key, BiConsumer<String, Object> consumer) {
+          Optional<Object> optional = Optional.ofNullable(Resolver.of(data).get(key));
+          if (optional.isPresent()) {
+               consumer.accept(key, optional.get());
           }
      }
 

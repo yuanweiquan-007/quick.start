@@ -1,9 +1,28 @@
 package quick.start;
 
 import org.junit.Test;
+import quick.start.repositorys.condition.ConditionAttribute;
+import quick.start.repositorys.condition.Conditions;
 import quick.start.validator.Validator;
 
 public class TestValidation {
+
+     @Test
+     public void validationAndContation() {
+          Validator validator = Validator.of()
+                  .set("version", "1").required().integer()
+                  .set("payTime", "2016-11-11 10:12:12").date()
+                  .set("remark", "1").string()
+                  .end();
+          if (validator.isValidate()) {
+               Conditions conditions = new Conditions();
+               validator.ifPresent("version", conditions::equal);
+               validator.ifPresent("remark", conditions::where);
+               for (ConditionAttribute condition : conditions.getConditions()) {
+                    System.out.println(condition);
+               }
+          }
+     }
 
      @Test
      public void test() throws Exception {

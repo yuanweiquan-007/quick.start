@@ -82,13 +82,6 @@ public class Resolver {
           }
      }
 
-     public void ifPresent(String key, BiConsumer<String, Object> consumer) {
-          Optional<Object> optional = Optional.ofNullable(get(key));
-          if (optional.isPresent()) {
-               consumer.accept(key, optional.get());
-          }
-     }
-
      private Object getValue(String key) {
           Assert.hasLength(key, "key invalid");
           String[] tokenizeToStringArray = StringUtils.tokenizeToStringArray(key, DELIMITERS);
