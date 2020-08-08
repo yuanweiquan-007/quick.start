@@ -1,6 +1,7 @@
 package quick.start.repositorys.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -27,8 +28,9 @@ import java.util.stream.Collectors;
  */
 public class JdbcRepository<E extends Entity> extends AbstractDefaultRepository<E, JdbcCommandParser> {
 
+     @Lazy
      @Autowired
-     private JdbcTemplate jdbcTemplate;
+     protected JdbcTemplate jdbcTemplate;
 
      public JdbcRepository() {
           this.commandParser = new JdbcCommandParser();
