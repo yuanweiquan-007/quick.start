@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import quick.start.config.MyConfig;
 import quick.start.entity.Order;
 import quick.start.repositorys.OrderRepository;
+import quick.start.repositorys.WarehouseReponsity;
 import quick.start.repositorys.condition.Conditions;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public class TestReponsitory {
 
      @Autowired
      OrderRepository orderRepository;
+     @Autowired
+     WarehouseReponsity warehouseReponsity;
 
      Logger logger = LoggerFactory.getLogger(TestReponsitory.class);
 
@@ -54,6 +57,9 @@ public class TestReponsitory {
      @Test
      public void find() {
 //          orderRepository.find().forEach(order -> logger.info(order.toString()));
+          warehouseReponsity.findByColumn("warehouseCode", "27").forEach(x -> {
+               System.out.println(x.toString());
+          });
      }
 
      @Test

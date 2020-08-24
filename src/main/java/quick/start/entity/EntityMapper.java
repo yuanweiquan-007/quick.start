@@ -6,6 +6,7 @@ import org.springframework.cglib.beans.BeanMap;
 import org.springframework.util.ObjectUtils;
 import quick.start.util.StreamUtils;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +37,32 @@ public class EntityMapper {
                   .collect(Collectors.toList());
      }
 
-     public static <T> T toEntity(Map<String, Object> map, Class<T> clazz) throws Exception {
+     public static <T> T toEntity(final Map<String, Object> map, Class<T> clazz) throws Exception {
           T bean = clazz.newInstance();
-          BeanMap beanMap = BeanMap.create(bean);
-          beanMap.putAll(map);
+          Field[] fields = clazz.getDeclaredFields();
+          Map<String, Object> lowerKeyMap = convertLowerKey(map);
+          for (Field field : fields) {
+               field.setAccessible(true);
+               String lowerCaseFieldName = field.getName().toLowerCase();
+               if (lowerKeyMap.containsKey(lowerCaseFieldName)) {
+                    field.set(bean, lowerKeyMap.get(lowerCaseFieldName));
+               }
+          }
           return bean;
+     }
+
+     /**
+      * 将Map的key值转换成小写
+      *
+      * @param map
+      * @return
+      */
+     private static Map<String, Object> convertLowerKey(Map<String, Object> map) {
+          Map<String, Object> lowerKeyMap = new HashMap<>(16);
+          map.forEach((key, value) -> {
+               lowerKeyMap.put(key.toLowerCase(), value);
+          });
+          return lowerKeyMap;
      }
 
      public static <T> List<T> toEntityList(List<Map<String, Object>> list, Class<T> clazz) throws Exception {
