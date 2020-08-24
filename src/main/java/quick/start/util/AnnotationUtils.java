@@ -28,7 +28,7 @@ public class AnnotationUtils {
           return !ObjectUtils.isEmpty(classs) && classs.isAnnotationPresent(annotationClass);
      }
 
-     public static <A extends Annotation> void annotationOption(Class<?> classs, Class<A> annotationClass, Consumer<A> consumer) {
+     public static <A extends Annotation> void isAnnotationPresent(Class<?> classs, Class<A> annotationClass, Consumer<A> consumer) {
           if (isAnnotationPresent(classs, annotationClass)) {
                consumer.accept(classs.getAnnotation(annotationClass));
           }

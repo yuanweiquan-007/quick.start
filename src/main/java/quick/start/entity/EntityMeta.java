@@ -50,8 +50,12 @@ public class EntityMeta<E extends Entity> {
      public static <E extends Entity> EntityMeta<E> of(Class<E> entityClass) {
           EntityMeta<E> meta = new EntityMeta<>();
           meta.setEntityClass(entityClass);
-          AnnotationUtils.annotationOption(entityClass, Table.class, x -> meta.setTableName(x.value()));
-          AnnotationUtils.annotationOption(entityClass, PrimaryKey.class, x -> meta.setPrimaryKey(x.value()));
+          AnnotationUtils.isAnnotationPresent(entityClass, Table.class, x -> meta.setTableName(x.value()));
+          AnnotationUtils.isAnnotationPresent(entityClass, PrimaryKey.class, x -> meta.setPrimaryKey(x.value()));
+          //如果没有@Table注解，默认使用class的名字作为表名
+          if (StringUtils.isEmpty(meta.tableName)) {
+               meta.setTableName(entityClass.getSimpleName());
+          }
           if (StringUtils.isEmpty(meta.primaryKey)) {
                parserPrimaryFromField(entityClass, meta);
           }
