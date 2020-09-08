@@ -13,6 +13,7 @@ import quick.start.entity.EntityMapper;
 import quick.start.parser.jdbcparser.JdbcCommandParser;
 import quick.start.repositorys.AbstractDefaultRepository;
 import quick.start.repositorys.command.*;
+import quick.start.util.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
@@ -139,7 +140,7 @@ public class JdbcRepository<E extends Entity> extends AbstractDefaultRepository<
                for (Field field : fields) {
                     try {
                          field.setAccessible(true);
-                         map.put(field.getName(), field.get(entity));
+                         map.put(FieldUtils.getFieldName(entity.getClass(), field), field.get(entity));
                     } catch (Exception ex) {
                          ex.printStackTrace();
                     }

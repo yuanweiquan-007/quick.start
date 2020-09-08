@@ -5,6 +5,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMeta;
+import quick.start.repositorys.condition.ConditionAttribute;
 import quick.start.repositorys.condition.Conditions;
 import quick.start.repositorys.support.SetAttribute;
 import quick.start.repositorys.support.SetSupport;
@@ -84,9 +85,7 @@ public abstract class AbstractCommandForEntity<E extends Entity> extends Conditi
      public AbstractCommandForEntity from(Map<String, Object> map) {
           if (!CollectionUtils.isEmpty(map)) {
                map.forEach((key, value) -> {
-                    if (!key.equals(primaryKey())) {//主键不允许更新
-                         this.set(key, value);
-                    }
+                    this.set(key, value);
                });
           }
           return this;
@@ -94,11 +93,29 @@ public abstract class AbstractCommandForEntity<E extends Entity> extends Conditi
 
      @Override
      public AbstractCommandForEntity set(String key, Object value) {
-          setAttributes.add(new SetAttribute(key, value));
+          Map<String, String> fieldMapping = meta.getFieldMapping();
+          if (fieldMapping.containsKey(key)) {
+               key = fieldMapping.get(key);
+          }
+          //主键及自增ID不允许更新
+          if (!key.equals(primaryKey()) && !key.equals(meta.getGeneratedKey())) {
+               setAttributes.add(new SetAttribute(key, value));
+          }
           return this;
      }
 
      public List<SetAttribute> getSetAttributes() {
           return setAttributes;
+     }
+
+     @Override
+     public List<ConditionAttribute> getConditions() {
+          Map<String, String> fieldMapping = meta.getFieldMapping();
+          for (ConditionAttribute condition : this.conditions) {
+               if (fieldMapping.containsKey(condition.getField())) {
+                    condition.setField(fieldMapping.get(condition.getField()));
+               }
+          }
+          return this.conditions;
      }
 }

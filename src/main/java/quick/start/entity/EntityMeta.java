@@ -1,10 +1,10 @@
 package quick.start.entity;
 
 import lombok.Data;
-import org.springframework.util.StringUtils;
 import quick.start.annotation.*;
 import quick.start.util.AnnotationUtils;
 import quick.start.util.FieldUtils;
+import quick.start.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -32,15 +32,19 @@ public class EntityMeta<E extends Entity> {
       */
      private String primaryKey;
      /**
+      * 自增key
+      */
+     private String generatedKey;
+     /**
       * 插入的字段
       */
      private Set<String> insertFields = new HashSet<>();
      /**
-      * @Column注解的字段映射：别名 -> 字段名
+      * @Column注解的字段映射：字段 -> 属性
       */
      private Map<String, String> columnMapping = new HashMap<>();
      /**
-      * @Column注解的字段映射：字段名 -> 别名
+      * @Column注解的字段映射：属性 -> 字段
       */
      private Map<String, String> fieldMapping = new HashMap<>();
 
@@ -52,13 +56,13 @@ public class EntityMeta<E extends Entity> {
           meta.setEntityClass(entityClass);
           //解析表名称
           parserTableName(meta);
-
-
-          AnnotationUtils.isAnnotationPresent(entityClass, PrimaryKey.class, x -> meta.setPrimaryKey(x.value()));
-          if (StringUtils.isEmpty(meta.primaryKey)) {
-               parserPrimaryFromField(entityClass, meta);
-          }
+          //解析主键名称
+          parserPrimary(meta);
+          //解析自增key
+          parserGeneratedKey(meta);
+          //解析插入字段
           meta.parserInsertFields();
+          //解析属性-字段映射关系
           meta.parserColumnMapping(entityClass);
           return meta;
      }
@@ -90,6 +94,10 @@ public class EntityMeta<E extends Entity> {
                     String columnValue = AnnotationUtils.getAnnotationAttribute(field.getAnnotation(Column.class), x -> x.value());
                     columnMapping.put(columnValue, field.getName());
                     fieldMapping.put(field.getName(), columnValue);
+               } else if (AnnotationUtils.isAnnotationPresent(entityClass, MapUnderScoreToCamelCase.class)) {
+                    String columnValue = StringUtils.humpToLine(field.getName());
+                    columnMapping.put(columnValue, field.getName());
+                    fieldMapping.put(field.getName(), columnValue);
                }
           }
      }
@@ -101,12 +109,38 @@ public class EntityMeta<E extends Entity> {
                        || AnnotationUtils.isAnnotationPresent(field, Generated.class)
                        || (!(field.getType() instanceof Serializable))
                        || field.getType().isInterface())) {
-                    insertFields.add(FieldUtils.getFieldName(field));
+                    insertFields.add(FieldUtils.getFieldName(entityClass, field));
                }
           }
      }
 
-     private static <E extends Entity> void parserPrimaryFromField(Class<E> eClass, EntityMeta<E> meta) {
+     /**
+      * 解析自增key
+      *
+      * @param meta
+      * @param <E>
+      */
+     private static <E extends Entity> void parserGeneratedKey(EntityMeta<E> meta) {
+          for (Field field : meta.getEntityClass().getDeclaredFields()) {
+               if (AnnotationUtils.isAnnotationPresent(field, Generated.class)) {
+                    meta.generatedKey = FieldUtils.getFieldName(meta.getEntityClass(), field);
+               }
+          }
+     }
+
+     /**
+      * 解析主键
+      *
+      * @param meta
+      * @param <E>
+      */
+     private static <E extends Entity> void parserPrimary(EntityMeta<E> meta) {
+          Class<E> eClass = meta.getEntityClass();
+          //类上的@Primary注解
+          if (AnnotationUtils.isAnnotationPresent(eClass, PrimaryKey.class)) {
+               meta.setPrimaryKey(eClass.getAnnotation(PrimaryKey.class).value());
+               return;
+          }
           for (Field field : eClass.getDeclaredFields()) {
                if (AnnotationUtils.isAnnotationPresent(field, PrimaryKey.class)) {
                     //@Column注解优先级高
@@ -116,11 +150,11 @@ public class EntityMeta<E extends Entity> {
                     }
                     //再解析@PrimaryKey
                     String primaryKey = field.getAnnotation(PrimaryKey.class).value();
-                    if (StringUtils.isEmpty(primaryKey)) {
+                    if (!StringUtils.isEmpty(primaryKey)) {
                          meta.setPrimaryKey(field.getName());
-                    } else {
-                         meta.setPrimaryKey(primaryKey);
+                         break;
                     }
+                    meta.setPrimaryKey(FieldUtils.getFieldName(eClass, field));
                     break;
                }
           }

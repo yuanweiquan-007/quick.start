@@ -68,7 +68,7 @@ public class BeanUtils {
                for (Field field : fields) {
                     try {
                          field.setAccessible(true);
-                         map.put(field.getName(), field.get(object));
+                         map.put(FieldUtils.getFieldName(object.getClass(), field), field.get(object));
                     } catch (Exception ex) {
                          ex.printStackTrace();
                     }
