@@ -60,7 +60,7 @@ public class EntityMapper {
      private static Map<String, Object> convertLowerKey(Map<String, Object> map) {
           Map<String, Object> lowerKeyMap = new HashMap<>(16);
           map.forEach((key, value) -> {
-               lowerKeyMap.put(key.toLowerCase(), value);
+               lowerKeyMap.put(key.toLowerCase().replace("_", ""), value);
           });
           return lowerKeyMap;
      }

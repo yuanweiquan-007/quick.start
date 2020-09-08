@@ -50,18 +50,38 @@ public class EntityMeta<E extends Entity> {
      public static <E extends Entity> EntityMeta<E> of(Class<E> entityClass) {
           EntityMeta<E> meta = new EntityMeta<>();
           meta.setEntityClass(entityClass);
-          AnnotationUtils.isAnnotationPresent(entityClass, Table.class, x -> meta.setTableName(x.value()));
+          //解析表名称
+          parserTableName(meta);
+
+
           AnnotationUtils.isAnnotationPresent(entityClass, PrimaryKey.class, x -> meta.setPrimaryKey(x.value()));
-          //如果没有@Table注解，默认使用class的名字作为表名
-          if (StringUtils.isEmpty(meta.tableName)) {
-               meta.setTableName(entityClass.getSimpleName());
-          }
           if (StringUtils.isEmpty(meta.primaryKey)) {
                parserPrimaryFromField(entityClass, meta);
           }
           meta.parserInsertFields();
           meta.parserColumnMapping(entityClass);
           return meta;
+     }
+
+     /**
+      * 解析表名称，@Table优先级最高，其次@MapUnderScoreToCamelCase，否则默认类名作为表名
+      *
+      * @param meta 类元数据对象
+      * @param <E>
+      */
+     private static <E extends Entity> void parserTableName(EntityMeta<E> meta) {
+          Class<E> entityClass = meta.getEntityClass();
+          if (AnnotationUtils.isAnnotationPresent(entityClass, Table.class)) {
+               meta.setTableName(entityClass.getAnnotation(Table.class).value());
+               return;
+          }
+          if (AnnotationUtils.isAnnotationPresent(entityClass, MapUnderScoreToCamelCase.class)) {
+               meta.setTableName(quick.start.util.StringUtils.humpToLine(entityClass.getSimpleName()));
+               return;
+          }
+          if (StringUtils.isEmpty(meta.tableName)) {
+               meta.setTableName(entityClass.getSimpleName());
+          }
      }
 
      private void parserColumnMapping(Class<E> entityClass) {
