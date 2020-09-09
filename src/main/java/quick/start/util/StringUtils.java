@@ -20,36 +20,36 @@ public class StringUtils extends org.springframework.util.StringUtils {
      /**
       * 首字母转大写
       *
-      * @param context
-      * @return
+      * @param str 字符串
+      * @return 首字母大写字符串
       */
-     public static String toUpperCaseFirstOne(String context) {
-          if (Character.isUpperCase(context.charAt(0))) {
-               return context;
+     public static String toUpperCaseFirstOne(String str) {
+          if (Character.isUpperCase(str.charAt(0))) {
+               return str;
           } else {
-               return (new StringBuilder()).append(Character.toUpperCase(context.charAt(0))).append(context.substring(1)).toString();
+               return (new StringBuilder()).append(Character.toUpperCase(str.charAt(0))).append(str.substring(1)).toString();
           }
      }
 
      /**
       * 首字母转小写
       *
-      * @param context
-      * @return
+      * @param str 字符串
+      * @return 首字母小写字符串
       */
-     public static String toLowerCaseFirstOne(String context) {
-          if (Character.isLowerCase(context.charAt(0))) {
-               return context;
+     public static String toLowerCaseFirstOne(String str) {
+          if (Character.isLowerCase(str.charAt(0))) {
+               return str;
           } else {
-               return (new StringBuilder()).append(Character.toLowerCase(context.charAt(0))).append(context.substring(1)).toString();
+               return (new StringBuilder()).append(Character.toLowerCase(str.charAt(0))).append(str.substring(1)).toString();
           }
      }
 
      /**
       * 驼峰转下划线
       *
-      * @param str
-      * @return
+      * @param str 字符串
+      * @return 驼峰字符串
       */
      public static String humpToLine(String str) {
           Matcher matcher = humpPattern.matcher(toLowerCaseFirstOne(str));

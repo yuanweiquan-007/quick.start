@@ -42,9 +42,13 @@ public class Triple<L, M, R> implements Serializable {
      /**
       * 静态构造
       *
+      * @param <L>    泛型
+      * @param <M>    泛型
+      * @param <R>    泛型
       * @param left   左值
       * @param middle 中值
       * @param right  右值
+      * @return 返回Triple对象
       */
      public static <L, M, R> Triple<L, M, R> of(final L left, final M middle, final R right) {
           return new Triple<>(left, middle, right);

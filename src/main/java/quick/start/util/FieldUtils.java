@@ -11,11 +11,12 @@ import java.lang.reflect.Field;
 public class FieldUtils {
 
      /**
-      * 获取字段名字，@Column > @MapUnderScoreToCamelCase
+      * 获取字段名字
+      * 优先级@Column注解大于@MapUnderScoreToCamelCase
       *
-      * @param classs
-      * @param field
-      * @return
+      * @param classs 类
+      * @param field  字段
+      * @return 字段名称
       */
      public static String getFieldName(Class<?> classs, Field field) {
           if (AnnotationUtils.isAnnotationPresent(field, Column.class)) {

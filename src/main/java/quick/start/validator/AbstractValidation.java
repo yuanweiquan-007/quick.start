@@ -18,8 +18,8 @@ public abstract class AbstractValidation implements Validatable, Support<Validat
      /**
       * 判断当前值是否为空
       *
-      * @param value
-      * @return
+      * @param value 要判断的对象
+      * @return boolean
       */
      public static boolean isPresent(Object value) {
           return value != null;
@@ -50,9 +50,9 @@ public abstract class AbstractValidation implements Validatable, Support<Validat
      /**
       * 判断当前值是否与指定的正则匹配
       *
-      * @param value
-      * @param pattern
-      * @return
+      * @param value   要判断的值
+      * @param pattern 正在表达式
+      * @return 是否匹配
       */
      public static boolean match(Object value, Pattern pattern) {
           if (!isPresent(value) || !isString(value) || pattern == null) {
@@ -64,10 +64,9 @@ public abstract class AbstractValidation implements Validatable, Support<Validat
      /**
       * 判断当前值是否字符串
       *
-      * @param value
-      * @return
+      * @param value 值
+      * @return 是否是字符串
       */
-
      public static boolean isString(Object value) {
           return value instanceof String;
      }
@@ -75,9 +74,9 @@ public abstract class AbstractValidation implements Validatable, Support<Validat
      /**
       * 判断当前值是否指定的对象
       *
-      * @param value
-      * @param clazz
-      * @return
+      * @param value 对象
+      * @param clazz 指定类
+      * @return 是否是
       */
      public static boolean isClass(Object value, Class<?> clazz) {
           if (value == null || clazz == null) {
@@ -89,9 +88,9 @@ public abstract class AbstractValidation implements Validatable, Support<Validat
      /**
       * 判断当前值是不是一个与指定格式相符的日期时间
       *
-      * @param value
-      * @param format
-      * @return
+      * @param value  值
+      * @param format 时间格式
+      * @return 是否是
       */
      public static boolean isDate(Object value, String format) {
           if (!isPresent(value)) {
@@ -114,8 +113,8 @@ public abstract class AbstractValidation implements Validatable, Support<Validat
      /**
       * 传入一个key，返回验证信息
       *
-      * @param key
-      * @return
+      * @param key key
+      * @return 信息
       */
      public abstract String validationMessage(String key);
 

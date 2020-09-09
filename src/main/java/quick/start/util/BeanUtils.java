@@ -16,8 +16,8 @@ public class BeanUtils {
      /**
       * 获取两个对象中属性值不一样的字段
       *
-      * @param oldObject
-      * @param newObject
+      * @param oldObject 老对象
+      * @param newObject 新对象
       * @return
       */
      public static Map<String, Object> differents(Object oldObject, Object newObject) {

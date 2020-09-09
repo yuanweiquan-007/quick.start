@@ -15,10 +15,10 @@ public class NumberValidation extends AbstractValidation {
      /**
       * 判断当前值是否指定类型的number
       *
-      * @param value
-      * @param clazz
-      * @param <T>
-      * @return
+      * @param value 对象
+      * @param clazz 类型
+      * @param <T>   泛型参数
+      * @return 是否是指定类型
       */
      public static <T extends Number> boolean isNumber(Object value, Class<T> clazz) {
           try {

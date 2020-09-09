@@ -48,13 +48,6 @@ public class JdbcCommandParser extends AbstractCommandParser {
           return ExecuteCommandMeta.of(CommonConstant.NULL, null);
      }
 
-
-     /**
-      * 解析条件
-      *
-      * @param conditions
-      * @return
-      */
      protected String parserConditions(List<ConditionAttribute> conditions) {
           if (CollectionUtils.isEmpty(conditions)) {
                return CommonConstant.NULL;
@@ -68,8 +61,8 @@ public class JdbcCommandParser extends AbstractCommandParser {
      /**
       * 解析条件属性
       *
-      * @param condition
-      * @return
+      * @param condition 条件
+      * @return 属性
       */
      protected String parserConditionAttribute(ConditionAttribute condition) {
           StringBuffer buffer = new StringBuffer(MysqlCommandConstant.SPACE);
@@ -129,8 +122,8 @@ public class JdbcCommandParser extends AbstractCommandParser {
      /**
       * in添加值转换
       *
-      * @param values
-      * @return
+      * @param values 内容集合
+      * @return in字符内容
       */
      protected String convertInValues(Collection<? extends Serializable> values) {
           if (CollectionUtils.isEmpty(values)) {
@@ -142,12 +135,6 @@ public class JdbcCommandParser extends AbstractCommandParser {
                   .substring(1);
      }
 
-     /**
-      * 解析limit条件
-      *
-      * @param command
-      * @return
-      */
      protected String parserLimit(AbstractCommandForEntity command) {
           if (ObjectUtils.isEmpty(command.getPageSize())) {
                return CommonConstant.NULL;

@@ -47,7 +47,7 @@
 <dependency>
   <groupId>io.github.yuanweiquan-007</groupId>
   <artifactId>quick.start</artifactId>
-  <version>1.6</version>
+  <version>1.7</version>
 </dependency>
 ```
 
@@ -68,6 +68,7 @@ public JdbcTemplate jdbcTemplate() {
 ```java
 @Data
 @Table("Orders")//定义表名
+@MapUnderScoreToCamelCase//单表开启驼峰
 public class Order implements Entity {
      @Generated//设置自增属性
      private Integer orderId;
