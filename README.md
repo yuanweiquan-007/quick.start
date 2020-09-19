@@ -47,7 +47,7 @@
 <dependency>
   <groupId>io.github.yuanweiquan-007</groupId>
   <artifactId>quick.start</artifactId>
-  <version>1.7</version>
+  <version>1.8</version>
 </dependency>
 ```
 
