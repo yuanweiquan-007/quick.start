@@ -20,4 +20,5 @@ public class MysqlCommandConstant extends CommonConstant {
      public static final String EQUAL = "=";
      public static final String PLACEHOLDER = "?";
      public static final String PERCENT = "%";
+     public static final String OFFSET = "OFFSET";
 }
