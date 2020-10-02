@@ -8,6 +8,7 @@ import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -82,10 +83,10 @@ public class Resolver {
         }
     }
 
-    public <T> void ifPresent(String key, Consumer<T> consumer) {
+    public <T> void ifPresent(String key, BiConsumer<String, T> consumer) {
         T result = get(key);
         if (!ObjectUtils.isEmpty(result)) {
-            consumer.accept(result);
+            consumer.accept(key, result);
         }
     }
 

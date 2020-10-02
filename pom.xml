@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.yuanweiquan-007</groupId>
     <artifactId>quick.start</artifactId>
-    <version>2.0</version>
+    <version>2.2</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
