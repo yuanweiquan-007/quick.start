@@ -22,7 +22,7 @@
         <dom4j>1.6.1</dom4j>
         <jackson>2.9.9</jackson>
         <lombok>1.18.10</lombok>
-        <junit>4.12</junit>
+        <junit>4.13.1</junit>
     </properties>
 
     <!-- 依赖 -->
