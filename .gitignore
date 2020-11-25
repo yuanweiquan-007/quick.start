@@ -24,3 +24,5 @@ hs_err_pid*
 pom.xml.bak
 deploy.sh
 test
+.idea
+.DS_Store

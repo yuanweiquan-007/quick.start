@@ -17,7 +17,7 @@ import java.util.Set;
  * @author yuanweiquan
  */
 @Data
-public class EntityMeta<E extends Entity> {
+public class   EntityMeta<E extends Entity> {
 
      /**
       * 对象类
