@@ -23,9 +23,7 @@ public class DateUtils {
       * @return
       */
      public static String format(Date date) {
-          synchronized (SIMPLE_DATE_FORMAT) {
-               return SIMPLE_DATE_FORMAT.format(date);
-          }
+          return SIMPLE_DATE_FORMAT.format(date);
      }
 
      /**
