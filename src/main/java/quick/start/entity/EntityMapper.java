@@ -35,7 +35,7 @@ public class EntityMapper {
     public static <T extends Entity> List<Map<String, Object>> toMapList(List<T> entitys) {
         return StreamUtils
                 .of(entitys)
-                .map(entity -> toMap(entity))
+                .map(EntityMapper::toMap)
                 .collect(Collectors.toList());
     }
 
