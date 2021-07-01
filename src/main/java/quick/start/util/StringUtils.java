@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public class StringUtils extends org.springframework.util.StringUtils {
 
-    private static Pattern humpPattern = Pattern.compile("[A-Z]");
+    private static final Pattern humpPattern = Pattern.compile("[A-Z]");
 
     public static Boolean isNotEmpty(@Nullable Object str) {
         return !isEmpty(str);
