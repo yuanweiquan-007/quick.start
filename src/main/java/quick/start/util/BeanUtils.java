@@ -57,7 +57,7 @@ public class BeanUtils {
 
      private static Boolean saveAble(Field field) {
           return !(field.isAnnotationPresent(SaveAble.class)
-                  && field.getAnnotation(SaveAble.class).value() == false)
+                  && !field.getAnnotation(SaveAble.class).value())
                   && !field.isAnnotationPresent(Generated.class);
      }
 
