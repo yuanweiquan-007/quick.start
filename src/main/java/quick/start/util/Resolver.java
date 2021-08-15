@@ -64,7 +64,7 @@ public class Resolver {
             return of();
         }
         Object tmp = data.get(root);
-        if (ObjectUtils.isEmpty(tmp) && !Map.class.isInstance(tmp)) {
+        if (ObjectUtils.isEmpty(tmp) && !(tmp instanceof Map)) {
             return of();
         }
         return of((Map<String, Object>) tmp);
