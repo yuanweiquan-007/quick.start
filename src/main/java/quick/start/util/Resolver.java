@@ -83,6 +83,11 @@ public class Resolver {
         }
     }
 
+    public <T> T getOrDefault(String key, T defaultValue) {
+        T value = get(key);
+        return null == value ? defaultValue : value;
+    }
+
     public <T> void ifPresent(String key, BiConsumer<String, T> consumer) {
         T result = get(key);
         if (!ObjectUtils.isEmpty(result)) {
