@@ -6,7 +6,12 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
+import quick.start.util.convers.BigDecimalConversion;
+import quick.start.util.convers.BooleanConversion;
+import quick.start.util.convers.DateConversion;
+import quick.start.util.convers.StringConversion;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -81,6 +86,38 @@ public class Resolver {
         } else {
             return null;
         }
+    }
+
+    public Optional<String> getString(String key) {
+        return StringConversion.convert(get(key));
+    }
+
+    public String getString(String key, String defaultValue) {
+        return StringConversion.convert(get(key)).orElse(defaultValue);
+    }
+
+    public Optional<BigDecimal> getDecimal(String key) {
+        return BigDecimalConversion.convert(get(key));
+    }
+
+    public BigDecimal getDecimal(String key, BigDecimal defaultValue) {
+        return BigDecimalConversion.convert(get(key)).orElse(defaultValue);
+    }
+
+    public Optional<Boolean> getBoolean(String key) {
+        return BooleanConversion.convert(get(key));
+    }
+
+    public Boolean getBoolean(String key, Boolean defaultVale) {
+        return BooleanConversion.convert(get(key)).orElse(defaultVale);
+    }
+
+    public Optional<Date> getDate(String key) {
+        return DateConversion.convert(get(key));
+    }
+
+    public Date getDate(String key, Date defaultValue) {
+        return DateConversion.convert(get(key)).orElse(defaultValue);
     }
 
     public <T> T getOrDefault(String key, T defaultValue) {
