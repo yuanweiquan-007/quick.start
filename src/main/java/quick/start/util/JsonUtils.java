@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -20,7 +21,9 @@ public class JsonUtils {
     private final static String DATE_TIME_FORMATTER = "yyyy-MM-dd HH:mm:ss";
 
     private final static ObjectMapper MAPPER = new ObjectMapper()
-            .setVisibility(PropertyAccessor.FIELD, Visibility.ANY).disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .setDateFormat(new SimpleDateFormat(DATE_TIME_FORMATTER));
 
     public static String fromMap(Map<String, Object> data) {
