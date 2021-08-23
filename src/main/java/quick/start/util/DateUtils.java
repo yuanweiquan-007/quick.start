@@ -34,9 +34,7 @@ public class DateUtils {
      * @throws ParseException
      */
     public static Date parser(String date) throws ParseException {
-        synchronized (SIMPLE_DATE_FORMAT) {
-            return SIMPLE_DATE_FORMAT.parse(date);
-        }
+        return SIMPLE_DATE_FORMAT.parse(date);
     }
 
     /**

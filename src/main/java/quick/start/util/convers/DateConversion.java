@@ -2,13 +2,13 @@ package quick.start.util.convers;
 
 import org.springframework.util.ObjectUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 public class DateConversion {
 
-    public static final InstantConversion INSTANT = new InstantConversion();
+    private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static Optional<Date> convert(Object value) {
         if (ObjectUtils.isEmpty(value)) {
@@ -17,7 +17,13 @@ public class DateConversion {
         if (value instanceof Date) {
             return Optional.of((Date) value);
         }
-        return INSTANT.convert(value).map(instant -> new Date(instant.minusMillis(TimeUnit.HOURS.toMillis(8)).toEpochMilli()));
+
+        try {
+            return Optional.of(DATE_TIME_FORMAT.parse(String.valueOf(value)));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Optional.empty();
+        }
     }
 
 }
