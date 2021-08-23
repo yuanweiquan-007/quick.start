@@ -6,10 +6,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import quick.start.entity.Entity;
 import quick.start.entity.EntityMapper;
-import quick.start.util.convers.BigDecimalConversion;
-import quick.start.util.convers.BooleanConversion;
-import quick.start.util.convers.DateConversion;
-import quick.start.util.convers.StringConversion;
+import quick.start.util.convers.*;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -118,6 +115,38 @@ public class Resolver {
 
     public Date getDate(String key, Date defaultValue) {
         return DateConversion.convert(get(key)).orElse(defaultValue);
+    }
+
+    public Optional<Integer> getInteger(String key) {
+        return IntegerConversion.convert(get(key));
+    }
+
+    public Integer getInteger(String key, Integer defaultValue) {
+        return getInteger(key).orElse(defaultValue);
+    }
+
+    public Optional<Long> getLong(String key) {
+        return LongConversion.convert(get(key));
+    }
+
+    public Float getFloat(String key, Float defaultValue) {
+        return getFloat(key).orElse(defaultValue);
+    }
+
+    public Optional<Float> getFloat(String key) {
+        return FloatConversion.convert(get(key));
+    }
+
+    public Long getLong(String key, Long defaultValue) {
+        return getLong(key).orElse(defaultValue);
+    }
+
+    public Optional<Double> getDouble(String key) {
+        return DoubleConversion.convert(get(key));
+    }
+
+    public Double getDouble(String key, Double defaultValue) {
+        return getDouble(key).orElse(defaultValue);
     }
 
     public <T> void ifPresent(String key, BiConsumer<String, T> consumer) {

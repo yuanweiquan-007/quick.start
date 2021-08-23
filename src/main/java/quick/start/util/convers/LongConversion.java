@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class LongConversion {
 
-    public Optional<Long> convert(Object value) {
+    public static Optional<Long> convert(Object value) {
         if (ObjectUtils.isEmpty(value)) {
             return Optional.empty();
         }
@@ -26,19 +26,19 @@ public class LongConversion {
         return convert(String.valueOf(value));
     }
 
-    public Optional<Long> convert(long value) {
+    private static Optional<Long> convert(long value) {
         return Optional.of(Long.valueOf(value));
     }
 
-    public Optional<Long> convert(Number value) {
+    private static Optional<Long> convert(Number value) {
         return Optional.of(value.longValue());
     }
 
-    public Optional<Long> convert(Boolean value) {
+    private static Optional<Long> convert(Boolean value) {
         return Optional.of(Boolean.TRUE.equals(value) ? 1L : 0L);
     }
 
-    public Optional<Long> convert(String value) {
+    private static Optional<Long> convert(String value) {
         try {
             return Optional.of(Long.valueOf(value));
         } catch (NumberFormatException e) {

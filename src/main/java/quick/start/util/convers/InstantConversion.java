@@ -13,7 +13,6 @@ public class InstantConversion {
 
     private enum Type {DATE, TIME, DATETIME}
 
-    public static final LongConversion LONG = new LongConversion();
     private static final Map<DateTimeFormatter, Type> FORMATTERS = new LinkedHashMap<>();
 
     static {
@@ -70,7 +69,7 @@ public class InstantConversion {
             return convert((OffsetDateTime) value);
         }
         if (NumberUtils.isNumber(value)) {
-            return convert(LONG.convert(value).orElse(0L).longValue());
+            return convert(LongConversion.convert(value).orElse(0L).longValue());
         }
         return convert(String.valueOf(value));
     }
