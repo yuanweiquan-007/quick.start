@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * 可写Dao接口
  *
- * @author itwhen
+ * @author yuanweiquan
  */
 public interface Writeable<E extends Entity> {
 
