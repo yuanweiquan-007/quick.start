@@ -1,5 +1,7 @@
 package quick.start.util;
 
+import org.springframework.util.Assert;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ public class DateUtils {
      * @return
      */
     public static String format(Date date) {
+        Assert.notNull(date, "要格式化的时间不能为空");
         return SIMPLE_DATE_FORMAT.format(date);
     }
 
@@ -34,6 +37,7 @@ public class DateUtils {
      * @throws ParseException
      */
     public static Date parser(String date) throws ParseException {
+        Assert.isTrue(StringUtils.isNotEmpty(date), "要解析的时间不能为空");
         return SIMPLE_DATE_FORMAT.parse(date);
     }
 

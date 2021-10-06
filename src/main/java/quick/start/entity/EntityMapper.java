@@ -1,5 +1,6 @@
 package quick.start.entity;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cglib.beans.BeanMap;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 /**
  * @author yuanweiquan
  */
+@Slf4j
 public class EntityMapper {
 
     private static final Logger logger = LoggerFactory.getLogger(EntityMapper.class);
@@ -44,18 +46,23 @@ public class EntityMapper {
         Field[] fields = clazz.getDeclaredFields();
         Map<String, Object> lowerKeyMap = convertLowerKey(map);
         for (Field field : fields) {
-            String lowerCaseFieldName = field.getName().toLowerCase();
-            Object fieldValue = lowerKeyMap.get(lowerCaseFieldName);
-            if (ObjectUtils.isEmpty(fieldValue)) {
-                continue;
-            }
-            field.setAccessible(true);
-            if (lowerKeyMap.containsKey(lowerCaseFieldName)) {
+            try {
+                String lowerCaseFieldName = field.getName().toLowerCase();
+                Object fieldValue = lowerKeyMap.get(lowerCaseFieldName);
+                if (ObjectUtils.isEmpty(fieldValue)) {
+                    continue;
+                }
+                field.setAccessible(true);
+                if (!lowerKeyMap.containsKey(lowerCaseFieldName)) {
+                    continue;
+                }
                 if (field.getType().getSimpleName().equals(Date.class.getSimpleName())) {
                     field.set(bean, DateUtils.parser(String.valueOf(fieldValue)));
                 } else {
                     field.set(bean, fieldValue);
                 }
+            } catch (Exception ex) {
+                log.error("parse " + field.getName() + " exception", ex);
             }
         }
         return bean;
