@@ -18,7 +18,7 @@ public interface Writeable<E extends Entity> {
       * 写入实体
       *
       * @param entity 实体
-      * @return
+      * @return 影响的条数
       */
      Integer insert(E entity);
 
@@ -26,7 +26,7 @@ public interface Writeable<E extends Entity> {
       * 写入多个实体
       *
       * @param entitys 实体
-      * @return
+      * @return 影响的条数
       */
      Integer insert(List<E> entitys);
 
@@ -34,7 +34,7 @@ public interface Writeable<E extends Entity> {
       * 更新实体
       *
       * @param entity 实体
-      * @return
+      * @return 影响的条数
       */
      Integer update(E entity);
 
@@ -52,7 +52,7 @@ public interface Writeable<E extends Entity> {
       *
       * @param id   主键
       * @param data 更新数据
-      * @return
+      * @return 影响的条数
       */
      Integer update(String id, Map<String, Object> data);
 
@@ -62,7 +62,7 @@ public interface Writeable<E extends Entity> {
       * @param id    主键值
       * @param key   更新的字段名
       * @param value 值
-      * @return
+      * @return 影响的条数
       */
      Integer update(String id, String key, Object value);
 
@@ -72,7 +72,7 @@ public interface Writeable<E extends Entity> {
       * @param ids   主键值
       * @param key   更新的字段名
       * @param value 值
-      * @return
+      * @return 影响的条数
       */
      Integer update(List<? extends Serializable> ids, String key, Object value);
 
@@ -87,17 +87,17 @@ public interface Writeable<E extends Entity> {
      /**
       * 删除多条记录
       *
-      * @param ids
-      * @return
+      * @param ids 主键值
+      * @return 影响的条数
       */
      Integer delete(List<? extends Serializable> ids);
 
      /**
       * 根据字段删除
       *
-      * @param column
-      * @param values
-      * @return
+      * @param column 字段
+      * @param values 值
+      * @return 影响的条数
       */
      Integer delete(String column, Collection<? extends Serializable> values);
 

@@ -18,7 +18,7 @@ public class BeanUtils {
       *
       * @param oldObject 老对象
       * @param newObject 新对象
-      * @return
+      * @return 不一致的值的集合
       */
      public static Map<String, Object> differents(Object oldObject, Object newObject) {
           Map<String, Object> differents = new HashMap<>(16);

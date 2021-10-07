@@ -35,40 +35,40 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
     /**
      * 查询
      *
-     * @param select
-     * @return
+     * @param select 选择器
+     * @return 集合
      */
     protected abstract List<E> select(Select<E> select);
 
     /**
      * 修改
      *
-     * @param update
-     * @return
+     * @param update 修改器
+     * @return 集合
      */
     protected abstract Integer update(Update<E> update);
 
     /**
      * 新增
      *
-     * @param insert
-     * @return
+     * @param insert 插入对象
+     * @return 影响的条数
      */
     protected abstract Integer insert(Insert<E> insert);
 
     /**
      * 删除
      *
-     * @param delete
-     * @return
+     * @param delete 删除器
+     * @return 影响的条数
      */
     protected abstract Integer delete(Delete<E> delete);
 
     /**
      * 统计
      *
-     * @param count
-     * @return
+     * @param count 统计查询器
+     * @return 影响的条数
      */
     protected abstract Integer count(Count<E> count);
 

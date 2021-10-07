@@ -7,8 +7,8 @@ public class NumberUtils {
     /**
      * 判断当前值是否number
      *
-     * @param value
-     * @return
+     * @param value 对象
+     * @return 是否是数字
      */
     public static boolean isNumber(Object value) {
         return isNumber(value, Number.class);
@@ -17,9 +17,9 @@ public class NumberUtils {
     /**
      * 判断当前值是否指定类型的number
      *
-     * @param value
-     * @param clazz
-     * @return
+     * @param value 要判断的对象
+     * @param clazz 类
+     * @return 是否是数字
      */
     public static <T extends Number> boolean isNumber(Object value, Class<T> clazz) {
         return isNumber(value, clazz, null);
@@ -28,9 +28,9 @@ public class NumberUtils {
     /**
      * 判断当前值是否指定类型的number
      *
-     * @param value
-     * @param clazz
-     * @return
+     * @param value 值
+     * @param clazz 对象
+     * @return 是否是数字
      */
     public static <T extends Number> boolean isNumber(Object value, Class<T> clazz, Predicate<Number> callback) {
         try {
