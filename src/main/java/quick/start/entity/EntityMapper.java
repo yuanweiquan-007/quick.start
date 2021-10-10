@@ -25,10 +25,16 @@ public class EntityMapper {
 
     public static <T extends Entity> Map<String, Object> toMap(T entity) {
         Map<String, Object> map = new HashMap<>(16);
-        if (!ObjectUtils.isEmpty(entity)) {
-            BeanMap beanMap = BeanMap.create(entity);
-            for (Object key : beanMap.keySet()) {
-                map.put(String.valueOf(key), beanMap.get(key));
+        if (ObjectUtils.isEmpty(entity)) {
+            return map;
+        }
+        Field[] fields = entity.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(Boolean.TRUE);
+                map.put(field.getName(), field.get(entity));
+            } catch (Exception ex) {
+                log.error("parse attr {} fail", field.getName(), ex);
             }
         }
         return map;
