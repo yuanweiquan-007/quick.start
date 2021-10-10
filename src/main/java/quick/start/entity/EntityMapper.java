@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
 import quick.start.util.DateUtils;
+import quick.start.util.JsonUtils;
 import quick.start.util.StreamUtils;
 
 import java.lang.reflect.Field;
@@ -27,16 +28,12 @@ public class EntityMapper {
         if (ObjectUtils.isEmpty(entity)) {
             return map;
         }
-        Field[] fields = entity.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            try {
-                field.setAccessible(Boolean.TRUE);
-                map.put(field.getName(), field.get(entity));
-            } catch (Exception ex) {
-                log.error("parse attr {} fail", field.getName(), ex);
-            }
+        try {
+            return JsonUtils.toMap(JsonUtils.from(entity));
+        } catch (Exception ex) {
+            log.error("{} to map exception", entity, ex);
+            return new HashMap<>();
         }
-        return map;
     }
 
     public static <T extends Entity> List<Map<String, Object>> toMapList(List<T> entitys) {
