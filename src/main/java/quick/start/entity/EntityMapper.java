@@ -9,7 +9,6 @@ import quick.start.util.JsonUtils;
 import quick.start.util.StreamUtils;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -59,26 +58,16 @@ public class EntityMapper {
                 if (!lowerKeyMap.containsKey(lowerCaseFieldName)) {
                     continue;
                 }
-                setFieldValue(bean, field, fieldValue);
+                if (field.getType().getSimpleName().equals(Date.class.getSimpleName())) {
+                    field.set(bean, DateUtils.parser(String.valueOf(fieldValue)));
+                } else {
+                    field.set(bean, fieldValue);
+                }
             } catch (Exception ex) {
                 log.error("parse " + field.getName() + " exception", ex);
             }
         }
         return bean;
-    }
-
-    private static <T> void setFieldValue(T bean, Field field, Object fieldValue) throws IllegalAccessException, ParseException {
-        if (field.getType().getSimpleName().equals(Date.class.getSimpleName())) {
-            field.set(bean, DateUtils.parser(String.valueOf(fieldValue)));
-        } else if (field.getType().getSimpleName().equals(Integer.class.getSimpleName())) {
-            field.setInt(bean, Integer.parseInt(String.valueOf(fieldValue)));
-        } else if (field.getType().getSimpleName().equals(Double.class.getSimpleName())) {
-            field.setDouble(bean, Double.parseDouble(String.valueOf(fieldValue)));
-        } else if (field.getType().getSimpleName().equals(Float.class.getSimpleName())) {
-            field.setFloat(bean, Float.parseFloat(String.valueOf(fieldValue)));
-        } else {
-            field.set(bean, fieldValue);
-        }
     }
 
     /**
