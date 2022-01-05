@@ -23,6 +23,10 @@ public class EntityMapper {
 
     private static final Logger logger = LoggerFactory.getLogger(EntityMapper.class);
 
+    public static <T extends Entity, E extends Entity> E convert(T entity, Class<E> clazz) throws Exception {
+        return toEntity(toMap(entity), clazz);
+    }
+
     public static <T extends Entity> Map<String, Object> toMap(T entity) {
         Map<String, Object> map = new HashMap<>(16);
         if (ObjectUtils.isEmpty(entity)) {

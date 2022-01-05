@@ -21,7 +21,7 @@ import java.util.Map;
 @Service
 public abstract class AbstractDefaultJdbcService<E extends Entity, D extends JdbcRepository<E>> implements ApplicationContextAware {
 
-    private D repository;
+    protected D repository;
 
     public Boolean has(Serializable id) {
         return repository.has(id);
