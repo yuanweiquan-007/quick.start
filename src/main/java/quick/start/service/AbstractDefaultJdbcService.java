@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
+import quick.start.collection.Paginator;
 import quick.start.entity.Entity;
 import quick.start.repositorys.condition.Conditions;
 import quick.start.repositorys.jdbc.JdbcRepository;
@@ -86,6 +87,18 @@ public abstract class AbstractDefaultJdbcService<E extends Entity, D extends Jdb
      */
     public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
         return repository.findByColumn(column, values);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param conditions 条件
+     * @param pageSize   每页大小
+     * @param pageNumber 当前页数
+     * @return {@link Paginator}
+     */
+    public Paginator<E> findByPage(Conditions conditions, Integer pageSize, Integer pageNumber) {
+        return repository.findByPage(conditions, pageSize, pageNumber);
     }
 
     /**
