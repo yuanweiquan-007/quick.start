@@ -22,7 +22,9 @@ public abstract class AbstractDefaultJdbcService<E extends Entity, D extends Jdb
 
     private D repository;
 
-    private ApplicationContext applicationContext;
+    public Boolean has(Serializable id) {
+        return repository.has(id);
+    }
 
     /**
      * 新增
@@ -144,7 +146,6 @@ public abstract class AbstractDefaultJdbcService<E extends Entity, D extends Jdb
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
         repository = applicationContext.getBean(getDaoClass());
     }
 
