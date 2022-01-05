@@ -10,5 +10,10 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SaveAble {
+     /**
+      * 值
+      *
+      * @return boolean
+      */
      boolean value() default true;
 }

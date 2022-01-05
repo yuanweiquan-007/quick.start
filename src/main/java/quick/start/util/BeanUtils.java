@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author yuanweiquan
+ * bean帮助类
  */
 public class BeanUtils {
 

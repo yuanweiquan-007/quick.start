@@ -83,9 +83,10 @@ public class Snowflake {
      }
 
      /**
+      * 下一个id
       * 获得下一个ID (该方法是线程安全的)
       *
-      * @return
+      * @return long
       */
      public static synchronized long nextId() {
           if (snowflake == null) {

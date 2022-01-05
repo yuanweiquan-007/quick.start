@@ -65,6 +65,7 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
     protected abstract Integer delete(Delete<E> delete);
 
     /**
+     * 数
      * 统计
      *
      * @param count 统计查询器
@@ -72,6 +73,12 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
      */
     protected abstract Integer count(Count<E> count);
 
+    /**
+     * 有
+     *
+     * @param id id
+     * @return boolean
+     */
     @Override
     public boolean has(Serializable id) {
         Assert.notNull(id, "查询时主键值为空");
@@ -83,6 +90,12 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         ) > 0;
     }
 
+    /**
+     * 发现通过id
+     *
+     * @param id id
+     * @return {@link E}
+     */
     @Override
     public E findById(Serializable id) {
         Assert.notNull(id, "查询时主键值为空");
@@ -98,6 +111,12 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         return CollectionUtils.isEmpty(entitys) ? commandFactory.newInstance() : entitys.get(0);
     }
 
+    /**
+     * 发现由ids
+     *
+     * @param ids id
+     * @return {@link List}<{@link E}>
+     */
     @Override
     public List<E> findByIds(Collection<? extends Serializable> ids) {
         Assert.notEmpty(ids, "查询主键值为空");
@@ -109,11 +128,23 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 找到
+     *
+     * @return {@link List}<{@link E}>
+     */
     @Override
     public List<E> find() {
         return select(commandFactory.select());
     }
 
+    /**
+     * 找到了列
+     *
+     * @param column 列
+     * @param value  价值
+     * @return {@link List}<{@link E}>
+     */
     @Override
     public List<E> findByColumn(String column, Serializable value) {
         return select(
@@ -123,6 +154,13 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 找到了列
+     *
+     * @param column 列
+     * @param values 值
+     * @return {@link List}<{@link E}>
+     */
     @Override
     public List<E> findByColumn(String column, Collection<? extends Serializable> values) {
         return select(
@@ -132,6 +170,12 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 找到
+     *
+     * @param conditions 条件
+     * @return {@link List}<{@link E}>
+     */
     @Override
     public List<E> find(Conditions conditions) {
         return select(
@@ -141,6 +185,14 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 找到页面
+     *
+     * @param conditions 条件
+     * @param pageSize   页面大小
+     * @param pageNumber 页码
+     * @return {@link Paginator}<{@link E}>
+     */
     @Override
     public Paginator<E> findByPage(Conditions conditions, Integer pageSize, Integer pageNumber) {
         if (pageNumber < 0) {
@@ -156,6 +208,12 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
     }
 
 
+    /**
+     * 删除
+     *
+     * @param id id
+     * @return {@link Integer}
+     */
     @Override
     public Integer delete(Serializable id) {
         Assert.notNull(id, "删除主键值为空");
@@ -167,6 +225,12 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 删除
+     *
+     * @param ids id
+     * @return {@link Integer}
+     */
     @Override
     public Integer delete(List<? extends Serializable> ids) {
         Assert.notEmpty(ids, "删除主键值为空");
@@ -178,6 +242,13 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 删除
+     *
+     * @param column 列
+     * @param values 值
+     * @return {@link Integer}
+     */
     @Override
     public Integer delete(String column, Collection<? extends Serializable> values) {
         return delete(
@@ -187,11 +258,23 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
         );
     }
 
+    /**
+     * 插入
+     *
+     * @param entity 实体
+     * @return {@link Integer}
+     */
     @Override
     public Integer insert(E entity) {
         return insert(commandFactory.insert().setValues(Arrays.asList(entity)));
     }
 
+    /**
+     * 插入
+     *
+     * @param entitys 实体
+     * @return {@link Integer}
+     */
     @Override
     public Integer insert(List<E> entitys) {
         return insert(commandFactory.insert().setValues(entitys));

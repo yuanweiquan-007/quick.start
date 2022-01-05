@@ -5,6 +5,9 @@ import quick.start.util.ClassUtils;
 
 import java.util.Optional;
 
+/**
+ *
+ */
 public class DoubleConversion {
 
     public static Optional<Double> convert(Object value) {

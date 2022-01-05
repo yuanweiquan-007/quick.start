@@ -14,6 +14,11 @@ import java.lang.annotation.*;
 @Conditional(OnBeanCondition.class)
 public @interface ConditionalOnBean {
 
+     /**
+      * 值
+      *
+      * @return {@link Class}
+      */
      Class<?>[] value() default {};
 
 }

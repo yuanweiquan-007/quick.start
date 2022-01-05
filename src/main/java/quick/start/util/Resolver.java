@@ -20,8 +20,14 @@ import java.util.function.Consumer;
  */
 public class Resolver {
 
+    /**
+     * 数据
+     */
     protected final Map<String, Object> data = new LinkedHashMap<>();
 
+    /**
+     * 分隔符
+     */
     public final static String DELIMITERS = "|-/#;,: ";
 
     private Resolver() {
@@ -33,29 +39,62 @@ public class Resolver {
         }
     }
 
+    /**
+     * @return {@link Resolver}
+     */
     public static Resolver of() {
         return new Resolver();
     }
 
+    /**
+     * @param data 数据
+     * @return {@link Resolver}
+     */
     public static Resolver of(Map<String, ?> data) {
         return new Resolver(data);
     }
 
+    /**
+     * @param key   关键词
+     * @param value 值
+     * @return {@link Resolver}
+     */
     public static Resolver of(String key, Object value) {
         Resolver serviceForm = new Resolver();
         serviceForm.set(key, value);
         return serviceForm;
     }
 
+    /**
+     * 设置
+     *
+     * @param key   关键词
+     * @param value 值
+     * @return {@link Resolver}
+     */
     public Resolver set(String key, Object value) {
         data.put(key, value);
         return this;
     }
 
+    /**
+     * json
+     *
+     * @param json json
+     * @return {@link Resolver}
+     * @throws Exception 异常
+     */
     public static Resolver ofJson(String json) throws Exception {
         return of(JsonUtils.toMap(json));
     }
 
+    /**
+     * xml
+     *
+     * @param xml xml
+     * @return {@link Resolver}
+     * @throws Exception 异常
+     */
     public static Resolver ofXml(String xml) throws Exception {
         return of(XmlUtils.toMap(xml));
     }

@@ -15,6 +15,11 @@ public class Insert<E extends Entity> extends AbstractCommandForEntity<E> {
       */
      private List<E> values;
 
+     /**
+      * 默认构造函数
+      *
+      * @param meta 元数据
+      */
      public Insert(EntityMeta<E> meta) {
           super(meta);
      }

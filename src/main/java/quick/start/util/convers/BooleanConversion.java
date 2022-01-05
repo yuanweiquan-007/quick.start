@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *
+ */
 public class BooleanConversion {
 
     private static final List<String> PRIVATIVES = Arrays.asList("false", "0", "");

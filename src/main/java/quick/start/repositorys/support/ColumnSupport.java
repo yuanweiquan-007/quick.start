@@ -6,10 +6,11 @@ package quick.start.repositorys.support;
 public interface ColumnSupport {
 
      /**
+      * 列
       * 指定字段
       *
-      * @param columns
-      * @return
+      * @param columns 列
+      * @return {@link ColumnSupport}
       */
      public ColumnSupport columns(String... columns);
 

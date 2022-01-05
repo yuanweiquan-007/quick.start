@@ -48,6 +48,12 @@ public enum JdbcConditionType {
           this.value = value;
      }
 
+     /**
+      * 得到值
+      *
+      * @param type 类型
+      * @return {@link String}
+      */
      public static String getValue(ConditionType type) {
           for (JdbcConditionType jdbcConditionType : JdbcConditionType.values()) {
                if (jdbcConditionType.type.equals(type)) {

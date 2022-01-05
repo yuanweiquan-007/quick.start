@@ -8,6 +8,11 @@ import quick.start.entity.EntityMeta;
  */
 public class Delete<E extends Entity> extends AbstractCommandForEntity<E> {
 
+     /**
+      * 默认构造函数
+      *
+      * @param meta 元数据
+      */
      public Delete(EntityMeta<E> meta) {
           super(meta);
      }

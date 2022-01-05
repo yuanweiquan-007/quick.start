@@ -6,18 +6,20 @@ package quick.start.repositorys.support;
 public interface SortSupport {
 
      /**
+      * asc
       * 升序
       *
-      * @param field
-      * @return
+      * @param field 字段
+      * @return {@link SortSupport}
       */
      public SortSupport asc(String field);
 
      /**
+      * desc
       * 降序
       *
-      * @param field
-      * @return
+      * @param field 字段
+      * @return {@link SortSupport}
       */
      public SortSupport desc(String field);
 

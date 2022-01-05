@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Optional;
 
+/**
+ *
+ */
 public class BigDecimalConversion {
 
     public static Optional<BigDecimal> convert(Object value) {

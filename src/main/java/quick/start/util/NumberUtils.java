@@ -2,6 +2,9 @@ package quick.start.util;
 
 import java.util.function.Predicate;
 
+/**
+ * 数字帮助类
+ */
 public class NumberUtils {
 
     /**
@@ -28,8 +31,9 @@ public class NumberUtils {
     /**
      * 判断当前值是否指定类型的number
      *
-     * @param value 值
-     * @param clazz 对象
+     * @param value    值
+     * @param clazz    对象
+     * @param callback 回调
      * @return 是否是数字
      */
     public static <T extends Number> boolean isNumber(Object value, Class<T> clazz, Predicate<Number> callback) {

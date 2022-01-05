@@ -24,6 +24,11 @@ public abstract class AbstractCommandForEntity<E extends Entity> extends Conditi
      protected EntityMeta<E> meta;
      protected List<SetAttribute> setAttributes = new ArrayList<>();
 
+     /**
+      * 构造方法
+      *
+      * @param meta 元数据
+      */
      public AbstractCommandForEntity(EntityMeta<E> meta) {
           this.meta = meta;
      }
@@ -31,11 +36,16 @@ public abstract class AbstractCommandForEntity<E extends Entity> extends Conditi
      /**
       * 命令类型
       *
-      * @return
+      * @return 类型
       * @see CommandType
       */
      public abstract CommandType commandType();
 
+     /**
+      * 得到元数据
+      *
+      * @return {@link EntityMeta}<{@link E}>
+      */
      public EntityMeta<E> getMeta() {
           return meta;
      }

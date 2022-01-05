@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
+/**
+ *
+ */
 public class BytesConversion {
 
     public Optional<Byte[]> convert(Object value) {

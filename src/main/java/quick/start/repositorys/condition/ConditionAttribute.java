@@ -28,6 +28,12 @@ public class ConditionAttribute {
           this.value = value;
      }
 
+     /**
+      * @param field 字段
+      * @param type  类型
+      * @param value 值
+      * @return {@link ConditionAttribute}
+      */
      public static final ConditionAttribute of(String field, ConditionType type, Object value) {
           return new ConditionAttribute(field, type, value);
      }

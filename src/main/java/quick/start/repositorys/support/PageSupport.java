@@ -6,19 +6,21 @@ package quick.start.repositorys.support;
 public interface PageSupport {
 
      /**
+      * 限制
       * limit
       *
-      * @param pageNumber
-      * @return
+      * @param pageNumber 当前页数
+      * @return {@link PageSupport}
       */
      public PageSupport limit(Integer pageNumber);
 
      /**
+      * 限制
       * limit
       *
-      * @param pageSize
-      * @param pageNumber
-      * @return
+      * @param pageSize   每页大小
+      * @param pageNumber 当前页数
+      * @return {@link PageSupport}
       */
      public PageSupport limit(Integer pageSize, Integer pageNumber);
 

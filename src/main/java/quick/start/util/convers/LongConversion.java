@@ -5,6 +5,9 @@ import quick.start.util.ClassUtils;
 
 import java.util.Optional;
 
+/**
+ *
+ */
 public class LongConversion {
 
     public static Optional<Long> convert(Object value) {

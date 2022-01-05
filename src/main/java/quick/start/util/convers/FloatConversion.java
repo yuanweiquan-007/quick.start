@@ -5,6 +5,9 @@ import quick.start.util.ClassUtils;
 
 import java.util.Optional;
 
+/**
+ *
+ */
 public class FloatConversion {
 
     public static Optional<Float> convert(Object value) {

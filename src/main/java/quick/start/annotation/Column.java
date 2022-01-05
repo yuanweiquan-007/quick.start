@@ -10,5 +10,10 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
+     /**
+      * 值
+      *
+      * @return {@link String}
+      */
      String value();
 }

@@ -7,6 +7,9 @@ import quick.start.util.BytesUtils;
 import java.io.InputStream;
 import java.util.Optional;
 
+/**
+ *
+ */
 public class StringConversion {
 
     public static final BytesConversion BYTES = new BytesConversion();

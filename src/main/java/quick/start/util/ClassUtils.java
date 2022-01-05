@@ -1,5 +1,8 @@
 package quick.start.util;
 
+/**
+ * class帮助类
+ */
 public class ClassUtils {
 
     /**

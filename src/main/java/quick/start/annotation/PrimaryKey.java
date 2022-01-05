@@ -10,5 +10,10 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrimaryKey {
+     /**
+      * 值
+      *
+      * @return {@link String}
+      */
      String value() default "";
 }

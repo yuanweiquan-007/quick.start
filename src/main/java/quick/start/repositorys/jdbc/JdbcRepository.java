@@ -29,18 +29,25 @@ import java.util.stream.Collectors;
  */
 public class JdbcRepository<E extends Entity> extends AbstractDefaultRepository<E, JdbcCommandParser> {
 
+     /**
+      * jdbc模板
+      */
      @Lazy
      @Autowired
      protected JdbcTemplate jdbcTemplate;
 
+     /**
+      * 默认构造方法
+      */
      public JdbcRepository() {
           this.commandParser = new JdbcCommandParser();
      }
 
      /**
+      * 设置jdbc模板
       * 如果要指定JdbcTemplate，可以通过此方法修改
       *
-      * @param jdbcTemplate
+      * @param jdbcTemplate jdbc模板
       */
      public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
           this.jdbcTemplate = jdbcTemplate;

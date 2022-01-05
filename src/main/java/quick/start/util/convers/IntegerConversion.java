@@ -5,6 +5,9 @@ import quick.start.util.ClassUtils;
 
 import java.util.Optional;
 
+/**
+ *
+ */
 public class IntegerConversion {
 
     public static Optional<Integer> convert(Object value) {
