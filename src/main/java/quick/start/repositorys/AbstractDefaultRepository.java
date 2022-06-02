@@ -313,7 +313,7 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
     }
 
     @Override
-    public Integer update(String id, String key, Object value) {
+    public Integer update(Serializable id, String key, Object value) {
         Assert.notNull(id, "修改主键值为空");
         return update(
                 (Update) commandFactory
@@ -337,7 +337,7 @@ public abstract class AbstractDefaultRepository<E extends Entity, P extends Abst
     }
 
     @Override
-    public Integer update(String id, Map<String, Object> data) {
+    public Integer update(Serializable id, Map<String, Object> data) {
         Assert.notNull(id, "修改主键值为空");
         return update(
                 (Update) commandFactory

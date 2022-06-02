@@ -54,7 +54,7 @@ public interface Writeable<E extends Entity> {
       * @param data 更新数据
       * @return 影响的条数
       */
-     Integer update(String id, Map<String, Object> data);
+     Integer update(Serializable id, Map<String, Object> data);
 
      /**
       * 按照指定主键更新字段
@@ -64,7 +64,7 @@ public interface Writeable<E extends Entity> {
       * @param value 值
       * @return 影响的条数
       */
-     Integer update(String id, String key, Object value);
+     Integer update(Serializable id, String key, Object value);
 
      /**
       * 按照指定主键更新字段

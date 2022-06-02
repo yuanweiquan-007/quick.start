@@ -1,8 +1,8 @@
 package quick.start.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,16 +37,11 @@ public class JsonUtils {
     }
 
     /**
-     *
      * @param data 数据
      * @return {@link String}
      */
     public static String from(Object data) {
-        try {
-            return MAPPER.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
-            return null;
-        }
+        return JSONObject.toJSONString(data);
     }
 
     /**
