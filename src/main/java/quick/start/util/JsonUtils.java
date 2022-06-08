@@ -33,14 +33,14 @@ public class JsonUtils {
      * @return {@link String}
      */
     public static String fromMap(Map<String, Object> data) {
-        return toJson(data);
+        return from(data);
     }
 
     /**
      * @param data 数据
      * @return {@link String}
      */
-    public static String toJson(Object data) {
+    public static String from(Object data) {
         return JSONObject.toJSONString(data);
     }
 

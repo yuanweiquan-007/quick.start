@@ -33,7 +33,7 @@ public class EntityMapper {
             return map;
         }
         try {
-            return JsonUtils.toMap(JsonUtils.toJson(entity));
+            return JsonUtils.toMap(JsonUtils.from(entity));
         } catch (Exception ex) {
             log.error("{} to map exception", entity, ex);
             return new HashMap<>();
