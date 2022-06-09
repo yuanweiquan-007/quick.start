@@ -27,20 +27,10 @@ public class JsonUtils {
             .setDateFormat(new SimpleDateFormat(DATE_TIME_FORMATTER));
 
     /**
-     * 集合转json
-     *
      * @param data 数据
      * @return {@link String}
      */
-    public static String fromMap(Map<String, Object> data) {
-        return from(data);
-    }
-
-    /**
-     * @param data 数据
-     * @return {@link String}
-     */
-    public static String from(Object data) {
+    public static String toJson(Object data) {
         return JSONObject.toJSONString(data);
     }
 
