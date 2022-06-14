@@ -119,7 +119,7 @@ public abstract class AbstractDefaultJdbcService<E extends Entity, D extends Jdb
      * @param value 值
      * @return {@link Integer}
      */
-    public Integer update(String id, String key, Object value) {
+    public Integer update(Serializable id, String key, Object value) {
         return repository.update(id, key, value);
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractDefaultJdbcService<E extends Entity, D extends Jdb
      * @param data 数据
      * @return {@link Integer}
      */
-    public Integer update(String id, Map<String, Object> data) {
+    public Integer update(Serializable id, Map<String, Object> data) {
         return repository.update(id, data);
     }
 
