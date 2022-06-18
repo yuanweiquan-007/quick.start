@@ -62,8 +62,13 @@ public class EntityMapper {
                 if (!lowerKeyMap.containsKey(lowerCaseFieldName)) {
                     continue;
                 }
-                if (field.getType().getSimpleName().equals(Date.class.getSimpleName())) {
+                String simpleClassName = field.getType().getSimpleName();
+                if (simpleClassName.equals(Date.class.getSimpleName())) {
                     field.set(bean, DateUtils.parser(String.valueOf(fieldValue)));
+                } else if (simpleClassName.equals(Integer.class.getSimpleName())) {
+                    field.set(bean, Integer.parseInt(String.valueOf(fieldValue)));
+                } else if (simpleClassName.equals(Long.class.getSimpleName())) {
+                    field.set(bean, Long.parseLong(String.valueOf(fieldValue)));
                 } else {
                     field.set(bean, fieldValue);
                 }
