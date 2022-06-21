@@ -16,7 +16,7 @@
         <spring.vsersion>5.1.5.RELEASE</spring.vsersion>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <mysql.version>5.1.26</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <commons.dbcp2>2.1.1</commons.dbcp2>
         <logback>1.2.0</logback>
         <dom4j>1.6.1</dom4j>
