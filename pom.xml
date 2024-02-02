@@ -13,7 +13,7 @@
     <description>java quick start project</description>
 
     <properties>
-        <spring.vsersion>5.1.5.RELEASE</spring.vsersion>
+        <spring.vsersion>5.2.22.RELEASE</spring.vsersion>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mysql.version>5.1.26</mysql.version>
